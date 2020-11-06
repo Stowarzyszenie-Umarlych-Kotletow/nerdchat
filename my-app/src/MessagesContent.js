@@ -1,11 +1,13 @@
 import './MessagesContent.css';
+import MessageBoard from './messageBoard/MessageBoard'
 
-function Messages() {
+
+function MessagesContent() {
     return (
         <div id="messagesContent">
-            <h1>I am a message container</h1>
+            <MessageBoard />
         </div>
     )
 }
 
-export default Messages;
+export default MessagesContent;
