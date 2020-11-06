@@ -1,9 +1,9 @@
 import LeftSide from './LeftSideContent';
-import Messages from './MessagesContent';
+import MessagesContent from './MessagesContent';
 
 function Main() {
     return ([
-        Messages(), 
+        MessagesContent(), 
         LeftSide()
     ])
 }
