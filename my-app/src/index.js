@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Present from './Present';
+import Main from './MainContent';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
-    <Present />
+    <Main />
+    
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
   return (
-    <h1 align='center'>Hello Adrian</h1>
+    <h1 align='center'>Nerdchat App</h1>
   );
 }
 

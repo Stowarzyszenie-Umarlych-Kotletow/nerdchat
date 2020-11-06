@@ -1,0 +1,12 @@
+#menuLeftContent {
+    float: left;
+    /* width: 25%; */
+    height: 100%;
+    margin-left: 0px;
+    padding-left: 10px;
+    background-color: aqua;
+    width: 24%;
+}
+h1 {
+    text-align: 'center';
+}
