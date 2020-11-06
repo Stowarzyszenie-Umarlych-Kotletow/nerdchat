@@ -2,11 +2,27 @@
     float: left;
     /* width: 25%; */
     height: 100%;
-    margin-left: 0px;
+    margin: auto;
     padding-left: 10px;
-    background-color: aqua;
     width: 24%;
+    /* position: relative; */
+}
+#latestMessage {
+    text-align: 'center';
+    padding-left: 10px;
+    /* background-color: grey; */
+    color: black;
+    width: 24%;
+    margin-top: 1px;
+    border: solid;
+    border-radius: 5px;
+    background-color: #809fff;
+    /* display: block; */
+    /* position: relative; */
 }
 h1 {
+    text-align: 'center';
+}
+p {
     text-align: 'center';
 }
