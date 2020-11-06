@@ -1,0 +1,24 @@
+#latestMessage {
+    text-align: 'center';
+    padding-left: 0px;
+    /* background-color: grey; */
+    color: black;
+    width: 25%;
+    margin-top: auto;
+    border: 1px solid black;
+    border-radius: 0px;
+    background-color: #809fff;
+    display: block;
+    /* clear: both; */
+    /* position: relative; */
+}
+#latestMessageName {
+    padding-left: 15px;
+}
+#latestMessage.h1 {
+    text-align: 'center';
+}
+#latestMessage.p {
+    text-align: 'center';
+    font-size: 20px;
+}

@@ -1,0 +1,13 @@
+#leftSideTitle {
+    text-align: 'center';
+    width: 25%;
+    background-color: #b3d1ff;
+    display: block;
+    /* float: left; */
+    overflow: hidden;
+    border: 2px, solid, grey
+}
+#leftSideTitle.p {
+    text-align: 'center';
+    font-size: 18px;
+}
