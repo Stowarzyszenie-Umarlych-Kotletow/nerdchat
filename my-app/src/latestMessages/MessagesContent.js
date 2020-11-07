@@ -1,5 +1,5 @@
 import './MessagesContent.css';
-import MessageBoard from './messageBoard/MessageBoard'
+import MessageBoard from './../messageBoard/MessageBoard'
 
 
 function MessagesContent() {

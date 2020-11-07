@@ -15,8 +15,11 @@ a {
 }
 
 .MessageBoard {
+  background-color: #333;
   display: flex;
   justify-content: center;
+  height: 810px;
+  max-height: 100%;
 }
 
 .container {
@@ -33,4 +36,9 @@ a {
 }
 .btn:hover {
   background: #666;
+}
+
+.messageContainer {
+  padding-top: 10px;
+  height: 100%;
 }

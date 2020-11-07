@@ -1,13 +1,11 @@
 #latestMessage {
     text-align: 'center';
-    padding-left: 0px;
+    padding-left: 1px;
     /* background-color: grey; */
     color: black;
-    width: 25%;
-    margin-top: auto;
-    border: 1px solid black;
-    border-radius: 0px;
-    background-color: #809fff;
+    margin-bottom: 2px;
+    margin-right: 10px;
+    background-color: #e2b027;
     display: block;
     /* clear: both; */
     /* position: relative; */
@@ -15,7 +13,6 @@
 #latestMessageName {
     padding-left: 7px;
     font-size: 22px;
-    width: 50%;
     /* float: left; */
     font-weight: 600;
     /* border: 1px solid black; */
@@ -33,7 +30,7 @@
     display: block;
     font-weight: 300;
     font-size: 15px;
-    width: 100%;
+    margin: 3px;
     
 }
 #latestMessage.h1 {

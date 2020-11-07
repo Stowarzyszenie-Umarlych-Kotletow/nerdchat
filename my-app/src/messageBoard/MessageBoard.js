@@ -43,9 +43,12 @@ class MessageBoard extends Component {
       content: content, 
       id: this.state.messages.length, 
       sender: 'Me', 
-      time: String() + new Date().getHours() + ':' + new Date().getMinutes()}
-    console.log(newMessage.id);
-    this.setState({ messages: [...this.state.messages, newMessage]})
+      time: new Date().getMinutes() < 10? String() + new Date().getHours() + ':0' + new Date().getMinutes(): String() + new Date().getHours() + ':' + new Date().getMinutes()
+    }
+    if (newMessage.content != '')
+    {
+      this.setState({ messages: [...this.state.messages, newMessage]})
+    }
   }
 
   
@@ -54,7 +57,9 @@ class MessageBoard extends Component {
     return (
       <div className="MessageBoard" >
         <div className="container">
-          <Messages messages={this.state.messages} />
+          <div className="messageContainer">
+            <Messages messages={this.state.messages} />
+          </div>
           <AddMessage addMessage={this.addMessage} />
         </div>
       </div>

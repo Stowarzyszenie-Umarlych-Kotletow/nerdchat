@@ -21,7 +21,7 @@ export class AddMessage extends Component {
                 id = "textField"
                 type="text" 
                 name="content" 
-                style={{flex: '10', padding: '5px'}}
+                style={{flex: '10', padding: '5px', height: '40px'}}
                 placeholder="Add Message..."
                 value={this.state.content}
                 onChange={this.onChange} 

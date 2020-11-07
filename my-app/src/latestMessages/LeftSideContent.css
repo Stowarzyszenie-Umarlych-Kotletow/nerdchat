@@ -2,9 +2,7 @@
     float: left;
     /* width: 25%; */
     height: 100%;
-    margin: auto;
     padding-left: 10px;
-    width: 24%;
     /* position: relative; */
 }
 #latestMessage {
@@ -12,11 +10,7 @@
     padding-left: 10px;
     /* background-color: grey; */
     color: black;
-    width: 24%;
-    margin-top: 1px;
-    border: solid;
-    border-radius: 5px;
-    background-color: #809fff;
+    margin: 3px;
     /* display: block; */
     /* position: relative; */
 }
@@ -25,4 +19,11 @@ h1 {
 }
 p {
     text-align: 'center';
+}
+
+.leftSideContainer {
+    height: 850px;
+    width: 25%;
+    max-height: 100%;
+    background-color: #404040;
 }
