@@ -1,7 +1,10 @@
 #leftSideTitle {
+    color: #f5f5f5;
     text-align: 'center';
-    width: 25%;
-    background-color: #b3d1ff;
+    height: 3%;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background-color: #404040;
     display: block;
     /* float: left; */
     overflow: hidden;

@@ -3,8 +3,8 @@ import './LeftSideLatest.css';
 
 function createLatestMessages(){
     let latestMessages = [];
-    for(let i = 0; i < 12; i++) {
-        let lMessage = new LatestMessage("John", "ICH HEISSE DONALD TRUMP AND IM THE BEST MAN ON THE PLANET", "2.11.2020");
+    for(let i = 0; i < 8; i++) {
+        let lMessage = new LatestMessage("John", "Hallo, how is it going in there. How is Sarah?", "2.11.2020");
         latestMessages[i] = lMessage;
     }
     return latestMessages;
