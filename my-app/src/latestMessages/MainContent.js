@@ -2,10 +2,12 @@ import LeftSide from './LeftSideContent';
 import MessagesContent from './MessagesContent';
 
 function Main() {
-    return ([
-        MessagesContent(), 
-        LeftSide()
-    ])
+    return (
+        <div>
+            <MessagesContent /> 
+            <LeftSide />
+        </div>
+    )
 }
 
 export default Main

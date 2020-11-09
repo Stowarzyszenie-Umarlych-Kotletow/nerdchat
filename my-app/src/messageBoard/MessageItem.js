@@ -3,48 +3,36 @@ import PropTypes from 'prop-types';
 import './MessageItem.css'
 
 export class MessageItem extends Component {
+    // get style of message box depending on whose information is it
     getStyle = (id) => {
         if (this.props.message.sender === 'Me')
         {
             return { 
-                display: 'inline-block',
                 background: '#262626',
-                padding: '10px',
-                paddingLeft: '15px',
-                textDecoration: 'none',
                 color: '#f5f5f5',
-                maxWidth: '40%',
-                wordWrap: "break-word",
                 order: String() + id,
-                marginBottom: '10px',
-                marginRight: '1%',
                 marginLeft: '60%',
+                marginRight: '1%',
                 float: 'right'
             }
         }
         else {
             return {
-                display: 'inline-block',
                 background: '#696969',
-                padding: '10px',
-                paddingLeft: '15px',
-                textDecoration: 'none',
                 color: '#1f1f2e',
-                maxWidth: '40%',
-                marginLeft: '1%',
-                wordWrap: "break-word",
                 order: String() + id,
-                marginBottom: '10px'
+                marginLeft: '1%',
             }
         }
     }
 
+    // rendering div of single message box
     render() {
         const {sender, time, content, id} = this.props.message;
-        return (
+         return (
             <div style={{}}>
                 <div className='textbox' style={this.getStyle(id)}>
-                    <p>{sender} - {time}</p>
+                    <p>{sender} - &#9202; {time}</p>
                     <h1>{content}</h1>
                 </div>
             </div>

@@ -1,20 +1,15 @@
 import { Component } from 'react';
 import MessageItem from './MessageItem'
-import PropTypes from 'prop-types';
 
 
 class Messages extends Component {
   render() {
+    // creating rendering object for every message
     return this.props.messages.map((message) => (
         <MessageItem key={message.id} message={message}/>
     ));
   }
 
-}
-
-Messages.propTypes = {
-    //messages: PropTypes.array.isRequired,
-    //message: PropTypes.object.isRequired
 }
 
 export default Messages;

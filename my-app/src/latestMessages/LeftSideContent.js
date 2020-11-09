@@ -9,9 +9,11 @@ import LeftSideLatest from './LeftSideLatest';
 function LeftSide() {
     return (
         <React.Fragment>
-            <div className="leftSideContainer">
+            <div className="leftSideContainer" >
                 <LeftSideTitle />
-                <LeftSideLatest />
+                <div className="latestMessagesContainer">
+                    <LeftSideLatest />
+                </div>
             </div>
         </React.Fragment>
     )

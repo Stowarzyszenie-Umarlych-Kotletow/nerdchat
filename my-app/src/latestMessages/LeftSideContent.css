@@ -27,3 +27,8 @@ p {
     max-height: 100%;
     background-color: #404040;
 }
+
+.latestMessagesContainer {
+    height: 97%;
+    overflow-y: scroll;
+}

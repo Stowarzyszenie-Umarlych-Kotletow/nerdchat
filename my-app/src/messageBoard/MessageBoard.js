@@ -2,7 +2,6 @@ import { Component } from 'react';
 import './MessageBoard.css';
 import Messages from './Messages'
 import AddMessage from './AddMessage'
-import PropTypes from 'prop-types';
 
 
 class MessageBoard extends Component {
@@ -38,26 +37,26 @@ class MessageBoard extends Component {
   }
 
   // Add Message to MessageBoard
-  addMessage = (content) => {
+  addMessage = (content, sender) => {
+    // create a new message object
     const newMessage = {
       content: content, 
       id: this.state.messages.length, 
-      sender: 'Me', 
+      sender: sender, 
       time: new Date().getMinutes() < 10? String() + new Date().getHours() + ':0' + new Date().getMinutes(): String() + new Date().getHours() + ':' + new Date().getMinutes()
     }
-    if (newMessage.content != '')
+    // check if user hasn't sent a hollow message, or just
+    if (content.trim() != '')
     {
       this.setState({ messages: [...this.state.messages, newMessage]})
-    }
-  }
-
-  
-
+    }  
+  }  
+  // rendering a message box and components within like object Messages that takes care of rendering array of messages in chat
   render() {
     return (
-      <div className="MessageBoard" >
-        <div className="container">
-          <div className="messageContainer">
+      <div id="MessageBoard">
+        <div style={{width:"100%"}}>
+          <div id="MessageContainer">
             <Messages messages={this.state.messages} />
           </div>
           <AddMessage addMessage={this.addMessage} />
@@ -66,11 +65,9 @@ class MessageBoard extends Component {
     );
   }
 
-}
-
-// PropTypes
-MessageBoard.propTypes = {
-    //messages: PropTypes.array.isRequired
+  componentDidUpdate() {
+    document.getElementById("MessageContainer").scrollTop = document.getElementById("MessageContainer").scrollHeight;
+  }
 }
 
 export default MessageBoard;

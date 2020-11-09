@@ -14,16 +14,12 @@ a {
   text-decoration: none;
 }
 
-.MessageBoard {
+#MessageBoard {
   background-color: #333;
   display: flex;
   justify-content: center;
   height: 810px;
   max-height: 100%;
-}
-
-.container {
-  width: 100%;
 }
 
 .btn {
@@ -38,7 +34,11 @@ a {
   background: #666;
 }
 
-.messageContainer {
+#MessageContainer {
   padding-top: 10px;
   height: 100%;
+  overflow-y: scroll;
+  bottom: 0px;
+  display: flex;
+  flex-direction: column;
 }
