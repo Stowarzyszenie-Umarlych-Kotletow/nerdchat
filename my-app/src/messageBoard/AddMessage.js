@@ -9,8 +9,10 @@ export class AddMessage extends Component {
     onSubmit = (e) => {
         // overwriting onSubmit fuction
         e.preventDefault();
+
+        console.log(this.state.content);
         // calling function that adds a message
-        this.props.addMessage(this.state.content, "Me");
+        this.props.addMessage(document.getElementById('textField').value, "Me");
         // reseting input field
         this.setState({content: ''});
         // keeping a focus on input field to allow continious writing
@@ -32,6 +34,13 @@ export class AddMessage extends Component {
     render() {
         return (
             <form onSubmit={this.onSubmit} style={{display: 'flex'}}>
+               <input 
+                type="button"
+                value="😈"
+                id="EmojiButton"
+                style={{flex: '1', fontSize: '20px', backgroundColor: '#444', border: 'none'}}
+                onClick={this.onEmojiButtonClick}
+                />
                 <input 
                 id = "textField"
                 type="text" 
@@ -42,17 +51,10 @@ export class AddMessage extends Component {
                 onChange={this.onChange} 
                 />
                 <input 
-                type="button"
-                value="😀"
-                id="EmojiButton"
-                style={{flex: '1', fontSize: '20px'}}
-                onClick={this.onEmojiButtonClick}
-                />
-                <input 
                 type="submit"
                 value="Send"
                 className="btn"
-                style={{flex: '3', fontSize: "35"}}
+                style={{flex: '3', fontSize: "20px", fontWeight:"300"}}
                 />
             </form>
         )

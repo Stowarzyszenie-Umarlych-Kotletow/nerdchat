@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import './MessageBoard.css';
-import Messages from './Messages'
+import Messages from './Messages/Messages'
 import AddMessage from './AddMessage'
-import EmojiBox from './EmojiBox'
+import EmojiBox from './EmojiBox/EmojiBox'
 
 
 class MessageBoard extends Component {
@@ -49,7 +49,7 @@ class MessageBoard extends Component {
     // check if user hasn't sent a hollow message, or just
     if (content.trim() !== '')
     {
-      this.setState({ messages: [...this.state.messages, newMessage]})
+    this.setState({ messages: [...this.state.messages, newMessage]})
     }  
   }  
   // rendering a message box and components within like object Messages that takes care of rendering array of messages in chat

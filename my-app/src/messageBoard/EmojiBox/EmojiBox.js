@@ -1,11 +1,27 @@
 import React, { Component } from 'react'
 import './EmojiBox.css'
+import Emojis from './Emojis'
 
 export class EmojiBox extends Component {
+    state = {
+        emojis: [
+        '😀', '😁', '😂', '🤣', '😃', '😄', '😅', '😆', '😉', '😊', '😋', '😎', 
+        '😍', '😘', '😗', '😙', '😚', '🙂', '🤗', '🤔', '😐', '😑', '😶',
+        '🙄'
+        ]
+    }
+
+
     render() {
         return (
             <div id="EmojiBox">
-                <div id="EmojiBoxHeader" > Emoji Box <div style={{float: "bottom", fontSize: "10px"}}>Hold to drag </div> </div> 
+                <div id="EmojiBoxHeaderContainer">
+                    <div id="EmojiBoxHeader" > Emoji Box</div>
+                    <div className="XButton" onClick={() => {document.getElementById("EmojiBox").style.visibility = 'hidden';}}/>
+                </ div>
+                <div style={{padding: '15px'}}>
+                   <Emojis emojis={this.state.emojis} />
+                </div>
             </div>
         )   
     }
