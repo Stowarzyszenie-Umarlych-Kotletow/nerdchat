@@ -1,4 +1,5 @@
 * {
+  z-index: 0;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -12,14 +13,6 @@ body {
 a {
   color: #333;
   text-decoration: none;
-}
-
-#MessageBoard {
-  background-color: #333;
-  display: flex;
-  justify-content: center;
-  height: 810px;
-  max-height: 100%;
 }
 
 .btn {
@@ -41,4 +34,12 @@ a {
   bottom: 0px;
   display: flex;
   flex-direction: column;
+}
+
+#MessageBoard {
+  background-color: #333;
+  display: flex;
+  justify-content: center;
+  height: 810px;
+  max-height: 100%;
 }

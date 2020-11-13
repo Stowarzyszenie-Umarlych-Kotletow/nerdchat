@@ -2,6 +2,7 @@ import { Component } from 'react';
 import './MessageBoard.css';
 import Messages from './Messages'
 import AddMessage from './AddMessage'
+import EmojiBox from './EmojiBox'
 
 
 class MessageBoard extends Component {
@@ -46,7 +47,7 @@ class MessageBoard extends Component {
       time: new Date().getMinutes() < 10? String() + new Date().getHours() + ':0' + new Date().getMinutes(): String() + new Date().getHours() + ':' + new Date().getMinutes()
     }
     // check if user hasn't sent a hollow message, or just
-    if (content.trim() != '')
+    if (content.trim() !== '')
     {
       this.setState({ messages: [...this.state.messages, newMessage]})
     }  
@@ -57,6 +58,7 @@ class MessageBoard extends Component {
       <div id="MessageBoard">
         <div style={{width:"100%"}}>
           <div id="MessageContainer">
+            <EmojiBox />
             <Messages messages={this.state.messages} />
           </div>
           <AddMessage addMessage={this.addMessage} />
