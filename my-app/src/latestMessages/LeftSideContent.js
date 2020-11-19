@@ -1,9 +1,8 @@
 import './LeftSideContent.css';
-import LatestMessage from './latestMessage'
-import { render } from 'react-dom';
 import React from 'react';
 import LeftSideTitle from './LeftSideTitle';
 import LeftSideLatest from './LeftSideLatest';
+import '../common/scrollbar.css'
 
 
 function LeftSide() {

@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import './MessageBoard.css';
+import '../common/scrollbar.css'
 import Messages from './Messages/Messages'
 import AddMessage from './AddMessage'
 import EmojiBox from './EmojiBox/EmojiBox'
@@ -38,15 +39,15 @@ class MessageBoard extends Component {
   }
 
   // Add Message to MessageBoard
-  addMessage = (content, sender) => {
+  addMessage = (content, sender, time) => {
     // create a new message object
     const newMessage = {
       content: content, 
       id: this.state.messages.length, 
       sender: sender, 
-      time: new Date().getMinutes() < 10? String() + new Date().getHours() + ':0' + new Date().getMinutes(): String() + new Date().getHours() + ':' + new Date().getMinutes()
+      time: time
     }
-    // check if user hasn't sent a hollow message, or just
+    // check if user hasn't sent a hollow message, or just whitespaces 
     if (content.trim() !== '')
     {
     this.setState({ messages: [...this.state.messages, newMessage]})

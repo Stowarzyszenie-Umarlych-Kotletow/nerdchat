@@ -9,10 +9,12 @@ export class AddMessage extends Component {
     onSubmit = (e) => {
         // overwriting onSubmit fuction
         e.preventDefault();
-
-        console.log(this.state.content);
+        // time of sending
+        const date = new Date();
+        const minutes = date.getMinutes() < 10 ? ':0' + date.getMinutes() : date.getMinutes();
+        const time =  String() + date.getHours() + ':' + minutes; // + '  ' + date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear();
         // calling function that adds a message
-        this.props.addMessage(document.getElementById('textField').value, "Me");
+        this.props.addMessage(document.getElementById('textField').value, "Me", time);
         // reseting input field
         this.setState({content: ''});
         // keeping a focus on input field to allow continious writing
@@ -38,7 +40,7 @@ export class AddMessage extends Component {
                 type="button"
                 value="😈"
                 id="EmojiButton"
-                style={{flex: '1', fontSize: '20px', backgroundColor: '#444', border: 'none'}}
+                style={{flex: '1', fontSize: '20px', backgroundColor: '#262626', border: 'none'}}
                 onClick={this.onEmojiButtonClick}
                 />
                 <input 

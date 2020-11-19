@@ -17,7 +17,7 @@ class Emojis extends Component {
             type="button"
             value={emoji}
             id="EmojiButton"
-            style={{flex: '1', fontSize: '30px', backgroundColor: '#444c', border:"none"}}
+            style={{flex: '1', fontSize: '30px', backgroundColor: '#4440', border:"none"}}
             onClick={()=>this.onClickEmoji(emoji)}
             /> 
         ));

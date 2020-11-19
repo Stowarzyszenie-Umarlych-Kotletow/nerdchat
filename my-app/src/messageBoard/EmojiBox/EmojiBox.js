@@ -11,7 +11,6 @@ export class EmojiBox extends Component {
         ]
     }
 
-
     render() {
         return (
             <div id="EmojiBox">
