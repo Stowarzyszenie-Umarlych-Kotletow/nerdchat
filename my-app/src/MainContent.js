@@ -1,5 +1,5 @@
-import LeftSide from './LeftSideContent';
-import MessagesContent from './MessagesContent';
+import LeftSide from './latestMessages/LeftSideContent';
+import MessagesContent from './latestMessages/MessagesContent';
 
 function Main() {
     return (
