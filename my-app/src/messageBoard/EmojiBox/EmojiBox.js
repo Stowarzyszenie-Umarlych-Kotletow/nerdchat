@@ -25,9 +25,12 @@ export class EmojiBox extends Component {
         )   
     }
 
+
     componentDidMount(){
         this.dragElement(document.getElementById("EmojiBox"))
     }
+    
+   
 
     dragElement = (element) => {
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -44,6 +47,12 @@ export class EmojiBox extends Component {
             document.onmousemove = elementDrag;
         }
 
+        function between(x, min_v, max_v) {
+            x = Math.min(x, max_v);
+            x = Math.max(x, min_v);
+            return x;
+        }
+
         function elementDrag(e) {
             e = e || window.event;
             e.preventDefault();
@@ -52,9 +61,12 @@ export class EmojiBox extends Component {
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
+            var emojiBox = document.getElementById("EmojiBox");
+            const widthConstraint = visualViewport.width - emojiBox.offsetWidth;
+            const heightConstraint = visualViewport.height - emojiBox.offsetHeight;
             // set the element's new position:
-            element.style.top = (element.offsetTop - pos2) + "px";
-            element.style.left = (element.offsetLeft - pos1) + "px";
+            element.style.top = between(element.offsetTop - pos2, 0, heightConstraint) + "px";
+            element.style.left = between(element.offsetLeft - pos1, 0, widthConstraint) + "px";
         }
 
         function closeDragElement() {
@@ -64,7 +76,6 @@ export class EmojiBox extends Component {
         }
 
     }
-
 }
 
 
