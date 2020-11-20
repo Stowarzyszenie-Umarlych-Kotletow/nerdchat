@@ -6,6 +6,7 @@ export class LoginWindow extends Component {
     onLogin = () => {
         document.getElementById("loginWindow").style.visibility = 'hidden';
         document.getElementById("MainContent").style.visibility =  'visible';
+        
     }
 
     onChange = (e) => this.setState({[e.target.name]: e.target.value});

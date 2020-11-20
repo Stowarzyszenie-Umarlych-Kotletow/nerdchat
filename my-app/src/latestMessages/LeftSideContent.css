@@ -22,9 +22,8 @@ p {
 }
 
 .leftSideContainer {
-    height: 893px;
+    height: 100%;
     width: 25%;
-    max-height: 100%;
     background-color: #404040;
 }
 

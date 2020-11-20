@@ -18,7 +18,6 @@ export class config {
             twelweHourFormating: false
         }
     }
-   
 }
 
 export default config
