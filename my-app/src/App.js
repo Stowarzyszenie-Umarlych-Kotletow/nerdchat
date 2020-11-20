@@ -15,6 +15,14 @@ const App = () => {
   const [wsClient, setWsClient] = useState(undefined);
 
 
+  useEffect(() => 
+  {
+    setInterval(() => 
+    {
+      if(myUserId !== undefined)
+        getChatRoomList(myUserId).then(rooms => setChatRoomList(rooms));
+    }, 1000);
+  }, []);
 
 useEffect(() => 
 {

@@ -26,11 +26,11 @@ export class MessageItem extends Component {
 
     // rendering div of single message box
     render() {
-        const {senderName, senderId, time, content, id} = this.props.message;
+        const {senderName, senderId, sentAt, content, id} = this.props.message;
          return (
             <div style={{}}>
                 <div className='textbox' style={this.getStyle(id)}>
-                    <p>{senderName} - &#9202; {time}</p>
+                    <p>{senderName} - &#9202; {new Date(Date.parse(sentAt)).toLocaleTimeString()}</p>
                     <h1>{content}</h1>
                 </div>
             </div>

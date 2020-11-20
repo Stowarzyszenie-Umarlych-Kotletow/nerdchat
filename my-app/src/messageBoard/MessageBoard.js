@@ -16,9 +16,7 @@ class MessageBoard extends Component {
   }
 
   componentDidMount = () => {
-    console.log("HEJ?");
     setInterval(() => {
-      console.log("huhu");
       if(this.props.activeChatId !== undefined) {
         getMessages(this.props.activeChatId).then(m => this.setState({messages: m}));
       }
