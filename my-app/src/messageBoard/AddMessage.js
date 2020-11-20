@@ -12,7 +12,7 @@ export class AddMessage extends Component {
         // time of sending
         const date = new Date();
         const minutes = date.getMinutes() < 10 ? ':0' + date.getMinutes() : date.getMinutes();
-        const time =  String() + date.getHours() + ':' + minutes; // + '  ' + date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear();
+        const time =  String() + date.getHours() + ':' + minutes; 
         // calling function that adds a message
         this.props.addMessage(document.getElementById('textField').value, "Me", time);
         // reseting input field
