@@ -4,38 +4,35 @@ import '../common/scrollbar.css'
 import Messages from './Messages/Messages'
 import AddMessage from './AddMessage'
 import EmojiBox from './EmojiBox/EmojiBox'
+import React, {useEffect} from 'react'
+import {getMessages, sendMessage} from '../common/Api'
 
 
 class MessageBoard extends Component {
   state = {
     messages: [
-      {
-        id: 0,
-        sender: 'Amy',
-        content: 'Take out the trash',
-        time: '14:32'
-      },
-      {
-        id: 1,
-        sender: 'Amy',
-        content: 'And do it quick',
-        time: '14:33'
-      },
-      {
 
-        id: 2,
-        sender: 'Amy',
-        content: 'I am walking our dog',
-        time: '14:36'
-      },
-      {
-
-        id: 3,
-        sender: 'Me',
-        content: 'Buy me some coke',
-        time: '15:14'
-      }
     ]
+  }
+
+  componentDidMount = () => {
+    console.log("HEJ?");
+    setInterval(() => {
+      console.log("huhu");
+      if(this.props.activeChatId !== undefined) {
+        getMessages(this.props.activeChatId).then(m => this.setState({messages: m}));
+      }
+      
+    }, 
+    1000);
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    console.log("Active chat ID: " + this.props.activeChatId);
+    if(prevProps.activeChatId != this.props.activeChatId && this.props.activeChatId !== undefined) {
+      getMessages(this.props.activeChatId).then(m => this.setState({messages: m}));
+    }
+    document.getElementById("MessageContainer").scrollTop = document.getElementById("MessageContainer").scrollHeight;
   }
 
   // Add Message to MessageBoard
@@ -50,7 +47,7 @@ class MessageBoard extends Component {
     // check if user hasn't sent a hollow message, or just whitespaces 
     if (content.trim() !== '')
     {
-    this.setState({ messages: [...this.state.messages, newMessage]})
+      sendMessage(this.props.myUserId, this.props.activeChatId, content);
     }  
   }  
   // rendering a message box and components within like object Messages that takes care of rendering array of messages in chat
@@ -68,9 +65,6 @@ class MessageBoard extends Component {
     );
   }
 
-  componentDidUpdate() {
-    document.getElementById("MessageContainer").scrollTop = document.getElementById("MessageContainer").scrollHeight;
-  }
 }
 
 export default MessageBoard;

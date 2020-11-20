@@ -10,11 +10,10 @@ export class LoginWindow extends Component {
     }
     onLogin = () => {
         logIn(this.state.login, this.setState.password).then(id => {
-            window.alert(id);
             this.props.setMyUserId(id);
             document.getElementById("loginWindow").style.visibility = 'hidden';
             document.getElementById("MainContent").style.visibility =  'visible';
-        }, err => window.alert('fail'));
+        }, err => window.alert('Login failed'));
     }
 
     onChange = (e) => this.setState({[e.target.name]: e.target.value});

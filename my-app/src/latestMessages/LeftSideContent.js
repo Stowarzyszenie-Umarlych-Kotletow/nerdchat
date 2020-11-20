@@ -13,10 +13,9 @@ function LeftSide(props) {
                 <LeftSideTitle />
                 <div className="latestMessagesContainer">
                 <ChatContext.Consumer>
-                    {({chatRoomList}) => {
-                        console.log("LIST");
+                    {({chatRoomList, setActiveChatId}) => {
                         console.log(chatRoomList);
-                        return <LeftSideLatest {...{chatRoomList}}/>
+                        return <LeftSideLatest {...{chatRoomList, setActiveChatId}}/>
                     }}
                 
                     

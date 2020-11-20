@@ -41,11 +41,11 @@ function getAllMessages() {
     return(allMessages)
 }
 
-function LeftSideLatest({chatRoomList, setChatRoomList, myUserId}) {
+function LeftSideLatest({chatRoomList, setActiveChatId, myUserId}) {
 
     return chatRoomList === undefined ? null : chatRoomList.map(m => {
         return (
-            <div id="latestMessage" key={m.chatName}>
+            <div id="latestMessage" key={m.chatName} onClick={(e) => setActiveChatId(m.lastMessage.chatRoomId)}>
             <div id="latestMessageName">{m.chatName}</div>
             <div id="latestMessageDate">{new Date(Date.parse(m.lastMessage.sentAt)).toDateString()}</div>
             <div id="latestMessageMessage">{wrapText(m.lastMessage.contentPreview)}</div>  

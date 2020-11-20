@@ -36,3 +36,18 @@ export function getChatRoomList(userId) {
         method: "GET",
     })
 }
+
+export function getMessages(chatId) {
+    return request({
+        url: config.apiUrl + "/chatroom/" + encodeURI(chatId) + "/messages",
+        method: "GET",
+    })
+}
+
+export function sendMessage(userId, chatId, content) {
+  return request({
+      url: config.apiUrl + "/chatroom/" + encodeURI(chatId) + "/send",
+      method: "POST",
+      body: JSON.stringify({content, chatId, senderId: userId})
+  })
+}

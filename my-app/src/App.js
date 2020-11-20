@@ -22,7 +22,6 @@ useEffect(() =>
 
   }
   getChatRoomList(myUserId).then(rooms => setChatRoomList(rooms));
-  console.log('hi ' + myUserId);
 }, myUserId);
 
   return (
