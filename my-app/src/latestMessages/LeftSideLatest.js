@@ -1,5 +1,9 @@
 import LatestMessage from './latestMessage';
 import './LeftSideLatest.css';
+import AddMessage from '../messageBoard/AddMessage';
+import {getChatRoomList} from '../common/Api'
+import {ChatContext} from '../App'
+import { useEffect } from 'react';
 
 function createLatestMessages(){
     let latestMessages = [];
@@ -8,6 +12,14 @@ function createLatestMessages(){
         latestMessages[i] = lMessage;
     }
     return latestMessages;
+}
+
+function wrapText(text) {
+    if(text.length > 25){
+        let temp = text.substring(0, 25);
+        return temp + "...";
+    }
+    return text;
 }
 
 function getAllMessages() {
@@ -29,9 +41,17 @@ function getAllMessages() {
     return(allMessages)
 }
 
-function LeftSideLatest() {
-    let msg = getAllMessages();
-    return ([msg]);
+function LeftSideLatest({chatRoomList, setChatRoomList, myUserId}) {
+
+    return chatRoomList === undefined ? null : chatRoomList.map(m => {
+        return (
+            <div id="latestMessage" key={m.chatName}>
+            <div id="latestMessageName">{m.chatName}</div>
+            <div id="latestMessageDate">{new Date(Date.parse(m.lastMessage.sentAt)).toDateString()}</div>
+            <div id="latestMessageMessage">{wrapText(m.lastMessage.contentPreview)}</div>  
+            </div>
+        );
+    });
 }
 
 export default LeftSideLatest;

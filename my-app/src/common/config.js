@@ -15,10 +15,9 @@ export class config {
             colorConversationsBox: '#1f272b',
 
             // time
-            twelweHourFormating: false
+            twelweHourFormating: false,
         }
     }
-   
 }
 
 export default config
