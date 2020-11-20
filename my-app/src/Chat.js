@@ -1,4 +1,4 @@
-
+import "./Chat.css";
 import MessagesContent from "./latestMessages/MessagesContent";
 import LeftSide from "./latestMessages/LeftSideContent";
 
