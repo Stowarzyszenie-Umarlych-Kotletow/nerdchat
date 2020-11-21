@@ -31,3 +31,15 @@ p {
     height: 97%;
     overflow-y: scroll;
 }
+.leftSideSettingsIcon {
+    /* width: 10%;  */
+    z-index: 5; 
+    position: absolute; 
+    font-size: 24px; 
+    padding-left: 7px;
+    padding-top: 5px;
+}
+.leftSideSettingsIcon:hover {
+    color: transparent;
+    text-shadow: 0 0 0 rgb(187, 187, 187);
+}
