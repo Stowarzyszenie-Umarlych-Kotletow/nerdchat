@@ -10,6 +10,7 @@ function LeftSide(props) {
     return (
         <React.Fragment>
             <div className="leftSideContainer" >
+            <h1 align='center' style={{backgroundColor:'#ffc933', fontWeight:'bold'}}>Nerdchat App</h1>
                 <LeftSideTitle />
                 <div className="latestMessagesContainer">
                 <ChatContext.Consumer>
