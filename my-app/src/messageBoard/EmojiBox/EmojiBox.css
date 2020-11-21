@@ -1,6 +1,6 @@
 #EmojiBox {
     position: absolute;
-    z-index: 1;
+    z-index: 9;
     height: 35%;
     width: 30%;
     left: 27%;
@@ -11,7 +11,7 @@
 
 #EmojiBoxHeaderContainer {
   padding: 10px;
-  z-index: 10;
+  z-index: 9;
   background-color: #333c;
   color: #fff;
   display: flex;

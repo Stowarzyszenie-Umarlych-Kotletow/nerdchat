@@ -17,7 +17,7 @@ export class EmojiBox extends Component {
                 <div id="EmojiBoxHeaderContainer">
                     <div id="EmojiBoxHeader" > Emoji Box</div>
                     <div className="XButton" onClick={() => {document.getElementById("EmojiBox").style.visibility = 'hidden';}}/>
-                </ div>
+                    </ div>
                 <div style={{padding: '15px'}}>
                    <Emojis emojis={this.state.emojis} />
                 </div>

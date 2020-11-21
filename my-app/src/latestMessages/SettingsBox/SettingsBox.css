@@ -1,0 +1,61 @@
+#SettingsBox {
+    position: absolute;
+    z-index: 12;
+    height: 70%;
+    width: 50%;
+    left: 40%;
+    bottom: 25%;
+    background-color: #44444c;
+    visibility: hidden;
+}
+#SettingsBoxHeaderContainer {
+    padding: 10px;
+    z-index: 9;
+    background-color: #33333c;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+}
+#SettingsBoxHeader {
+    width: 95%;
+    cursor: move;
+    padding-left: 20px;
+    font-size: 25px;
+}
+#SettingsContainer {
+    color: white;
+    padding-left: 15px;
+    padding-top: 15px;
+}
+
+.XButton {
+    height: 25px;
+    width: 25px;
+    background: #282828;
+    border-radius: 7px;
+    position: relative;
+}
+  
+.XButton::after {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    right: 1px;
+    content: "\d7";
+    font-size: 30px; 
+    color: #BE1616;
+    line-height: 24px;
+    text-align: center;
+}
+  
+.XButton:hover {
+    background: #BE1616;
+}
+  
+.XButton:hover::after {
+    color: #282828;
+}
+p {
+    align-self: center;
+    padding-left: 10px;
+}
