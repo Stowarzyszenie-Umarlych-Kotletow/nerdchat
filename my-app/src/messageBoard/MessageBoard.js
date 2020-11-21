@@ -53,6 +53,9 @@ class MessageBoard extends Component {
     return (
       <div id="MessageBoard">
         <div style={{width:"100%"}}>
+          <div id="MessagePerson"style={{height:"5%", backgroundColor:"#4f4f4f"}}>
+            <h1 style={{paddingLeft:"15px", color:"white"}}>chatName</h1>
+          </div>
           <div id="MessageContainer">
             <EmojiBox />
             <Messages messages={this.state.messages} />

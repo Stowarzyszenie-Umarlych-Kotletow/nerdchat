@@ -3,8 +3,9 @@
     padding-left: 1px;
     /* background-color: grey; */
     color: black;
-    margin-bottom: 2px;
-    margin-right: 10px;
+    margin-bottom: 4px;
+    margin-left: 15px;
+    margin-right: 0px;
     background-color: #e2b027;
     display: block;
     /* clear: both; */
@@ -21,6 +22,7 @@
     /* float: right; */
     /* width: 45%; */
     text-align: right;
+    padding-right: 5px;
     font-size: 15px;
 
     /* font-size: 15px; */
