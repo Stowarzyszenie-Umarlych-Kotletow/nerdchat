@@ -8,23 +8,25 @@ export class UserControlBox extends Component {
         document.getElementById("SettingsBox").style.visibility = 'visible';
     }
 
-    currentStatus = 'online';
-    statuses = {
-        'online' : 'chartreuse',
-        'afk' : 'yellow',
-        'busy' : 'red'
-
+    state = {
+        currentStatus : 'online',
+        status : {
+            'online' : 'chartreuse',
+            'afk' : 'yellow',
+            'busy' : 'red'
+        }
     }
-  
+    
+    getColorFromStatus = () => {
+        return this.state.status[this.state.currentStatus];
+    } 
+
     onStatusClick = () => {
-        var statusElement = document.getElementById('userStatus');
-        if (this.currentStatus === 'online') {
-            statusElement.style.backgroundColor = 'red';
-            this.currentStatus = 'busy';
+        if (this.state.currentStatus === 'online') {
+            this.setState({currentStatus: 'busy'});
         }
         else {
-            statusElement.style.backgroundColor = 'chartreuse';
-            this.currentStatus = 'online';
+            this.setState({currentStatus: 'online'});
         }
     } 
 
@@ -33,7 +35,7 @@ export class UserControlBox extends Component {
             <div id='userControlBox'>
                 <div id="userInfo"> 
                     <div id='userName' dataText="ControlUser#1337"/>
-                    <div id="userStatus" onClick={this.onStatusClick}/> 
+                    <div id="userStatus" onClick={this.onStatusClick} style={{backgroundColor: this.getColorFromStatus()}}/> 
                 </div>
                 <div id="settingsIcon" onClick={this.onSettingsButtonClick}>⚙️</div>
             </div>
