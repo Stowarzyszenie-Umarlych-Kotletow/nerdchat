@@ -40,3 +40,15 @@ a {
   justify-content: center;
   height: calc(100% - 40px);
 }
+
+#chatName {
+  height: 44px;
+  width: 100%;
+  background-color: #4f4f4f;
+  padding-left: 1%;
+  font-size: 30px;
+  font-weight: bold;
+}
+#chatName::after {
+  content: attr(dataText);
+}

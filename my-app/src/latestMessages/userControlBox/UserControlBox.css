@@ -1,0 +1,50 @@
+#userControlBox {
+    display: flex;
+    flex-direction: row;
+    background-color:#ffc933;
+    height: 69px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#userInfo {
+    flex: 7;
+    display: flex;
+    margin-right: 20px;
+    padding: 5px;
+    font-size: 24px;
+}
+
+#userName::after {
+    content: attr(dataText);
+}
+
+#userStatus {
+    border-style: solid;
+    height: 40px;
+    width: 40px;
+    border-radius: 7px;
+    margin: auto;
+    background-color: chartreuse;
+
+}
+
+#settingsIcon {
+    flex: 1;
+    display:flex;
+    border-radius: 7px;
+    font-size: 25px; 
+    text-align: center;
+    justify-content:center;
+    align-items:center;
+}
+
+#settingsIcon:hover {
+    background-color: #404040cc;
+}
+
+.separator {
+    flex: 1;
+}

@@ -1,31 +1,26 @@
-import './LeftSideContent.css';
 import React, { Component } from 'react';
 import LeftSideLatest from './LeftSideLatest';
 import SettingsBox from './SettingsBox/SettingsBox';
-import '../common/scrollbar.css'
+import UserControlBox from './userControlBox/UserControlBox'
 import {ChatContext} from '../App'
+import './LeftSideContent.css';
+import '../common/scrollbar.css'
 
 
 class LeftSide extends Component{
     
-    onSettingsButtonClick = () => {
-        document.getElementById("EmojiBox").style.visibility = 'hidden';
-        document.getElementById("SettingsBox").style.visibility = 'visible';
-    }
-
     render() {
         return (
             <React.Fragment>
                 <div className="leftSideContainer" >
                     <div style={{height:'69px'}}>
                         <div id="appTitleBox">
-                            <div id="settingsIcon" onClick={this.onSettingsButtonClick}>⚙️</div>
-                            <h1 style={{marginLeft:'15px'}}>Nerdchat App</h1>
+                            <h1 style={{marginLeft:'15px'}}>Nerdchat</h1>
                         </div>
                         <div id="textLatestMessages">Latest Messages </div>
                     </div>
                     <SettingsBox />
-                    <div className="latestMessagesContainer" style={{height:"90%"}}>
+                    <div id="conversationsContainer">
                     <ChatContext.Consumer>
                         {({chatRoomList, setActiveChatId}) => {
                             console.log(chatRoomList);
@@ -36,6 +31,7 @@ class LeftSide extends Component{
                     
                     </ChatContext.Consumer>
                     </div>
+                    <UserControlBox />
                 </div>
             </React.Fragment>
         )

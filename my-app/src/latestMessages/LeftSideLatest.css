@@ -1,31 +1,21 @@
 #latestMessage {
-    text-align: 'center';
     padding-left: 1px;
-    /* background-color: grey; */
     color: black;
     margin-bottom: 4px;
     margin-left: 15px;
     margin-right: 0px;
     background-color: #e2b027;
     display: block;
-    /* clear: both; */
-    /* position: relative; */
 }
 #latestMessageName {
     padding-left: 7px;
     font-size: 22px;
-    /* float: left; */
     font-weight: 600;
-    /* border: 1px solid black; */
 }
 #latestMessageDate {
-    /* float: right; */
-    /* width: 45%; */
     text-align: right;
     padding-right: 5px;
     font-size: 15px;
-
-    /* font-size: 15px; */
 }
 #latestMessageMessage {
     padding-left: 5px;
@@ -33,13 +23,8 @@
     font-weight: 300;
     font-size: 15px;
     margin: 3px;
-    
-}
-#latestMessage.h1 {
-    text-align: 'center';
 }
 
 #latestMessage.p {
-    text-align: 'center';
     font-size: 20px;
 }

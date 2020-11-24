@@ -1,24 +1,12 @@
 #menuLeftContent {
     float: left;
-    /* width: 25%; */
     height: 100%;
     padding-left: 10px;
-    /* position: relative; */
 }
 #latestMessage {
-    text-align: 'center';
     padding-left: 10px;
-    /* background-color: grey; */
     color: black;
     margin: 3px;
-    /* display: block; */
-    /* position: relative; */
-}
-h1 {
-    text-align: 'center';
-}
-p {
-    text-align: 'center';
 }
 
 .leftSideContainer {
@@ -27,11 +15,12 @@ p {
     background-color: #404040;
 }
 
-.latestMessagesContainer {
-    height: 97%;
+#conversationsContainer {
+    height: calc(100% - 138px);
     overflow-y: scroll;
 }
 
+/*Nerdchat text*/
 #appTitleBox {
     height: 64%;
     display: flex;
@@ -39,20 +28,7 @@ p {
     background-color: #ffc933;
     font-weight: bold;
 }
-
-#settingsIcon {
-    font-size: 24px; 
-    align-self: center;
-    text-align: center;
-    margin-right: 10px;
-    margin-left: 20px;
-    border-radius: 7px;
-}
-
-#settingsIcon:hover {
-    background-color: #404040cc;
-}
-
+/* Latest Messages text */
 #textLatestMessages {
     color: #f5f5f5;
     text-align: center;
@@ -60,7 +36,6 @@ p {
     padding-top: 3px;
     padding-bottom: 3px;
     display: block;
-    /* float: left; */
     overflow: hidden;
     border: 2px, solid, grey;
 }

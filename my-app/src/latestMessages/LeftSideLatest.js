@@ -18,10 +18,13 @@ function LeftSideLatest({chatRoomList, setActiveChatId, myUserId}) {
 
     return chatRoomList === undefined ? null : chatRoomList.map(m => {
         return (
-            <div id="latestMessage" key={m.chatName} onClick={(e) => setActiveChatId(m.lastMessage.chatRoomId)}>
-            <div id="latestMessageName">{m.chatName}</div>
-            <div id="latestMessageDate">{new Date(Date.parse(m.lastMessage.sentAt)).toDateString()}</div>
-            <div id="latestMessageMessage">{wrapText(m.lastMessage.contentPreview)}</div>  
+            <div id="latestMessage" key={m.chatName} onClick={(e) => {
+                setActiveChatId(m.lastMessage.chatRoomId); 
+                document.getElementById('chatName').setAttribute('dataText', m.chatName);
+                }}>
+                <div id="latestMessageName">{m.chatName}</div>
+                <div id="latestMessageDate">{new Date(Date.parse(m.lastMessage.sentAt)).toDateString()}</div>
+                <div id="latestMessageMessage">{wrapText(m.lastMessage.contentPreview)}</div>  
             </div>
         );
     });
