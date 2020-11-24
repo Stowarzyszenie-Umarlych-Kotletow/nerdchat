@@ -1,6 +1,5 @@
 import './LeftSideContent.css';
 import React, { Component } from 'react';
-import LeftSideTitle from './LeftSideTitle';
 import LeftSideLatest from './LeftSideLatest';
 import SettingsBox from './SettingsBox/SettingsBox';
 import '../common/scrollbar.css'
@@ -18,11 +17,13 @@ class LeftSide extends Component{
         return (
             <React.Fragment>
                 <div className="leftSideContainer" >
-                    <div className="leftSideSettingsIcon" onClick={this.onSettingsButtonClick}>
-                    <p>⚙️</p>
+                    <div style={{height:'69px'}}>
+                        <div id="appTitleBox">
+                            <div id="settingsIcon" onClick={this.onSettingsButtonClick}>⚙️</div>
+                            <h1 style={{marginLeft:'15px'}}>Nerdchat App</h1>
+                        </div>
+                        <div id="textLatestMessages">Latest Messages </div>
                     </div>
-                    <div style={{height:"5%"}}><h1 align='center' style={{backgroundColor:'#ffc933', fontWeight:'bold'}}>Nerdchat App</h1></div>
-                    <LeftSideTitle />
                     <SettingsBox />
                     <div className="latestMessagesContainer" style={{height:"90%"}}>
                     <ChatContext.Consumer>

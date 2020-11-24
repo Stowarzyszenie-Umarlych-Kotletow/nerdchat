@@ -34,8 +34,6 @@ useEffect(() =>
 
   return (
     <ChatContext.Provider value={{myUserId, setMyUserId, activeChatId, setActiveChatId, chatRoomList, setChatRoomList}}>
-      
-      {/* <h1 align='center' style={{backgroundColor:'#ffc933', fontWeight:'bold'}}>Nerdchat App</h1> */}
       <div>
             <LoginWindow setMyUserId={setMyUserId} />
             <Chat/>

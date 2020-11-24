@@ -31,15 +31,36 @@ p {
     height: 97%;
     overflow-y: scroll;
 }
-.leftSideSettingsIcon {
-    /* width: 10%;  */
-    z-index: 5; 
-    position: absolute; 
-    font-size: 24px; 
-    padding-left: 7px;
-    padding-top: 5px;
+
+#appTitleBox {
+    height: 64%;
+    display: flex;
+    flex-direction: row;
+    background-color: #ffc933;
+    font-weight: bold;
 }
-.leftSideSettingsIcon:hover {
-    color: transparent;
-    text-shadow: 0 0 0 rgb(187, 187, 187);
+
+#settingsIcon {
+    font-size: 24px; 
+    align-self: center;
+    text-align: center;
+    margin-right: 10px;
+    margin-left: 20px;
+    border-radius: 7px;
+}
+
+#settingsIcon:hover {
+    background-color: #404040cc;
+}
+
+#textLatestMessages {
+    color: #f5f5f5;
+    text-align: center;
+    height: 36%;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    display: block;
+    /* float: left; */
+    overflow: hidden;
+    border: 2px, solid, grey;
 }

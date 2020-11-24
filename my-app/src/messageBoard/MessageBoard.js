@@ -6,6 +6,7 @@ import AddMessage from './AddMessage'
 import EmojiBox from './EmojiBox/EmojiBox'
 import React, {useEffect} from 'react'
 import {getMessages, sendMessage} from '../common/Api'
+import ChatName from './ChatName.js'
 
 
 class MessageBoard extends Component {
@@ -53,9 +54,7 @@ class MessageBoard extends Component {
     return (
       <div id="MessageBoard">
         <div style={{width:"100%"}}>
-          <div id="MessagePerson"style={{height:"5%", backgroundColor:"#4f4f4f"}}>
-            <h1 style={{paddingLeft:"15px", color:"white"}}>chatName</h1>
-          </div>
+          <ChatName />
           <div id="MessageContainer">
             <EmojiBox />
             <Messages messages={this.state.messages} />
