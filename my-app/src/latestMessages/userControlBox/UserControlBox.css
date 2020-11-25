@@ -3,10 +3,12 @@
     flex-direction: row;
     background-color:#ffc933;
     height: 69px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    overflow-x: hidden;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 #userInfo {

@@ -15,7 +15,7 @@ class LeftSide extends Component{
                 <div className="leftSideContainer" >
                     <div style={{height:'69px'}}>
                         <div id="appTitleBox">
-                            <h1 style={{marginLeft:'15px'}}>Nerdchat</h1>
+                            <h1 style={{marginLeft:'25px'}}>Nerdchat</h1>
                         </div>
                         <div id="textLatestMessages">Latest Messages </div>
                     </div>
