@@ -17,12 +17,16 @@ export class LoginWindow extends Component {
     }
 
     onRegister = () => {
-        document.getElementById("loginWindow").style.visibility = 'hidden';
+        //document.getElementById("loginWindow").style.visibility = 'hidden';
         document.getElementById("registrationWindow").style.visibility = 'visible';
     }
 
     onChange = (e) => this.setState({[e.target.name]: e.target.value});
 
+    onForgotPassword = () => {
+        // TODO: 'forgotten password handling'
+        console.log("forgot my password, send help");
+    }
 
     render() {
         return (
@@ -42,6 +46,7 @@ export class LoginWindow extends Component {
                  placeholder="Password..."
                  onChange={this.onChange} 
                 />
+                <small><a onClick={this.onForgotPassword}>I forgot my password</a></small>
                 <div><input 
                 type="button"
                 value="Log in"

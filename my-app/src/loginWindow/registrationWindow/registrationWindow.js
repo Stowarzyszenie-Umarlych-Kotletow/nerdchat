@@ -3,12 +3,22 @@ import React, { Component } from 'react'
 
 export class RegistrationWindow extends Component {
     
+    onRegistration = () => {
+        // TODO: 'U know what to do ;) (registration handling)'
+        document.getElementById("registrationWindow").style.visibility = 'hidden';
+        document.getElementById("loginWindow").style.visibility = 'visible';
+    }
+
     onChange = (e) => this.setState({[e.target.name]: e.target.value});
     
+    onBack = () => {
+        document.getElementById("registrationWindow").style.visibility = 'hidden';
+    }
+
     render() {
         return (
             <div id="registrationWindow">
-                Registration
+                Welcome, join us now
                 <input 
                  id = "dataField"
                  type="text" 
@@ -50,6 +60,13 @@ export class RegistrationWindow extends Component {
                 id="registerButton"
                 onClick={this.onRegistration}
                 />
+                <input 
+                type="button"
+                value="Back"
+                id="backButton"
+                onClick={this.onBack}
+                />
+                
             </div>
         )
     }

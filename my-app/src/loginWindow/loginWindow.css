@@ -67,3 +67,15 @@
 #registerButton:hover {
     background-color: #888;
 }
+
+#loginWindow small {
+    margin-top: 5px;
+    text-align: center;
+}
+#loginWindow a {
+    color: white;
+    font-size: 10px;
+}
+#loginWindow a:hover {
+    color: lightblue;
+}
