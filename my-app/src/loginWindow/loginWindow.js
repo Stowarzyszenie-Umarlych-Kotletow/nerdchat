@@ -16,6 +16,11 @@ export class LoginWindow extends Component {
         }, err => window.alert('Login failed'));
     }
 
+    onRegister = () => {
+        document.getElementById("loginWindow").style.visibility = 'hidden';
+        document.getElementById("registrationWindow").style.visibility = 'visible';
+    }
+
     onChange = (e) => this.setState({[e.target.name]: e.target.value});
 
 
@@ -36,14 +41,19 @@ export class LoginWindow extends Component {
                  name="password" 
                  placeholder="Password..."
                  onChange={this.onChange} 
-                 />
-                 <input 
+                />
+                <div><input 
                 type="button"
                 value="Log in"
                 id="loginButton"
                 onClick={this.onLogin}
                 />
-                 
+                <input 
+                type="button"
+                value="Register"
+                id="registerButton"
+                onClick={this.onRegister}
+                /></div>
             </div>
         )
     }

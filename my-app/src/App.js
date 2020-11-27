@@ -4,6 +4,7 @@ import Chat from './Chat';
 import LeftSide from './latestMessages/LeftSideContent';
 import MessagesContent from './latestMessages/MessagesContent';
 import LoginWindow from './loginWindow/loginWindow'
+import RegistrationWindow from './loginWindow/registrationWindow/registrationWindow'
 import {getChatRoomList} from './common/Api'
 
 export const ChatContext = React.createContext();
@@ -36,6 +37,7 @@ useEffect(() =>
     <ChatContext.Provider value={{myUserId, setMyUserId, activeChatId, setActiveChatId, chatRoomList, setChatRoomList}}>
       <div>
             <LoginWindow setMyUserId={setMyUserId} />
+            <RegistrationWindow />
             <Chat/>
       </div>
     </ChatContext.Provider>
