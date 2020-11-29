@@ -25,6 +25,16 @@
     color: white;
     padding-left: 15px;
     padding-top: 15px;
+    height: 85%;
+    overflow-y: auto;
+}
+
+#SettingsSave {
+    background-color: #33333c;
+    bottom: 0px;
+    position: absolute;
+    height: 5%;
+    width: 100%;
 }
 
 .XButton {
@@ -54,7 +64,55 @@
 .XButton:hover::after {
     color: #282828;
 }
+
 p {
     align-self: center;
     padding-left: 10px;
 }
+
+#SettingElement {
+    width: 70%;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-left: 5%;
+    margin-bottom: 30px;
+}
+
+.rc-slider-mark {
+    padding-top: 7px;
+}
+
+.rc-slider-step {
+    border-color: rgb(44, 71, 112);
+    background-color: rgb(44, 71, 112);
+}
+
+.rc-slider-handle {
+    background-color: #ff5f00;
+    border-color: #ff5f00;
+}
+
+#saveSettingsButton {
+    width: 100%;
+    height: 100%;
+    background-color: whitesmoke;
+    font-size: 16px;
+}
+
+#saveSettingsButton:hover {
+    background-color: #33333c;
+    color: white;
+}
+
+#colorPicker1 {
+    width: 40%;
+    float: left;
+    margin-left: 20px;
+}
+
+#colorPicker2 {
+    width: 40%;
+    float: right;
+    margin-right: 20px;
+}
+
