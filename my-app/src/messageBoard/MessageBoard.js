@@ -5,11 +5,12 @@ import Messages from './Messages/Messages'
 import AddMessage from './AddMessage'
 import EmojiBox from './EmojiBox/EmojiBox'
 import React, {useEffect} from 'react'
-import {getMessages, sendMessage} from '../common/Api'
+import {getMessages, sendMessage, lsgi} from '../common/Api'
 
 
 class MessageBoard extends Component {
   state = {
+    chatName: "chatName",
     messages: [
 
     ]
@@ -53,7 +54,7 @@ class MessageBoard extends Component {
     return (
       <div id="MessageBoard">
         <div style={{width:"100%"}}>
-          <div id="chatName" dataText="chatName"/>
+          <div id="chatName" dataText={this.state.chatName} style={{color:lsgi('textColorMain')}}/>
           <div id="MessageContainer">
             <EmojiBox />
             <Messages messages={this.state.messages} />

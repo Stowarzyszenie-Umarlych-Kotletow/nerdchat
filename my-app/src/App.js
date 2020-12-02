@@ -6,6 +6,7 @@ import MessagesContent from './latestMessages/MessagesContent';
 import LoginWindow from './loginWindow/loginWindow'
 import RegistrationWindow from './loginWindow/registrationWindow/registrationWindow'
 import {getChatRoomList} from './common/Api'
+import config from './common/config'
 
 export const ChatContext = React.createContext();
 
@@ -32,6 +33,8 @@ useEffect(() =>
   }
   getChatRoomList(myUserId).then(rooms => setChatRoomList(rooms));
 }, myUserId);
+
+  var userConfig = new config(1337); 
 
   return (
     <ChatContext.Provider value={{myUserId, setMyUserId, activeChatId, setActiveChatId, chatRoomList, setChatRoomList}}>

@@ -9,7 +9,7 @@ export class MessageItem extends Component {
         {
             return { 
                 background: '#262626',
-                color: '#f5f5f5',
+                color: localStorage.getItem('textColorUser'),
                 marginLeft: '60%',
                 marginRight: '1%',
                 float: 'right'
@@ -18,7 +18,7 @@ export class MessageItem extends Component {
         else {
             return {
                 background: '#696969',
-                color: '#1f1f2e',
+                color: localStorage.getItem('textColorMain'),
                 marginLeft: '1%',
             }
         }

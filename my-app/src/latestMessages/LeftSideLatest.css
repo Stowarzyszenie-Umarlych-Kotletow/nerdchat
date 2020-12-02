@@ -1,28 +1,20 @@
-#latestMessage {
+.latestMessage {
     padding-left: 1px;
-    color: black;
-    margin-left: 15px;
-    background-color: #e2b027;
     display: block;
+    font-size: 16px;
 }
-#latestMessageName {
+.latestMessageName {
     padding-left: 7px;
     font-size: 22px;
     font-weight: 600;
 }
-#latestMessageDate {
+.latestMessageDate {
     text-align: right;
     padding-right: 5px;
-    font-size: 15px;
 }
-#latestMessageMessage {
+.latestMessageMessage {
     padding-left: 5px;
     display: block;
     font-weight: 300;
-    font-size: 15px;
     margin: 3px;
-}
-
-#latestMessage.p {
-    font-size: 20px;
 }
