@@ -10,7 +10,7 @@
 }
 #SettingsBoxHeaderContainer {
     padding: 10px;
-    z-index: 9;
+    z-index: 12;
     background-color: #33333c;
     color: #fff;
     display: flex;
@@ -27,6 +27,8 @@
     padding-top: 15px;
     height: 85%;
     overflow-y: auto;
+    z-index: 12;
+    display: block;
 }
 
 #SettingsSave {
@@ -107,11 +109,40 @@ p {
     width: 40%;
     float: left;
     margin-left: 20px;
+    color: black;
+    z-index: 12;
 }
 
 #colorPicker2 {
     width: 40%;
     float: right;
     margin-right: 20px;
+    color: black;
+    z-index: 12;
 }
 
+#colorPicker1 label {
+    color: white;
+}
+
+#colorPicker2 label {
+    color: white;
+}
+
+.Select {
+    width: 444px !important;
+    margin-right: 5px;
+    z-index: 12 !important;
+}
+
+.Select-menu {
+    position: fixed !important;
+}
+
+.Select.is-open { position: relative; z-index: 1000; }
+.Select-menu {
+    position: fixed !important;
+    width: 440px !important;
+    margin: 1px;
+    z-index: 13;
+}
