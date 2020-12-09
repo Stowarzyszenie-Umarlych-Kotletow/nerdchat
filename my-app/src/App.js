@@ -9,6 +9,7 @@ import {getChatRoomList} from './common/Api'
 import config from './common/config'
 
 export const ChatContext = React.createContext();
+export const UserContext = React.createContext();
 
 const App = () => {
   const [myUserId, setMyUserId] = useState();
@@ -28,21 +29,19 @@ const App = () => {
 
 useEffect(() => 
 {
-  if(wsClient === undefined) {
-
-  }
   getChatRoomList(myUserId).then(rooms => setChatRoomList(rooms));
 }, myUserId);
 
-  var userConfig = new config(1337); 
-
-  return (
-    <ChatContext.Provider value={{myUserId, setMyUserId, activeChatId, setActiveChatId, chatRoomList, setChatRoomList}}>
+  var userConfig = new config(1337);
+     return (
+    <ChatContext.Provider value={{myUserId, activeChatId, setActiveChatId, chatRoomList, setChatRoomList}}>
+      <UserContext.Provider value={{myUserId, setMyUserId}}>
       <div>
             <LoginWindow setMyUserId={setMyUserId} />
             <RegistrationWindow />
             <Chat/>
       </div>
+      </UserContext.Provider>
     </ChatContext.Provider>
   );
 }
