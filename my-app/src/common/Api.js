@@ -51,7 +51,3 @@ export function sendMessage(userId, chatId, content) {
       body: JSON.stringify({content, chatId, senderId: userId})
   })
 }
-
-export function lsgi(key) {
-  return localStorage.getItem(key);
-}

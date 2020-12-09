@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import './MessageItem.css'
+import {configGet} from '../../common/config'
 
 export class MessageItem extends Component {
     // get style of message box depending on whose information is it
@@ -8,8 +9,9 @@ export class MessageItem extends Component {
         if (this.props.message.senderId === this.props.myUserId)
         {
             return { 
+                fontSize: String(16 * configGet('fontSizeMultiplier')) + "px",
                 background: '#262626',
-                color: localStorage.getItem('textColorUser'),
+                color: configGet('textColorUser'),
                 marginLeft: '60%',
                 marginRight: '1%',
                 float: 'right'
@@ -17,8 +19,9 @@ export class MessageItem extends Component {
         }
         else {
             return {
+                fontSize: String(16 * configGet('fontSizeMultiplier')) + "px",
                 background: '#696969',
-                color: localStorage.getItem('textColorMain'),
+                color: configGet('textColorMain'),
                 marginLeft: '1%',
             }
         }
@@ -28,7 +31,7 @@ export class MessageItem extends Component {
     render() {
         const {senderName, senderId, sentAt, content, id} = this.props.message;
          return (
-            <div style={{}}>
+            <div>
                 <div className='textbox' style={this.getStyle(id)}>
                     <p>{senderName} - &#9202; {new Date(Date.parse(sentAt)).toLocaleTimeString()}</p>
                     <h1>{content}</h1>

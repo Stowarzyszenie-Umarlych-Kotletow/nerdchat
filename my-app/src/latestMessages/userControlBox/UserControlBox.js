@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './UserControlBox.css'
-import {lsgi} from '../../common/Api'
+import {configGet} from '../../common/config'
 
 export class UserControlBox extends Component {
 
@@ -33,7 +33,7 @@ export class UserControlBox extends Component {
 
     render() {
         return (
-            <div id='userControlBox' style={{backgroundColor:lsgi('colorAccents'), color:lsgi('textColorMain'), fontSize: String(24 * lsgi('fontSizeMultiplier')) +'px'}}>
+            <div id='userControlBox' style={{backgroundColor:configGet('colorAccents'), color:configGet('textColorMain'), fontSize: String(24 * configGet('fontSizeMultiplier')) +'px'}}>
                 <div id="userInfo"> 
                     <div id='userName' dataText="ControlUser#1337"/>
                     <div id="userStatus" onClick={this.onStatusClick} style={{backgroundColor: this.getColorFromStatus()}}/> 

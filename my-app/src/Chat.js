@@ -32,5 +32,4 @@ const Chat = ({myUserId}) => {
         </ChatContext.Provider>
     );
 }
-
 export default Chat;

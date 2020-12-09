@@ -1,5 +1,5 @@
-class SubscriptionManager {
+/*class SubscriptionManager {
     var subscriptions = [];
 };
 
-export default SubscriptionManager;
+export default SubscriptionManager;*/

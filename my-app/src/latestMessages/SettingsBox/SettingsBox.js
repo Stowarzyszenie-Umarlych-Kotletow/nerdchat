@@ -3,6 +3,7 @@ import Slider, {createSliderWithTooltip} from 'rc-slider'
 import "rc-slider/assets/index.css";
 import 'react-dropdown/style.css';
 import './SettingsBox.css'
+import {configUpdate} from '../../common/config'
 
 
 
@@ -35,6 +36,7 @@ class SettingsBox extends Component {
             e = 1.0;
         }
         this.setState({"fontSizeMultiplier": e});
+        configUpdate("fontSizeMultiplier", e);
         console.log(e);
         return;
     }
