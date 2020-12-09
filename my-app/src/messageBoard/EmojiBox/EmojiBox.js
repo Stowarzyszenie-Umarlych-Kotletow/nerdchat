@@ -25,7 +25,6 @@ export class EmojiBox extends Component {
         )   
     }
 
-
     componentDidMount(){
         this.dragElement(document.getElementById("EmojiBox"))
     }

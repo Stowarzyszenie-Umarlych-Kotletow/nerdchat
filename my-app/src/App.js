@@ -12,6 +12,8 @@ export const ChatContext = React.createContext();
 export const UserContext = React.createContext();
 
 const App = () => {
+  configSetDefault();
+  configImport(1337);
   const [myUserId, setMyUserId] = useState();
   const [activeChatId, setActiveChatId] = useState();
   const [chatRoomList, setChatRoomList] = useState([]);
