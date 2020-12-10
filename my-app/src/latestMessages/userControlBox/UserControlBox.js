@@ -45,7 +45,7 @@ export class UserControlBox extends Component {
           <div
             id="userStatus"
             onClick={this.onStatusClick}
-            style={{ backgroundColor: this.getColorFromStatus() }}
+            style={{backgroundColor: this.getColorFromStatus() }}
           />
         </div>
         <div id="settingsIcon" onClick={this.onSettingsButtonClick}>
