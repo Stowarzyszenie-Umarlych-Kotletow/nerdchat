@@ -25,7 +25,12 @@ export class Chat extends Component {
     this.setState({ activeChatId: val });
   };
   setChatRoomList = (val) => {
-    this.setState({ chatRoomList: val });
+    this.setState({
+      chatRoomList: val.sort(
+        (a, b) =>
+          Date.parse(b.lastMessage.sentAt) - Date.parse(a.lastMessage.sentAt)
+      ),
+    });
   };
   setSubscribed = (val) => {
     this.setState({ subscribed: val });
@@ -81,9 +86,7 @@ export class Chat extends Component {
         newObj.push(c);
       }
     }
-    this.setChatRoomList(
-      newObj.sort((a, b) => b.lastMessage.sentAt - a.lastMessage.sentAt)
-    );
+    this.setChatRoomList(newObj);
   }
 
   updateRoomListFromMsg = (msg) => {

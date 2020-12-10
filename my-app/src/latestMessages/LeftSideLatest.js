@@ -19,6 +19,11 @@ const LeftSideLatest = ({ chatRoomList, setActiveChatId, setLastRead }) => {
   return chatRoomList === undefined
     ? null
     : chatRoomList.map((m) => {
+        let date = new Date(Date.parse(m.lastMessage.sentAt));
+        let today = new Date();
+        let isToday =
+          (date.getDate(), date.getMonth(), date.getFullYear()) ===
+          (today.getDate(), today.getMonth(), today.getFullYear());
         return (
           <div
             className="latestMessage"
@@ -55,7 +60,7 @@ const LeftSideLatest = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               ) : null}
             </div>
             <div className="latestMessageDate">
-              {new Date(Date.parse(m.lastMessage.sentAt)).toDateString()}
+              {isToday ? date.toLocaleTimeString() : date.toDateString()}
             </div>
             <div className="latestMessageMessage">
               {wrapText(m.lastMessage.content)}

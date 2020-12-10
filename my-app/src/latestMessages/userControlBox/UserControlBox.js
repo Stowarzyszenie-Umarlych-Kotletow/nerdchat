@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./UserControlBox.css";
 import { UserConfig } from "../../context";
+import { UserContext } from "../../context";
 
 export class UserControlBox extends Component {
   onSettingsButtonClick = () => {
@@ -41,11 +42,19 @@ export class UserControlBox extends Component {
         }}
       >
         <div id="userInfo">
-          <div id="userName" dataText="ControlUser#1337" />
+          <UserContext.Consumer>
+            {({ myUserName }) => <div id="userName" dataText={myUserName} />}
+          </UserContext.Consumer>
+
           <div
             id="userStatus"
             onClick={this.onStatusClick}
-            style={{ backgroundColor: this.getColorFromStatus() }}
+            data-text={this.state.currentStatus}
+            style={{
+              backgroundColor: this.getColorFromStatus(),
+              fontSize: "18px",
+              cursor: "pointer",
+            }}
           />
         </div>
         <div id="settingsIcon" onClick={this.onSettingsButtonClick}>

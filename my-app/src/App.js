@@ -10,6 +10,7 @@ import { UserConfig, UserContext } from "./context";
 const App = () => {
   const [config, setConfig] = useState(undefined);
   const [myUserId, setMyUserId] = useState();
+  const [myUserName, setMyUserName] = useState();
   const getDefaultConfig = () => {
     return {
       // text
@@ -32,9 +33,9 @@ const App = () => {
   useEffect(() => {}, [myUserId]);
   return (
     <UserConfig.Provider value={config}>
-      <UserContext.Provider value={{ myUserId, setMyUserId }}>
+      <UserContext.Provider value={{ myUserId, setMyUserId, myUserName }}>
         <div>
-          <LoginWindow setMyUserId={setMyUserId} />
+          <LoginWindow {...{ setMyUserId, setMyUserName }} />
           <RegistrationWindow />
           <Chat {...{ myUserId, setConfig }} />
         </div>

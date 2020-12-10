@@ -10,8 +10,8 @@ export class LoginWindow extends Component {
   onLogin = () => {
     logIn(this.state.login, this.state.password).then(
       (id) => {
-        console.log("wons");
         this.props.setMyUserId(id);
+        this.props.setMyUserName(this.state.login);
         document.getElementById("loginWindow").style.visibility = "hidden";
         document.getElementById("MainContent").style.visibility = "visible";
       },
