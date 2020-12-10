@@ -10,7 +10,7 @@ import InputColor from "react-input-color";
 const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   const config = useContext(UserConfig);
   const SliderWithTooltip = createSliderWithTooltip(Slider);
-  const [localCfg, setLocalCfg] = useState(null);
+  const [localCfg, setLocalCfg] = useState({ fontSizeMultiplier: "1.0" });
 
   const saveSettings = () => {
     // TODO: save settings to config and config to database
@@ -66,7 +66,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
           <label>Font size</label>
           <br />
           <SliderWithTooltip
-            defaultValue={1.0}
+            defaultValue={config.fontSizeMultiplier}
             value={localCfg.fontSizeMultiplier}
             min={0.7}
             max={1.4}
