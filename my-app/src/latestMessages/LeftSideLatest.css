@@ -18,3 +18,15 @@
     font-weight: 300;
     margin: 3px;
 }
+
+.unreadMessagesCount {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    background-color: #262626cc;
+    color: blanchedalmond;
+    font-size: 13px;
+    text-align: center;
+}

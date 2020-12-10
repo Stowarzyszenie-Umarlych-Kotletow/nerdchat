@@ -16,16 +16,19 @@ function wrapText(text) {
 }
 
 function LeftSideLatest({chatRoomList, setActiveChatId, myUserId}) {
+    var pepe = 10;
 
     return chatRoomList === undefined ? null : chatRoomList.map(m => {
         return (
             <div className="latestMessage" key={m.chatName} style={{backgroundColor: configGet('colorAccents'), color: configGet('textColorMain'), 
             fontSize: String(16 * configGet('fontSizeMultiplier')) + "px"}} onClick={(e) => {
                 setActiveChatId(m.lastMessage.chatRoomId); 
-                // change chat name
                 document.getElementById('chatName').setAttribute('dataText', m.chatName);
                 }}>
-                <div className="latestMessageName" style={{fontSize: String(22 * configGet('fontSizeMultiplier')) + "px"}}>{m.chatName}</div>
+                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                    <div className="latestMessageName" style={{fontSize: String(22 * configGet('fontSizeMultiplier')) + "px"}}>{m.chatName}</div>
+                    <div className="unreadMessagesCount">{pepe}</div>
+                </div>
                 <div className="latestMessageDate" >{new Date(Date.parse(m.lastMessage.sentAt)).toDateString()}</div>
                 <div className="latestMessageMessage" >{wrapText(m.lastMessage.contentPreview)}</div>  
             </div>
