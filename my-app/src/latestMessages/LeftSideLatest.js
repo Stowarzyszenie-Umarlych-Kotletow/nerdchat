@@ -14,8 +14,7 @@ function wrapText(text) {
   return text;
 }
 
-const LeftSideLatest = ({ chatRoomList, setActiveChatId }) => {
-  const pepe = 10;
+const LeftSideLatest = ({ chatRoomList, setActiveChatId, setLastRead }) => {
   const cfg = useContext(UserConfig);
   return chatRoomList === undefined
     ? null
@@ -23,7 +22,7 @@ const LeftSideLatest = ({ chatRoomList, setActiveChatId }) => {
         return (
           <div
             className="latestMessage"
-            key={m.chatName}
+            key={m.chatRoomId}
             style={{
               backgroundColor: cfg.colorAccents,
               color: cfg.textColorMain,
@@ -31,20 +30,29 @@ const LeftSideLatest = ({ chatRoomList, setActiveChatId }) => {
             }}
             onClick={(e) => {
               setActiveChatId(m.chatRoomId);
+              setLastRead(m.chatRoomId);
               // change chat name
               document
                 .getElementById("chatName")
                 .setAttribute("dataText", m.chatName);
             }}
           >
-             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>  
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
               <div
                 className="latestMessageName"
-                style={{ fontSize: String(22 * cfg.fontSizeMultiplier) + "px",}}
+                style={{ fontSize: String(22 * cfg.fontSizeMultiplier) + "px" }}
               >
                 {m.chatName}
               </div>
-              <div className="unreadMessagesCount">{pepe}</div>
+              {m.unreadCount > 0 ? (
+                <div className="unreadMessagesCount">{m.unreadCount}</div>
+              ) : null}
             </div>
             <div className="latestMessageDate">
               {new Date(Date.parse(m.lastMessage.sentAt)).toDateString()}

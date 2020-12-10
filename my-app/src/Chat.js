@@ -69,25 +69,32 @@ export class Chat extends Component {
         }
       }
     }, this);
-    console.log(newSubs);
     this.setSubscribed(newSubs);
   };
 
-  updateRoomListFromMsg = (msg) => {
-    let now = new Date();
-    let found = null;
+  updateChatRoom(chatId, callback) {
     let newObj = [];
     for (let c of this.state.chatRoomList) {
-      if (c.chatRoomId === msg.chatRoomId) {
-        newObj.push(Object.assign({}, c, { lastMessage: msg }));
+      if (c.chatRoomId === chatId) {
+        newObj.push(Object.assign({}, c, callback(c)));
       } else {
         newObj.push(c);
       }
     }
-    console.log(newObj);
     this.setChatRoomList(
       newObj.sort((a, b) => b.lastMessage.sentAt - a.lastMessage.sentAt)
     );
+  }
+
+  updateRoomListFromMsg = (msg) => {
+    let activeChatId = this.state.activeChatId;
+    this.updateChatRoom(msg.chatRoomId, (chat) => {
+      let count = chat.unreadCount;
+      if (activeChatId !== chat.chatRoomId) {
+        count++;
+      }
+      return { lastMessage: msg, unreadCount: count };
+    });
   };
 
   sendChat = (message) => {
@@ -114,8 +121,21 @@ export class Chat extends Component {
     );
   };
 
+  onLastRead = (msg) => {
+    console.log("on last read");
+    let m = JSON.parse(msg.body);
+    this.updateChatRoom(m.chatRoomId, (chat) => {
+      return { unreadCount: 0 };
+    });
+  };
+
   onConnected = () => {
     console.log("connected");
+    stompClient.subscribe(
+      `/user/${this.props.myUserId}/queue/last-read`,
+      this.onLastRead,
+      {}
+    );
     getChatRoomList(this.props.myUserId).then((rooms) =>
       this.setChatRoomList(rooms)
     );
@@ -173,7 +193,10 @@ export class Chat extends Component {
               }}
             />
           </div>
-          <LeftSide updateConfig={this.updateConfig} />
+          <LeftSide
+            updateConfig={this.updateConfig}
+            setLastRead={this.setLastRead}
+          />
         </div>
       </ChatContext.Provider>
     );

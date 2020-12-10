@@ -16,21 +16,13 @@ export class MessageBoard extends Component {
   };
 
   handleNewMessage = (msg) => {
-    if (msg == null) return;
-    console.log("doing stuff");
-    console.log(msg);
-    console.log(msg.content);
+    for (let m of this.state.messages) {
+      if (m.messageId === msg.messageId) return;
+    }
+    this.setState({ messages: [...this.state.messages, msg] });
   };
 
-  componentDidMount = () => {
-    /*setInterval(() => {
-      if (this.props.activeChatId !== undefined) {
-        getMessages(this.props.activeChatId).then((m) =>
-          this.setState({ messages: m })
-        );
-      }
-    }, 1000);*/
-  };
+  componentDidMount = () => {};
 
   componentDidUpdate = (prevProps, prevState) => {
     console.log("Active chat ID: " + this.props.activeChatId);

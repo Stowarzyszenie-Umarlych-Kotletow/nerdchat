@@ -8,7 +8,7 @@ import { configGet } from "../common/config";
 import { ChatContext } from "../Chat";
 import { UserConfig } from "../context";
 
-const LeftSide = ({ updateConfig }) => {
+const LeftSide = ({ updateConfig, setLastRead }) => {
   const cfg = useContext(UserConfig);
   const [settingsOpen, setSettingsOpen] = useState(false);
   return (
@@ -36,7 +36,11 @@ const LeftSide = ({ updateConfig }) => {
           <ChatContext.Consumer>
             {({ chatRoomList, setActiveChatId }) => {
               console.log(chatRoomList);
-              return <LeftSideLatest {...{ chatRoomList, setActiveChatId }} />;
+              return (
+                <LeftSideLatest
+                  {...{ chatRoomList, setActiveChatId, setLastRead }}
+                />
+              );
             }}
           </ChatContext.Consumer>
         </div>
