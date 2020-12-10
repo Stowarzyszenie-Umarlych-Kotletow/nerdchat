@@ -67,7 +67,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
           <br />
           <SliderWithTooltip
             defaultValue={1.0}
-            value={config.fontSizeMultiplier}
+            value={localCfg.fontSizeMultiplier}
             min={0.7}
             max={1.4}
             step={0.1}
