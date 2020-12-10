@@ -1,5 +1,5 @@
 import "./Chat.css";
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { Component } from "react";
 import LeftSide from "./latestMessages/LeftSideContent";
 import { MessageBoard } from "./messageBoard/MessageBoard";
 import { getChatRoomList } from "./common/Api";
@@ -9,40 +9,58 @@ import { Stomp } from "@stomp/stompjs";
 export const ChatContext = React.createContext();
 
 var stompClient = null;
-const Chat = ({ myUserId, setConfig }) => {
-  const [activeChatId, setActiveChatId] = useState();
-  const [chatRoomList, setChatRoomList] = useState([]);
-  const [subscribed, setSubscribed] = useState({});
-
-  const connect = () => {
-    stompClient = Stomp.over(() => new WebSocket(config.wsUrl));
-    stompClient.connect({}, onConnected, onError);
+export class Chat extends Component {
+  state = {
+    activeChatId: null,
+    chatRoomList: [],
+    subscribed: {},
   };
-  const shouldBeSubscribed = (channel) => {
+
+  constructor(props) {
+    super(props);
+    this.board = React.createRef();
+  }
+
+  setActiveChatId = (val) => {
+    this.setState({ activeChatId: val });
+  };
+  setChatRoomList = (val) => {
+    this.setState({ chatRoomList: val });
+  };
+  setSubscribed = (val) => {
+    this.setState({ subscribed: val });
+  };
+
+  connect = () => {
+    stompClient = Stomp.over(() => new WebSocket(config.wsUrl));
+    stompClient.connect({}, this.onConnected, this.onError);
+  };
+  shouldBeSubscribed = (channel) => {
     return true;
   };
-  const subscribeObj = (channelId, s, h) => {
-    let obj = s[channelId];
+
+  subscribeObj = (channelId) => {
+    let obj = this.state.subscribed[channelId];
     if (obj != undefined && obj.active) return obj;
     obj = {
-      sub: stompClient.subscribe(`/topic/channel/notify/${channelId}`, h, {
-        id: channelId,
-      }),
+      sub: stompClient.subscribe(
+        `/topic/channel/notify/${channelId}`,
+        this.onMessageReceived,
+        {
+          id: channelId,
+        }
+      ),
       active: true,
     };
     return obj;
   };
 
-  const updateSubscriptions = () => {
+  updateSubscriptions = () => {
     let newSubs = {};
-    chatRoomList.forEach((c) => {
+    this.state.chatRoomList.forEach((c) => {
       console.log(c);
-      if (shouldBeSubscribed(c)) {
-        newSubs[c.chatRoomId] = subscribeObj(
-          c.chatRoomId,
-          subscribed,
-          onMessageReceived
-        );
+      if (this.shouldBeSubscribed(c)) {
+        newSubs[c.chatRoomId] = this.subscribeObj(c.chatRoomId);
       } else {
         let obj = newSubs[c.chatRoomId];
         if (obj != undefined && obj != null && obj.active) {
@@ -50,93 +68,116 @@ const Chat = ({ myUserId, setConfig }) => {
           obj.active = false;
         }
       }
-    });
+    }, this);
     console.log(newSubs);
-    setSubscribed(newSubs);
+    this.setSubscribed(newSubs);
   };
 
-  const sendChat = (message) => {
+  updateRoomListFromMsg = (msg) => {
+    let now = new Date();
+    let found = null;
+    let newObj = [];
+    for (let c of this.state.chatRoomList) {
+      if (c.chatRoomId === msg.chatRoomId) {
+        newObj.push(Object.assign({}, c, { lastMessage: msg }));
+      } else {
+        newObj.push(c);
+      }
+    }
+    console.log(newObj);
+    this.setChatRoomList(
+      newObj.sort((a, b) => b.lastMessage.sentAt - a.lastMessage.sentAt)
+    );
+  };
+
+  sendChat = (message) => {
     stompClient.send(
       "/app/send-chat",
       {},
       JSON.stringify({
-        channelId: activeChatId,
-        senderId: myUserId,
+        channelId: this.state.activeChatId,
+        senderId: this.props.myUserId,
         content: message,
       })
     );
   };
 
-  const setLastRead = (chatId) => {
+  setLastRead = (chatId) => {
     console.log(chatId);
     stompClient.send(
       "/app/last-read",
       {},
       JSON.stringify({
         channelId: chatId,
-        userId: myUserId,
+        userId: this.props.myUserId,
       })
     );
   };
 
-  const onConnected = () => {
+  onConnected = () => {
     console.log("connected");
-    getChatRoomList(myUserId).then((rooms) => setChatRoomList(rooms));
+    getChatRoomList(this.props.myUserId).then((rooms) =>
+      this.setChatRoomList(rooms)
+    );
   };
-  const onError = (err) => {
+  onError = (err) => {
     console.log(err);
   };
 
-  const onMessageReceived = (msg) => {
-    console.log(`msg: ${msg.body}`);
-    console.log(`test: ${this}`);
+  onMessageReceived = (msg) => {
     let m = JSON.parse(msg.body);
-
-    console.log("INSIDE");
-
-    setLastRead(activeChatId);
-  };
-
-  const updateConfig = (cfg) => {
-    setConfig(cfg);
-  };
-
-  useEffect(() => {
-    console.log("Lubię kotlety - ale nie mielone.");
-    if (stompClient != null && stompClient.connected) updateSubscriptions();
-  }, [chatRoomList]);
-
-  useEffect(() => {}, []);
-
-  useEffect(() => {
-    if (myUserId !== undefined) {
-      connect();
+    if (this.state.activeChatId == m.chatRoomId) {
+      this.board.current.handleNewMessage(m);
+      this.setLastRead(this.state.activeChatId);
     }
-  }, [myUserId]);
+    this.updateRoomListFromMsg(m);
+  };
 
-  useEffect(() => {
-    console.log(`now ${activeChatId}`);
-  }, [activeChatId]);
+  updateConfig = (cfg) => {
+    this.props.setConfig(cfg);
+  };
 
-  return (
-    <ChatContext.Provider
-      value={{
-        myUserId,
-        activeChatId,
-        setActiveChatId,
-        chatRoomList,
-        setChatRoomList,
-        sendChat,
-      }}
-    >
-      <div id="MainContent" style={{ visibility: "hidden" }}>
-        <div id="messagesContent">
-          <MessageBoard {...{ activeChatId, myUserId, sendChat }} />
+  componentDidUpdate = (pp, ps) => {
+    if (ps.chatRoomList !== this.state.chatRoomList) {
+      console.log("Lubię kotlety - ale nie mielone.");
+      if (stompClient != null && stompClient.connected)
+        this.updateSubscriptions();
+    }
+    if (pp.myUserId !== this.props.myUserId) {
+      if (this.props.myUserId !== undefined) {
+        this.connect();
+      }
+    }
+  };
+
+  render = () => {
+    return (
+      <ChatContext.Provider
+        value={{
+          myUserId: this.props.myUserId,
+          activeChatId: this.state.activeChatId,
+          setActiveChatId: this.setActiveChatId,
+          chatRoomList: this.state.chatRoomList,
+          setChatRoomList: this.setChatRoomList,
+          sendChat: this.sendChat,
+        }}
+      >
+        <div id="MainContent" style={{ visibility: "hidden" }}>
+          <div id="messagesContent">
+            <MessageBoard
+              ref={this.board}
+              {...{
+                activeChatId: this.state.activeChatId,
+                myUserId: this.props.myUserId,
+                sendChat: this.sendChat,
+              }}
+            />
+          </div>
+          <LeftSide updateConfig={this.updateConfig} />
         </div>
-        <LeftSide {...{ updateConfig }} />
-      </div>
-    </ChatContext.Provider>
-  );
-};
+      </ChatContext.Provider>
+    );
+  };
+}
 
 export default Chat;
