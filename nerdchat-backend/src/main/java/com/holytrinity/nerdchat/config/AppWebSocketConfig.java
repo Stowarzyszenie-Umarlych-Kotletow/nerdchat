@@ -1,6 +1,7 @@
 package com.holytrinity.nerdchat.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.DefaultContentTypeResolver;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -18,9 +19,10 @@ import java.util.List;
 
 public class AppWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker( "/user");
+        config.enableSimpleBroker( "/topic");
         config.setApplicationDestinationPrefixes("/app");
         config.setUserDestinationPrefix("/user");
     }
@@ -29,8 +31,7 @@ public class AppWebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/ws")
-                .setAllowedOrigins("*")
-                .withSockJS();
+                .setAllowedOrigins("*");
     }
 
     @Override
@@ -39,8 +40,9 @@ public class AppWebSocketConfig implements WebSocketMessageBrokerConfigurer {
         resolver.setDefaultMimeType(MimeTypeUtils.APPLICATION_JSON);
 
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-
-        converter.setObjectMapper(new ObjectMapper());
+        var map = new ObjectMapper();
+        map.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        converter.setObjectMapper(map);
         converter.setContentTypeResolver(resolver);
         messageConverters.add(converter);
         return false;

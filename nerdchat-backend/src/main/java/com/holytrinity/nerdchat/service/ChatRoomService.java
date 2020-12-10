@@ -33,12 +33,22 @@ public class ChatRoomService {
                 .orElse("Unnamed");
     }
 
+    public void setLastRead(ChatRoomMember member) {
+        member.setLastRead(new Date());
+        _memberRepository.save(member);
+    }
+
     public List<ChatRoomListEntry> getUserChatRoomList(UUID userId) {
         return _memberRepository.findByUser_id(userId).stream()
                 .sorted(Comparator.comparing(ChatRoomMember::getLastRead).reversed())
                 .map(x ->
                     _msgRepository.findLastInChatRoom(x.getChatRoom().getId()).map(
-                            m -> new ChatRoomListEntry(BasicChatMessageDto.from(m), getChatRoomName(m.getChatRoom(), userId)))
+                            m -> new ChatRoomListEntry(
+                                    BasicChatMessageDto.from(m),
+                                    getChatRoomName(m.getChatRoom(), userId),
+                                    x.getChatRoom().getId(),
+                                    _msgRepository.countByChatRoom_idAndSentAtAfter(x.getChatRoom().getId(), x.getLastRead())
+                            ))
                             .orElse(null))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

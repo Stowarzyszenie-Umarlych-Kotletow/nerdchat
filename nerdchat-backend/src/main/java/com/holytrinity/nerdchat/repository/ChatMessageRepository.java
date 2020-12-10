@@ -18,7 +18,7 @@ public interface ChatMessageRepository
 
     List<ChatMessage> findByChatRoom_id(UUID chatRoomId, Sort sort);
     Optional<ChatMessage> findFirstByChatRoom_id(UUID chatRoomId, Sort sort);
-    long countBySentAtAfter(Date sentAfter);
+    long countByChatRoom_idAndSentAtAfter(UUID chatRoomId, Date sentAfter);
 
     default Optional<ChatMessage> findLastInChatRoom(UUID chatRoomId) {
         return findFirstByChatRoom_id(chatRoomId, Sort.by("sentAt").descending());

@@ -18,7 +18,7 @@ public class BasicChatMessageDto {
     private UUID chatRoomId;
     private UUID senderId;
     private String senderName;
-    private String contentPreview;
+    private String content;
     private Date sentAt;
 
     public static BasicChatMessageDto from(ChatMessage msg) {
