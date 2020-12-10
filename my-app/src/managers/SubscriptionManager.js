@@ -1,5 +1,11 @@
-/*class SubscriptionManager {
-    var subscriptions = [];
-};
+class SubscriptionManager {
+  constructor() {
+    this.subscriptions = [];
+  }
 
-export default SubscriptionManager;*/
+  init(channels) {}
+
+  update(channels, sub, unsub) {}
+}
+
+export default SubscriptionManager;
