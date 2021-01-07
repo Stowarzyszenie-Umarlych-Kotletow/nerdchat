@@ -2,10 +2,7 @@ package com.holytrinity.nerdchat.controller;
 
 import com.holytrinity.nerdchat.entity.ChatMessage;
 import com.holytrinity.nerdchat.entity.ChatRoom;
-import com.holytrinity.nerdchat.model.BasicChatMessageDto;
-import com.holytrinity.nerdchat.model.ChatMessageDto;
-import com.holytrinity.nerdchat.model.SendChatMessage;
-import com.holytrinity.nerdchat.model.SetLastRead;
+import com.holytrinity.nerdchat.model.*;
 import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
 import com.holytrinity.nerdchat.repository.UserRepository;
 import com.holytrinity.nerdchat.service.ChatMessageService;
@@ -61,6 +58,11 @@ public class ChatController {
             return;
         var m = member.get();
         roomService.setLastRead(m);
+        messaging.convertAndSendToUser(
+                msg.getUserId().toString().toLowerCase(),
+                "/queue/last-read",
+                new SetLastReadResponse(msg.getChannelId(), m.getLastRead())
+        );
     }
 
     @GetMapping("/chatroom/{roomId}/messages")
