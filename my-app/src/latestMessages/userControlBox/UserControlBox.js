@@ -3,6 +3,11 @@ import "./UserControlBox.css";
 import { UserConfig } from "../../context";
 import { UserContext } from "../../context";
 
+var statusDisplayName = {
+  online: "🔔",
+  busy: "🔕",
+};
+
 export class UserControlBox extends Component {
   onSettingsButtonClick = () => {
     document.getElementById("EmojiBox").style.visibility = "hidden";
@@ -49,10 +54,10 @@ export class UserControlBox extends Component {
           <div
             id="userStatus"
             onClick={this.onStatusClick}
-            data-text={this.state.currentStatus}
+            data-text={statusDisplayName[this.state.currentStatus]}
             style={{
               backgroundColor: this.getColorFromStatus(),
-              fontSize: "18px",
+              fontSize: "21px",
               cursor: "pointer",
             }}
           />
