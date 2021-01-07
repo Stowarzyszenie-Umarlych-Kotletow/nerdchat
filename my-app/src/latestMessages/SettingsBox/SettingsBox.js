@@ -40,14 +40,14 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
     //loads fontSizeMultiplier and colors from config
   };
   let marks = {
-    0.7: "0.7x",
-    0.8: "0.8x",
-    0.9: "0.9x",
-    1.0: "1.0x",
-    1.1: "1.1x",
-    1.2: "1.2x",
-    1.3: "1.3x",
-    1.4: "1.4x",
+    0.7: "70%",
+    0.8: "80%",
+    0.9: "90%",
+    1.0: "100%",
+    1.1: "110%",
+    1.2: "120%",
+    1.3: "130%",
+    1.4: "140%",
   };
 
   return (

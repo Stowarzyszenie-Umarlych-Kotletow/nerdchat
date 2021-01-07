@@ -9,7 +9,6 @@
   padding-left: 10px;
   padding-right: 5px;
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 #userInfo {
@@ -42,12 +41,12 @@
 
 #settingsIcon {
   flex: 1;
-  display: flex;
-  border-radius: 7px;
-  font-size: 25px;
+  font-size: 26px;
   text-align: center;
   justify-content: center;
   align-items: center;
+  height: 61px;
+  border-radius: 20px;
 }
 
 #settingsIcon:hover {
