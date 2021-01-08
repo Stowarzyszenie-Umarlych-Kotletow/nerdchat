@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./MessageItem.css";
 import { configGet } from "../../common/config";
 import { UserConfig } from "../../context";
+import formatUrls from "./MessageItemTools";
 
 const MessageItem = ({ message, myUserId }) => {
   const cfg = useContext(UserConfig);
@@ -35,7 +36,11 @@ const MessageItem = ({ message, myUserId }) => {
           {senderName} - &#9202;{" "}
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
         </p>
-        <h1>{content}</h1>
+        <h1>
+          {formatUrls(content).map(function(d){
+            return (d)
+          })}
+        </h1>
       </div>
     </div>
   );

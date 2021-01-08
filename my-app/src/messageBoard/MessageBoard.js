@@ -11,7 +11,7 @@ import { UserConfig } from "../context";
 export class MessageBoard extends Component {
   static contextType = UserConfig;
   state = {
-    chatName: "chatName",
+    chatName: "",
     messages: [],
   };
 
