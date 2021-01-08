@@ -1,10 +1,10 @@
 import LatestMessage from "./latestMessage";
-import "./LeftSideLatest.css";
+import "./ConversationItem.css";
 import AddMessage from "../messageBoard/AddMessage";
 import { getChatRoomList } from "../common/Api";
 import { ChatContext } from "../App";
 import { useEffect, useContext } from "react";
-import { UserConfig } from "./../context";
+import { UserConfig } from "../context";
 
 function wrapText(text) {
   if (text != null && text.length > 25) {
@@ -14,7 +14,7 @@ function wrapText(text) {
   return text;
 }
 
-const LeftSideLatest = ({ chatRoomList, setActiveChatId, setLastRead }) => {
+const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
   const cfg = useContext(UserConfig);
   return chatRoomList === undefined
     ? null
@@ -71,4 +71,4 @@ const LeftSideLatest = ({ chatRoomList, setActiveChatId, setLastRead }) => {
       });
 };
 
-export default LeftSideLatest;
+export default ConversationItem;

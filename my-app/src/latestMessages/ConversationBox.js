@@ -1,19 +1,19 @@
 import React, { Component, useContext, useState } from "react";
-import LeftSideLatest from "./LeftSideLatest";
+import ConversationItem from "./ConversationItem";
 import SettingsBox from "./SettingsBox/SettingsBox";
 import UserControlBox from "./userControlBox/UserControlBox";
-import "./LeftSideContent.css";
+import "./ConversationBox.css";
 import "../common/scrollbar.css";
 import { configGet } from "../common/config";
 import { ChatContext } from "../Chat";
 import { UserConfig } from "../context";
 
-const LeftSide = ({ updateConfig, setLastRead }) => {
+const ConversationBox = ({ updateConfig, setLastRead }) => {
   const cfg = useContext(UserConfig);
   const [settingsOpen, setSettingsOpen] = useState(false);
   return (
     <React.Fragment>
-      <div className="leftSideContainer">
+      <div className="conversationBoxContainer">
         <div style={{ height: "69px" }}>
           <div id="appTitleBox" style={{ backgroundColor: cfg.colorAccents }}>
             <h1
@@ -37,7 +37,7 @@ const LeftSide = ({ updateConfig, setLastRead }) => {
             {({ chatRoomList, setActiveChatId }) => {
               console.log(chatRoomList);
               return (
-                <LeftSideLatest
+                <ConversationItem
                   {...{ chatRoomList, setActiveChatId, setLastRead }}
                 />
               );
@@ -50,4 +50,4 @@ const LeftSide = ({ updateConfig, setLastRead }) => {
   );
 };
 
-export default LeftSide;
+export default ConversationBox;

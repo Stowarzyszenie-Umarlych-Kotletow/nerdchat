@@ -1,6 +1,6 @@
 import "./Chat.css";
 import React, { Component } from "react";
-import LeftSide from "./latestMessages/LeftSideContent";
+import ConversationBox from "./latestMessages/ConversationBox";
 import { MessageBoard } from "./messageBoard/MessageBoard";
 import { getChatRoomList } from "./common/Api";
 import config from "./common/endpoints.json";
@@ -196,7 +196,7 @@ export class Chat extends Component {
               }}
             />
           </div>
-          <LeftSide
+          <ConversationBox
             updateConfig={this.updateConfig}
             setLastRead={this.setLastRead}
           />
