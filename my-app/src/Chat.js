@@ -153,6 +153,17 @@ export class Chat extends Component {
       this.board.current.handleNewMessage(m);
       this.setLastRead(this.state.activeChatId);
     }
+    let showNotification = document.visibilityState !== "visible";
+    if(showNotification) { 
+      if(Notification.permission ==="granted"){
+        var notif = new Notification("Tytuł", {
+          body: m,
+        });
+        setTimeout(notif.close.bind(notif), 3000);
+      }
+    }
+    
+    console.log(Notification.permission);
     this.updateRoomListFromMsg(m);
   };
 
