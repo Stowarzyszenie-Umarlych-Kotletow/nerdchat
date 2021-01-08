@@ -46,9 +46,10 @@ const LeftSideLatest = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "space-between",
               }}
             >
+              <img src={`/assets/NerdchatDefPic${m.chatName.length%9}.png`} alt={"Image is missing"} style={{height: "40px", width:"40px", fontSize: "12px"}}/>
+
               <div
                 className="latestMessageName"
                 style={{ fontSize: String(22 * cfg.fontSizeMultiplier) + "px" }}

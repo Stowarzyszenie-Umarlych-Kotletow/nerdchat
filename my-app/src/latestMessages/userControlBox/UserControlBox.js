@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./UserControlBox.css";
 import { UserConfig } from "../../context";
 import { UserContext } from "../../context";
+    
 
 var statusDisplayName = {
   online: "🔔",
@@ -9,6 +10,9 @@ var statusDisplayName = {
 };
 
 export class UserControlBox extends Component {
+
+
+
   onSettingsButtonClick = () => {
     document.getElementById("EmojiBox").style.visibility = "hidden";
     //document.getElementById("SettingsBox").style.visibility = "visible";
@@ -22,6 +26,7 @@ export class UserControlBox extends Component {
       afk: "yellow",
       busy: "red",
     },
+    profilePicIndex: 8
   };
 
   getColorFromStatus = () => {
@@ -37,7 +42,7 @@ export class UserControlBox extends Component {
   };
 
   render() {
-    return (
+  return (
       <div
         id="userControlBox"
         style={{
@@ -46,6 +51,8 @@ export class UserControlBox extends Component {
           fontSize: String(24 * this.context.fontSizeMultiplier) + "px",
         }}
       >
+        <img src={`/assets/NerdchatDefPic${this.state.profilePicIndex}.png`} alt={"Image is missing"} style={{height: "40px", width:"40px", fontSize: "12px"}}/>
+
         <div id="userInfo">
           <UserContext.Consumer>
             {({ myUserName }) => <div id="userName" dataText={myUserName} />}
