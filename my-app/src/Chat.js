@@ -6,7 +6,7 @@ import { getChatRoomList } from "./common/Api";
 import config from "./common/endpoints.json";
 import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
-import soundFile from './common/notif.wav';
+import soundFile from './common/notif_2.wav';
 export const ChatContext = React.createContext();
 
 
@@ -64,8 +64,10 @@ export class Chat extends Component {
 
   updateSubscriptions = () => {
     let newSubs = {};
+    let unread = 0;
     this.state.chatRoomList.forEach((c) => {
       console.log(c);
+      unread += c.unreadCount;
       if (this.shouldBeSubscribed(c)) {
         newSubs[c.chatRoomId] = this.subscribeObj(c.chatRoomId);
       } else {
@@ -76,6 +78,12 @@ export class Chat extends Component {
         }
       }
     }, this);
+    if(unread > 0){
+      document.title = String("(" + unread + ")") + " NerdChat";
+    }else{
+      document.title = "NerdChat";
+    }
+    
     this.setSubscribed(newSubs);
   };
 
@@ -156,8 +164,11 @@ export class Chat extends Component {
       this.setLastRead(this.state.activeChatId);
     }
     this.updateRoomListFromMsg(m);
-    let audio = new Audio(soundFile);
-    audio.play();
+    if(document.visibilityState !== "visible"){
+      let audio = new Audio(soundFile);
+      audio.play();
+    }
+    
   };
 
   updateConfig = (cfg) => {
