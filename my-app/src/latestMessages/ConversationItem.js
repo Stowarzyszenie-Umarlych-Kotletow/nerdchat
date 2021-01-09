@@ -32,6 +32,8 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               backgroundColor: cfg.colorAccents,
               color: cfg.textColorMain,
               fontSize: String(16 * cfg.fontSizeMultiplier) + "px",
+              paddingTop: "5px",
+              paddingLeft: "5px"
             }}
             onClick={(e) => {
               setActiveChatId(m.chatRoomId);
@@ -46,15 +48,20 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               style={{
                 display: "flex",
                 flexDirection: "row",
+                justifyContent: "space-between"
               }}
             >
-              <img src={`/assets/NerdchatDefPic${m.chatName.length%9}.png`} alt={"Image is missing"} style={{height: "40px", width:"40px", fontSize: "12px"}}/>
-
-              <div
-                className="latestMessageName"
-                style={{ fontSize: String(22 * cfg.fontSizeMultiplier) + "px" }}
-              >
-                {m.chatName}
+              <div  style={{
+                display: "flex",
+                flexDirection: "row"}}
+                >
+                <img src={`/assets/NerdchatDefPic${m.chatName.length%9}.png`} alt={"Image is missing"} style={{height: "40px", width:"40px", fontSize: "12px", marginRight: "5px"}}/>
+                <div
+                  className="latestMessageName"
+                  style={{ fontSize: String(22 * cfg.fontSizeMultiplier) + "px" }}
+                >
+                  {m.chatName}
+                </div>
               </div>
               {m.unreadCount > 0 ? (
                 <div className="unreadMessagesCount">{m.unreadCount}</div>

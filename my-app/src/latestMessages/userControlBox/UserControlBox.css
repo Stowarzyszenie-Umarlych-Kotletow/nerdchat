@@ -52,3 +52,10 @@
 #settingsIcon:hover {
   background-color: #404040cc;
 }
+
+#userProfilePic {
+  height: 45px;
+  width: 45px;
+  font-size: 12px;
+  margin-right: 5px;
+}

@@ -6,6 +6,7 @@ import "./SettingsBox.css";
 import { configUpdate } from "../../common/config";
 import { UserConfig } from "../../context";
 import InputColor from "react-input-color";
+import fs from 'fs'
 
 const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   const config = useContext(UserConfig);
@@ -13,11 +14,8 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   const [localCfg, setLocalCfg] = useState({ fontSizeMultiplier: "1.0" });
 
   const saveSettings = () => {
-    // TODO: save settings to config and config to database
     console.log(localCfg);
-    //console.log(pColor, aColor, pfColor, sfColor);
     updateConfig(Object.assign({}, localCfg));
-    // saving colors to config and updating them in the app
   };
 
   const onFontSizeChanged = (e) => {
@@ -35,6 +33,13 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   useEffect(() => {
     setLocalCfg(Object.assign({}, config));
   }, []);
+
+
+  // change profile pic
+  const changeProfilePic = (pic_id) => {
+    console.log(pic_id);
+    document.getElementById("userProfilePic").setAttribute("src", `/assets/NerdchatDefPic${pic_id}.png`)
+  };
 
   const onLoad = () => {
     //loads fontSizeMultiplier and colors from config
@@ -62,7 +67,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
         ></div>
       </div>
       <div id="SettingsContainer">
-        <div id="SettingElement">
+        <div className="SettingElement">
           <label>Font size</label>
           <br />
           <SliderWithTooltip
@@ -76,7 +81,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
             onChange={onFontSizeChanged}
           />
         </div>
-        <div id="SettingElement">
+        <div className="SettingElement">
           <div id="colorPicker1">
             <label>Primary Color</label>
             <br />
@@ -97,7 +102,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
             {/*<input id="accentColorPicker" type="color"></input>*/}
           </div>
         </div>
-        <div id="SettingElement">
+        <div className="SettingElement">
           <div id="colorPicker1">
             <label>Primary Font Color</label>
             <br />
@@ -116,6 +121,22 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
               placement="right"
             />
           </div>
+        </div>
+
+        <div id="SettingsProfilePictures">
+          <br />
+          <br />
+          <label>Profile pictures</label>
+          <br />
+          <img src={`/assets/NerdchatDefPic1.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(1)}/>
+          <img src={`/assets/NerdchatDefPic2.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(2)}/>
+          <img src={`/assets/NerdchatDefPic3.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(3)}/>
+          <img src={`/assets/NerdchatDefPic4.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(4)}/>
+          <img src={`/assets/NerdchatDefPic5.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(5)}/>
+          <img src={`/assets/NerdchatDefPic6.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(6)}/>
+          <img src={`/assets/NerdchatDefPic7.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(7)}/>
+          <img src={`/assets/NerdchatDefPic8.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(8)}/>
+          <img src={`/assets/NerdchatDefPic9.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(9)}/>
         </div>
       </div>
       <div id="SettingsSave">

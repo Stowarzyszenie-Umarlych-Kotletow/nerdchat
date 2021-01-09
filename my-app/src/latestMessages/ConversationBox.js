@@ -4,9 +4,9 @@ import SettingsBox from "./SettingsBox/SettingsBox";
 import UserControlBox from "./userControlBox/UserControlBox";
 import "./ConversationBox.css";
 import "../common/scrollbar.css";
-import { configGet } from "../common/config";
 import { ChatContext } from "../Chat";
 import { UserConfig } from "../context";
+import JoinConversation from "./JoinConversation"
 
 const ConversationBox = ({ updateConfig, setLastRead }) => {
   const cfg = useContext(UserConfig);
@@ -44,7 +44,17 @@ const ConversationBox = ({ updateConfig, setLastRead }) => {
             }}
           </ChatContext.Consumer>
         </div>
+        <div id="joinConversation" style={{color: cfg.textColorUser}}
+          onClick={(e)=>{
+            var visibility = document.getElementById("joinConversationBox").style.visibility;
+            if (visibility === "visible") visibility = "hidden";
+            else visibility = "visible";
+            document.getElementById("joinConversationBox").style.visibility = visibility;
+
+          }}> Join New Chat ✎
+        </div>
         <UserControlBox {...{ settingsOpen, setSettingsOpen }} />
+        <JoinConversation />
       </div>
     </React.Fragment>
   );

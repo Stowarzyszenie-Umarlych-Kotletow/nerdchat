@@ -17,7 +17,7 @@
 }
 
 #conversationsContainer {
-    height: calc(100% - 138px);
+    height: calc(100% - 178px);
     overflow-y: scroll;
     padding-left: 15px;
 }
@@ -39,4 +39,13 @@
     display: block;
     overflow: hidden;
     border: 2px, solid, grey;
+}
+
+#joinConversation {
+    height: 40px; 
+    width: 100%;
+    background-color: #17171733; 
+    font-size: 25px; 
+    padding-left: 7%;
+    text-align: center;
 }

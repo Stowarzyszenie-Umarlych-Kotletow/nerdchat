@@ -15,7 +15,6 @@ export class UserControlBox extends Component {
 
   onSettingsButtonClick = () => {
     document.getElementById("EmojiBox").style.visibility = "hidden";
-    //document.getElementById("SettingsBox").style.visibility = "visible";
     this.props.setSettingsOpen(true);
   };
 
@@ -49,10 +48,10 @@ export class UserControlBox extends Component {
           backgroundColor: this.context.colorAccents,
           color: this.context.textColorMain,
           fontSize: String(24 * this.context.fontSizeMultiplier) + "px",
+          paddingTop: "5px"
         }}
       >
-        <img src={`/assets/NerdchatDefPic${this.state.profilePicIndex}.png`} alt={"Image is missing"} style={{height: "40px", width:"40px", fontSize: "12px"}}/>
-
+        <img id="userProfilePic" src={`/assets/NerdchatDefPic${this.state.profilePicIndex}.png`} alt={"Image is missing"} />
         <div id="userInfo">
           <UserContext.Consumer>
             {({ myUserName }) => <div id="userName" dataText={myUserName} />}

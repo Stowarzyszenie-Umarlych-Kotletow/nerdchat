@@ -70,7 +70,7 @@ p {
   padding-left: 10px;
 }
 
-#SettingElement {
+.SettingElement {
   width: 70%;
   padding-top: 4px;
   padding-bottom: 4px;
