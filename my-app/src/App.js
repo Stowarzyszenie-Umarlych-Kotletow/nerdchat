@@ -31,6 +31,7 @@ const App = () => {
     setConfig(getDefaultConfig());
   }
   useEffect(() => {}, [myUserId]);
+  Notification.requestPermission();
   return (
     <UserConfig.Provider value={config}>
       <UserContext.Provider value={{ myUserId, setMyUserId, myUserName }}>
