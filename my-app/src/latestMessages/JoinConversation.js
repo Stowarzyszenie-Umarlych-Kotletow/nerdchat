@@ -3,10 +3,16 @@ import { UserConfig } from "../context";
 import "./JoinConversation.css"
 
 class JoinConversation extends Component{
+    state = {
+        chatCode: ""
+    }
+
     onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+
 
     onSubmit = (e) => 
     {
+        this.setState({ chatCode: "" });
         // join new conversation
         document.getElementById("joinConversationBox").style.visibility = "hidden";
 
@@ -22,7 +28,8 @@ class JoinConversation extends Component{
                 <input
                     id="joinConversationField"
                     type="text"
-                    name="chatcode"
+                    name="chatCode"
+                    value={this.state.chatCode}
                     placeholder="E. g. lion-lasagne-ford"
                     onChange={this.onChange}
                 />
