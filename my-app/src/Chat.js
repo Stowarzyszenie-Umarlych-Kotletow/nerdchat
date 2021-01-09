@@ -6,7 +6,9 @@ import { getChatRoomList } from "./common/Api";
 import config from "./common/endpoints.json";
 import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
+import soundFile from './common/notif.wav';
 export const ChatContext = React.createContext();
+
 
 var stompClient = null;
 export class Chat extends Component {
@@ -153,18 +155,9 @@ export class Chat extends Component {
       this.board.current.handleNewMessage(m);
       this.setLastRead(this.state.activeChatId);
     }
-    let showNotification = document.visibilityState !== "visible";
-    if(showNotification) { 
-      if(Notification.permission ==="granted"){
-        var notif = new Notification("Tytuł", {
-          body: m,
-        });
-        setTimeout(notif.close.bind(notif), 3000);
-      }
-    }
-    
-    console.log(Notification.permission);
     this.updateRoomListFromMsg(m);
+    let audio = new Audio(soundFile);
+    audio.play();
   };
 
   updateConfig = (cfg) => {
