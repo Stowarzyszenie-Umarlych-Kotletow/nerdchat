@@ -1,5 +1,5 @@
 import "./Chat.css";
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import ConversationBox from "./latestMessages/ConversationBox";
 import { MessageBoard } from "./messageBoard/MessageBoard";
 import { getChatRoomList } from "./common/Api";
@@ -7,6 +7,8 @@ import config from "./common/endpoints.json";
 import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import soundFile from './common/notif_2.wav';
+import { UserControlBox} from './latestMessages/userControlBox/UserControlBox';
+import { UserConfig } from "./context";
 export const ChatContext = React.createContext();
 
 
@@ -22,6 +24,8 @@ export class Chat extends Component {
     super(props);
     this.board = React.createRef();
   }
+
+  static contextType = UserConfig;
 
   setActiveChatId = (val) => {
     this.setState({ activeChatId: val });
@@ -164,10 +168,15 @@ export class Chat extends Component {
       this.setLastRead(this.state.activeChatId);
     }
     this.updateRoomListFromMsg(m);
-    if(document.visibilityState !== "visible"){
-      let audio = new Audio(soundFile);
-      audio.play();
+    const config = this.context;
+    if(config.currentStatus == "online"){
+      if(document.visibilityState !== "visible"){
+        let audio = new Audio(soundFile);
+        audio.play();
+      }
     }
+    console.log(config);
+    
     
   };
 
