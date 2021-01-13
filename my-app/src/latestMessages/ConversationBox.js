@@ -6,7 +6,7 @@ import "./ConversationBox.css";
 import "../common/scrollbar.css";
 import { ChatContext } from "../Chat";
 import { UserConfig } from "../context";
-import JoinConversation from "./JoinConversation"
+import JoinChat from "./JoinChat"
 
 const ConversationBox = ({ updateConfig, setLastRead }) => {
   const cfg = useContext(UserConfig);
@@ -46,15 +46,15 @@ const ConversationBox = ({ updateConfig, setLastRead }) => {
         </div>
         <div id="joinConversation" style={{color: cfg.textColorUser}}
           onClick={(e)=>{
-            var visibility = document.getElementById("joinConversationBox").style.visibility;
+            var visibility = document.getElementById("joinChatBox").style.visibility;
             if (visibility === "visible") visibility = "hidden";
             else visibility = "visible";
-            document.getElementById("joinConversationBox").style.visibility = visibility;
+            document.getElementById("joinChatBox").style.visibility = visibility;
 
-          }}> Join New Chat ✎
+          }}> New Chats ✎
         </div>
         <UserControlBox {...{ settingsOpen, setSettingsOpen }} />
-        <JoinConversation />
+        <JoinChat />
       </div>
     </React.Fragment>
   );
