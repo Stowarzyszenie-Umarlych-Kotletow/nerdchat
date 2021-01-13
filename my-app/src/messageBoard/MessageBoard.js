@@ -3,10 +3,10 @@ import "./MessageBoard.css";
 import "../common/scrollbar.css";
 import Messages from "./Messages/Messages";
 import AddMessage from "./AddMessage";
-import EmojiBox from "./EmojiBox/EmojiBox";
 import React, { useEffect } from "react";
 import { getMessages, sendMessage } from "../common/Api";
 import { UserConfig } from "../context";
+import EmojiBox from "./EmojiBox/EmojiBox";
 
 export class MessageBoard extends Component {
   static contextType = UserConfig;

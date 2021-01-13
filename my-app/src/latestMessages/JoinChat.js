@@ -16,7 +16,6 @@ class JoinChat extends Component{
         this.setState({ chatCode: "" });
         // join new Chat
         document.getElementById("joinChatBox").style.visibility = "hidden";
-
     }
 
     onSubmitFriend = (e) => 
@@ -24,7 +23,6 @@ class JoinChat extends Component{
         this.setState({ friend: "" });
         // join new 1to1 chat with friend
         document.getElementById("joinChatBox").style.visibility = "hidden";
-
     }
 
     //✎

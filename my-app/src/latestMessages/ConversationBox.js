@@ -8,6 +8,7 @@ import { ChatContext } from "../Chat";
 import { UserConfig } from "../context";
 import JoinChat from "./JoinChat"
 
+
 const ConversationBox = ({ updateConfig, setLastRead }) => {
   const cfg = useContext(UserConfig);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -15,15 +16,12 @@ const ConversationBox = ({ updateConfig, setLastRead }) => {
     <React.Fragment>
       <div className="conversationBoxContainer">
         <div style={{ height: "69px" }}>
-          <div id="appTitleBox" style={{ backgroundColor: cfg.colorAccents }}>
-            <h1
-              style={{
-                marginLeft: "25px",
+          <div id="appTitleBox" style={{ backgroundColor: cfg.colorAccents, 
                 color: cfg.textColorMain,
-              }}
-            >
+                zIndex: "1",
+                fontSize: "30px"
+              }}>
               Nerdchat
-            </h1>
           </div>
           <div id="textLatestMessages" style={{ color: cfg.textColorUser }}>
             Latest Messages{" "}

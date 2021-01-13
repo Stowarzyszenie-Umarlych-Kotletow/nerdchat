@@ -60,9 +60,8 @@ export class EmojiBox extends Component {
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
-            var emojiBox = document.getElementById("EmojiBox");
-            const widthConstraint = visualViewport.width - emojiBox.offsetWidth;
-            const heightConstraint = visualViewport.height - emojiBox.offsetHeight;
+            const widthConstraint = visualViewport.width - element.offsetWidth;
+            const heightConstraint = visualViewport.height - element.offsetHeight;
             // set the element's new position:
             element.style.top = between(element.offsetTop - pos2, 0, heightConstraint) + "px";
             element.style.left = between(element.offsetLeft - pos1, 0, widthConstraint) + "px";
