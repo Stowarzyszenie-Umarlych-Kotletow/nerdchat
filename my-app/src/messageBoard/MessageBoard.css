@@ -41,14 +41,54 @@ a {
   height: calc(100% - 40px);
 }
 
-#chatName {
+#chatHeader {
   height: 44px;
   width: 100%;
   background-color: #4f4f4f;
   padding-left: 1%;
+  padding-right: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#chatName {
   font-size: 30px;
   font-weight: bold;
 }
 #chatName::after {
+  content: attr(dataText);
+}
+
+#chatOptionsButton {
+  position: relative;
+  width: 44px;
+  height: 100%;
+  text-align: center;
+  padding-left: 7px;
+  z-index: 17;
+}
+
+#chatOptionsButton:hover {
+  background-color: #26262666;
+}
+
+#chatOptionsButton:after {
+  font-size: 30px;
+  content: '\2807';
+}
+
+#chatOptions {
+  position:absolute;
+  top: 44px;
+  right: 0px;
+  width: 250px;
+  background-color: #262626cc;
+  text-align: left;
+  word-wrap: break-word;
+  padding-left: 10%;
+  visibility: hidden;
+}
+#copyOption:after {
   content: attr(dataText);
 }
