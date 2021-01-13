@@ -11,7 +11,7 @@ var statusDisplayName = {
 
 export class UserControlBox extends Component {
 
-
+  static contextType = UserConfig; 
 
   onSettingsButtonClick = () => {
     document.getElementById("EmojiBox").style.visibility = "hidden";
@@ -28,15 +28,23 @@ export class UserControlBox extends Component {
     profilePicIndex: 8
   };
 
+  getCurrentState = () => {
+    return this.state.currentStatus;
+  }
+
+
   getColorFromStatus = () => {
     return this.state.status[this.state.currentStatus];
   };
 
   onStatusClick = () => {
+    const config = this.context;
     if (this.state.currentStatus === "online") {
       this.setState({ currentStatus: "busy" });
+      config.currentStatus = "busy";
     } else {
       this.setState({ currentStatus: "online" });
+      config.currentStatus = "online";
     }
   };
 

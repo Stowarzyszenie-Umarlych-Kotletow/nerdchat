@@ -22,6 +22,7 @@ const App = () => {
       colorBackground: "#333", // 333333
       // time
       twelweHourFormating: false,
+      currentStatus: "online",
     };
   };
   useEffect(() => {
