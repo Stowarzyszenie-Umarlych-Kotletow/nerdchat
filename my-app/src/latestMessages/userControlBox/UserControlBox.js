@@ -62,7 +62,7 @@ export class UserControlBox extends Component {
         <img id="userProfilePic" src={`/assets/NerdchatDefPic${this.state.profilePicIndex}.png`} alt={""} />
         <div id="userInfo">
           <UserContext.Consumer>
-            {({ myUserName }) => <div id="userName" dataText={myUserName} />}
+            {({ myUserName }) => <div id="userName" datatext={myUserName} />}
           </UserContext.Consumer>
 
           <div

@@ -38,7 +38,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               // change chat name
               document
                 .getElementById("chatName")
-                .setAttribute("dataText", m.chatName);
+                .setAttribute("datatext", m.chatName);
             }}
           >
             <div

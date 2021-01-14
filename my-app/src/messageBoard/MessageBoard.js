@@ -60,12 +60,12 @@ export class MessageBoard extends Component {
             <div id="chatHeader">
               <div
                 id="chatName"
-                dataText={this.state.chatName}
+                datatext={this.state.chatName}
               />
               <div id="chatOptionsButton" onClick={() => this.setState({openOptions: !this.state.openOptions})} >
                 {
                 this.state.openOptions ? (<div id="chatOptions" style={{color: this.context.textColorUser}}>
-                  <div id="copyOption" onClick={(e) => {e.stopPropagation(); navigator.clipboard.writeText(this.state.chatCode);}} dataText = {"Copy Chat Code to Clipboard"}/>
+                  <div id="copyOption" onClick={(e) => {e.stopPropagation(); navigator.clipboard.writeText(this.state.chatCode);}} datatext = {"Copy Chat Code to Clipboard"}/>
                   <input type="text" value="" id="clipboardAssistant" style={{display: "none"}}/> 
                   <label> Opcja 2 </label>
                   <br/>

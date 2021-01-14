@@ -20,7 +20,7 @@
 }
 
 #userName::after {
-  content: attr(dataText);
+  content: attr(datatext);
 }
 
 #userStatus {

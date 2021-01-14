@@ -51,5 +51,5 @@
 }
 
 #newChatsButton:after {
-    content: attr(dataText);
+    content: attr(datatext);
 }

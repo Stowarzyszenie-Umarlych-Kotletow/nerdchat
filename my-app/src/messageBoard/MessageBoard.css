@@ -57,7 +57,7 @@ a {
   font-weight: bold;
 }
 #chatName::after {
-  content: attr(dataText);
+  content: attr(datatext);
 }
 
 #chatOptionsButton {
@@ -89,5 +89,5 @@ a {
   padding-left: 10%;
 }
 #copyOption:after {
-  content: attr(dataText);
+  content: attr(datatext);
 }

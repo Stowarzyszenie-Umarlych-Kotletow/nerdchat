@@ -53,7 +53,7 @@ const ConversationBox = ({ updateConfig, setLastRead }) => {
           }}
         >
           {" "}
-          <div id="newChatsButton" dataText="New Chats ✎" />
+          <div id="newChatsButton" datatext="New Chats ✎" />
         </div>
         <UserControlBox {...{ settingsOpen, setSettingsOpen }} />
         {joinChatOpen ? (
