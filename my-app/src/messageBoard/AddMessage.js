@@ -3,6 +3,7 @@ import React, { Component } from "react";
 export class AddMessage extends Component {
   state = {
     content: "",
+    visibility: true
   };
 
   // function that submits a message
@@ -42,7 +43,7 @@ export class AddMessage extends Component {
     return (
       <form
         onSubmit={this.onSubmit}
-        style={{ display: "flex" }}
+        style={{ display: "flex"}}
         autoComplete="off"
       >
         <input
