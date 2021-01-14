@@ -9,7 +9,7 @@ function formatUrls(data) {
     for (let i = 0; i < slices.length; i++) {
       if (slices[i].match(regex)) {
         results.push(<span>{p} </span>);
-        p = <a href={slices[i]} target="_blank">{slices[i]}</a>;
+        p = <a href={slices[i]} target="_blank" rel="noreferrer">{slices[i]}</a>;
         results.push(p);
         p = "";
       } else {

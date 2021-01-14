@@ -1,5 +1,3 @@
-var userConfig = { }
-
 // loading default config
 export function configSetDefault () {
     window.userConfig = {

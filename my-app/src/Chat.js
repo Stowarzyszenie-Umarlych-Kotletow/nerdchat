@@ -1,14 +1,12 @@
 import "./Chat.css";
-import React, { Component, useContext } from "react";
+import React, { Component } from "react";
 import ConversationBox from "./latestMessages/ConversationBox";
 import { MessageBoard } from "./messageBoard/MessageBoard";
 import { getChatRoomList, StompApi } from "./common/Api";
 import config from "./common/endpoints.json";
-import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import soundFile from "./common/notif_2.wav";
 import { UserConfig, ChatContext } from "./context";
-import { configSetDefault } from "./common/config";
 
 var stompClient = null;
 var api = new StompApi(null);
@@ -54,7 +52,7 @@ export class Chat extends Component {
 
   subscribeObj = (channelId) => {
     let obj = this.state.subscribed[channelId];
-    if (obj != undefined && obj.active) return obj;
+    if (obj !== undefined && obj.active) return obj;
     obj = {
       sub: api.subscribe(
         `/topic/channel/notify/${channelId}`,
@@ -78,7 +76,7 @@ export class Chat extends Component {
         newSubs[c.chatRoomId] = this.subscribeObj(c.chatRoomId);
       } else {
         let obj = newSubs[c.chatRoomId];
-        if (obj != undefined && obj != null && obj.active) {
+        if (obj !== undefined && obj !==null && obj.active) {
           obj.sub.unsubscribe();
           obj.active = false;
         }
@@ -117,12 +115,6 @@ export class Chat extends Component {
   };
 
   sendChat = (message) => {
-    /* sendPromise("/app/create-room/direct", "lepszykowal").then((m) => {
-      console.log(m);
-      if (m.isSuccess) {
-        this.setActiveChatId(m.chatRoomId);
-      }
-    });*/
     api.sendChat(this.state.activeChatId, message);
   };
 
@@ -132,15 +124,14 @@ export class Chat extends Component {
 
   onLastRead = (msg) => {
     let m = JSON.parse(msg.body);
-    this.updateChatRoom(m.chatRoomId, (chat) => {
+    this.updateChatRoom(m.chatRoomId, () => {
       return { unreadCount: 0 };
     });
   };
 
   onNotifyUpdated = (msg) => {
-    let m = JSON.parse(msg.body);
     let type = msg.headers["type"];
-    if (type == "new-room") {
+    if (type === "new-room") {
       getChatRoomList(this.props.myUserId).then((rooms) =>
         this.setChatRoomList(rooms)
       );
@@ -174,13 +165,13 @@ export class Chat extends Component {
 
   onMessageReceived = (msg) => {
     let m = JSON.parse(msg.body);
-    if (this.state.activeChatId == m.chatRoomId) {
+    if (this.state.activeChatId === m.chatRoomId) {
       this.board.current.handleNewMessage(m);
       this.setLastRead(this.state.activeChatId);
     }
     this.updateRoomListFromMsg(m);
     const config = this.context;
-    if (config.currentStatus == "online") {
+    if (config.currentStatus === "online") {
       if (document.visibilityState !== "visible") {
         let audio = new Audio(soundFile);
         audio.play();
@@ -196,7 +187,7 @@ export class Chat extends Component {
   componentDidUpdate = (pp, ps) => {
     if (ps.chatRoomList !== this.state.chatRoomList) {
       console.log("Lubię kotlety - ale nie mielone.");
-      if (api != null && api.connected) this.updateSubscriptions();
+      if (api !==null && api.connected) this.updateSubscriptions();
     }
     if (pp.myUserId !== this.props.myUserId) {
       if (this.props.myUserId !== undefined) {

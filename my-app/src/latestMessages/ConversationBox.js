@@ -1,4 +1,4 @@
-import React, { Component, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import ConversationItem from "./ConversationItem";
 import SettingsBox from "./SettingsBox/SettingsBox";
 import UserControlBox from "./userControlBox/UserControlBox";

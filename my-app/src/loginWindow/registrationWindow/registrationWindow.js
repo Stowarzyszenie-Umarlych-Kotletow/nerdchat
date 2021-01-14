@@ -17,38 +17,38 @@ export class RegistrationWindow extends Component {
 
     render() {
         return (
-            <div id="registrationWindow">
+            <form id="registrationWindow">
                 Welcome, join us now
                 <input 
-                 id = "dataField"
+                 className = "dataField"
                  type="text" 
                  name="nickname" 
                  placeholder="Nickname..."
                  onChange={this.onChange} 
                  />
                 <input 
-                 id = "dataField"
+                 className = "dataField"
                  type="text" 
                  name="firstName" 
                  placeholder="First name..."
                  onChange={this.onChange} 
                  />
                 <input 
-                 id = "dataField"
+                 className = "dataField"
                  type="text" 
                  name="lastName" 
                  placeholder="Last name..."
                  onChange={this.onChange} 
                  />
                 <input 
-                 id = "passwordField"
+                 className = "passwordField"
                  type="password" 
                  name="password" 
                  placeholder="Password..."
                  onChange={this.onChange} 
                 />
                 <input 
-                 id = "passwordField"
+                 className = "passwordField"
                  type="password" 
                  name="passwordConfirm" 
                  placeholder="Confirm password..."
@@ -67,7 +67,7 @@ export class RegistrationWindow extends Component {
                 onClick={this.onBack}
                 />
                 
-            </div>
+            </form>
         )
     }
 }

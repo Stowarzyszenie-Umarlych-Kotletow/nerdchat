@@ -1,5 +1,4 @@
 import { Component } from 'react'
-import AddMessage from './../AddMessage'
 
 
 class Emojis extends Component {

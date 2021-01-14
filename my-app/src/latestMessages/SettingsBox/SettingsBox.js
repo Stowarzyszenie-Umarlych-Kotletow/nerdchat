@@ -1,12 +1,11 @@
-import React, { Component, useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Slider, { createSliderWithTooltip } from "rc-slider";
 import "rc-slider/assets/index.css";
 import "react-dropdown/style.css";
 import "./SettingsBox.css";
-import { configUpdate } from "../../common/config";
 import { UserConfig } from "../../context";
 import InputColor from "react-input-color";
-import fs from 'fs'
+
 
 const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   const config = useContext(UserConfig);
@@ -32,7 +31,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
 
   useEffect(() => {
     setLocalCfg(Object.assign({}, config));
-  }, []);
+  });
 
 
   // change profile pic
@@ -41,9 +40,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
     document.getElementById("userProfilePic").setAttribute("src", `/assets/NerdchatDefPic${pic_id}.png`)
   };
 
-  const onLoad = () => {
-    //loads fontSizeMultiplier and colors from config
-  };
+
   let marks = {
     0.7: "70%",
     0.8: "80%",
@@ -128,15 +125,15 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
           <br />
           <label>Profile pictures</label>
           <br />
-          <img src={`/assets/NerdchatDefPic1.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(1)}/>
-          <img src={`/assets/NerdchatDefPic2.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(2)}/>
-          <img src={`/assets/NerdchatDefPic3.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(3)}/>
-          <img src={`/assets/NerdchatDefPic4.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(4)}/>
-          <img src={`/assets/NerdchatDefPic5.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(5)}/>
-          <img src={`/assets/NerdchatDefPic6.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(6)}/>
-          <img src={`/assets/NerdchatDefPic7.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(7)}/>
-          <img src={`/assets/NerdchatDefPic8.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(8)}/>
-          <img src={`/assets/NerdchatDefPic9.png`}  style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(9)}/>
+          <img src={`/assets/NerdchatDefPic1.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(1)}/>
+          <img src={`/assets/NerdchatDefPic2.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(2)}/>
+          <img src={`/assets/NerdchatDefPic3.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(3)}/>
+          <img src={`/assets/NerdchatDefPic4.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(4)}/>
+          <img src={`/assets/NerdchatDefPic5.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(5)}/>
+          <img src={`/assets/NerdchatDefPic6.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(6)}/>
+          <img src={`/assets/NerdchatDefPic7.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(7)}/>
+          <img src={`/assets/NerdchatDefPic8.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(8)}/>
+          <img src={`/assets/NerdchatDefPic9.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(9)}/>
         </div>
       </div>
       <div id="SettingsSave">

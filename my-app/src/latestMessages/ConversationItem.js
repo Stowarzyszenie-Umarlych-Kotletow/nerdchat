@@ -1,8 +1,6 @@
-import LatestMessage from "./latestMessage";
+
 import "./ConversationItem.css";
-import AddMessage from "../messageBoard/AddMessage";
-import { getChatRoomList } from "../common/Api";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { UserConfig } from "../context";
 
 function wrapText(text) {
@@ -59,7 +57,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               >
                 <img
                   src={`/assets/NerdchatDefPic${m.chatName.length % 9}.png`}
-                  alt={"Image is missing"}
+                  alt={""}
                   style={{
                     height: "40px",
                     width: "40px",

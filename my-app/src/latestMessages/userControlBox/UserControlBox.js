@@ -59,7 +59,7 @@ export class UserControlBox extends Component {
           paddingTop: "5px"
         }}
       >
-        <img id="userProfilePic" src={`/assets/NerdchatDefPic${this.state.profilePicIndex}.png`} alt={"Image is missing"} />
+        <img id="userProfilePic" src={`/assets/NerdchatDefPic${this.state.profilePicIndex}.png`} alt={""} />
         <div id="userInfo">
           <UserContext.Consumer>
             {({ myUserName }) => <div id="userName" dataText={myUserName} />}

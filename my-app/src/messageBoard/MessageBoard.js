@@ -3,8 +3,8 @@ import "./MessageBoard.css";
 import "../common/scrollbar.css";
 import Messages from "./Messages/Messages";
 import AddMessage from "./AddMessage";
-import React, { useEffect } from "react";
-import { getMessages, sendMessage } from "../common/Api";
+import React from "react";
+import { getMessages } from "../common/Api";
 import { UserConfig } from "../context";
 import EmojiBox from "./EmojiBox/EmojiBox";
 
@@ -29,7 +29,7 @@ export class MessageBoard extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     console.log("Active chat ID: " + this.props.activeChatId);
     if (
-      prevProps.activeChatId != this.props.activeChatId &&
+      prevProps.activeChatId !== this.props.activeChatId &&
       this.props.activeChatId !== undefined
     ) {
       getMessages(this.props.activeChatId).then((m) =>

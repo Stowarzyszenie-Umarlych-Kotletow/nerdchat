@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { ChatContext } from "../context";
 
 export class AddMessage extends Component {
   state = {

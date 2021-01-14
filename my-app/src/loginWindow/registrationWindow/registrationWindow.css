@@ -19,7 +19,7 @@
     visibility: hidden;
 }
 
-#dataField {
+.dataField {
     margin-left: auto;
     margin-right: auto;
     width: 80%;
@@ -28,7 +28,7 @@
     padding: 5px;
 }
 
-#passwordField {
+.passwordField {
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;

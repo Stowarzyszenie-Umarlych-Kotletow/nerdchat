@@ -1,14 +1,13 @@
-import React, { Component, useContext } from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import "./MessageItem.css";
-import { configGet } from "../../common/config";
 import { UserConfig } from "../../context";
 import formatUrls from "./MessageItemTools";
 
 const MessageItem = ({ message, myUserId }) => {
   const cfg = useContext(UserConfig);
   // get style of message box depending on whose information is it
-  const getStyle = (id) => {
+  const getStyle = () => {
     if (message.senderId === myUserId) {
       return {
         fontSize: String(16 * cfg.fontSizeMultiplier) + "px",
@@ -28,7 +27,7 @@ const MessageItem = ({ message, myUserId }) => {
     }
   };
 
-  const { senderName, senderId, sentAt, content, id } = message;
+  const { senderName, sentAt, content, id } = message;
   return (
     <div>
       <div className="textbox" style={getStyle(id)}>

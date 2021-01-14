@@ -1,10 +1,8 @@
 import "./App.css";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Chat from "./Chat";
 import LoginWindow from "./loginWindow/loginWindow";
 import RegistrationWindow from "./loginWindow/registrationWindow/registrationWindow";
-import { getChatRoomList } from "./common/Api";
-import { configSetDefault, configImport } from "./common/config";
 import { UserConfig, UserContext } from "./context";
 
 const App = () => {

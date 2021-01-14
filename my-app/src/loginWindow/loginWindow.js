@@ -15,7 +15,7 @@ export class LoginWindow extends Component {
         document.getElementById("loginWindow").style.visibility = "hidden";
         document.getElementById("MainContent").style.visibility = "visible";
       },
-      (err) => window.alert("Login failed")
+      () => window.alert("Login failed")
     );
   };
 
@@ -33,7 +33,7 @@ export class LoginWindow extends Component {
 
   render() {
     return (
-      <div id="loginWindow">
+      <form id="loginWindow">
         Hello, please sign in!
         <input
           id="loginField"
@@ -43,14 +43,14 @@ export class LoginWindow extends Component {
           onChange={this.onChange}
         />
         <input
-          id="passwordField"
+          className="passwordField"
           type="password"
           name="password"
           placeholder="Password..."
           onChange={this.onChange}
         />
         <small>
-          <a onClick={this.onForgotPassword}>I forgot my password</a>
+          <a onClick={this.onForgotPassword} href="google.com">I forgot my password</a>
         </small>
         <div>
           <input
@@ -66,7 +66,7 @@ export class LoginWindow extends Component {
             onClick={this.onRegister}
           />
         </div>
-      </div>
+      </form>
     );
   }
 }

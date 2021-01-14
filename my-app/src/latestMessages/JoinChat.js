@@ -11,7 +11,7 @@ class JoinChat extends Component {
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-  onSubmitChatCode = (e) => {
+  onSubmitChatCode = () => {
     this.context.api.joinChatByCode(this.state.chatCode).then((m) => {
       if (m.success) {
         this.setState({ chatCode: "" });
@@ -23,7 +23,7 @@ class JoinChat extends Component {
     });
   };
 
-  onSubmitNewChat = (e) => {
+  onSubmitNewChat = () => {
     this.context.api.createGroupChat(this.state.newChatName).then((m) => {
       if (m.success) {
         this.setState({ newChatName: "" });
@@ -35,7 +35,7 @@ class JoinChat extends Component {
     });
   };
 
-  onSubmitFriend = (e) => {
+  onSubmitFriend = () => {
     // join new 1to1 chat with friend
     this.context.api.joinDirectChat(this.state.friend).then(
       (m) => {
@@ -45,8 +45,7 @@ class JoinChat extends Component {
         } else {
           alert("User not found");
         }
-      },
-      (err) => {}
+      }
     );
   };
 
