@@ -113,6 +113,14 @@ export class StompApi {
     return this.sendPromise("/app/create-room/direct", nickname);
   }
 
+  createGroupChat(groupName) {
+    return this.sendPromise("/app/create-room/group", groupName);
+  }
+
+  joinChatByCode(code) {
+    return this.sendPromise("/app/join-room/code", code);
+  }
+
   handleResponse(msg) {
     let r = msg.headers["r"];
     if (this.promises[r] !== undefined) {

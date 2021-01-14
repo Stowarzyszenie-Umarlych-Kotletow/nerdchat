@@ -1,10 +1,12 @@
 package com.holytrinity.nerdchat.entity;
 
+import com.holytrinity.nerdchat.model.MemberPermissions;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -30,4 +32,5 @@ public class ChatRoomMember {
     private List<ChatMessage> messages;
     @CreationTimestamp
     private Date lastRead;
+    private MemberPermissions permissions;
 }

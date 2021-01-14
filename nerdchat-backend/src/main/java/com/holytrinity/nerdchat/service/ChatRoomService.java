@@ -1,35 +1,38 @@
 package com.holytrinity.nerdchat.service;
 
 import com.holytrinity.nerdchat.entity.ChatRoom;
+import com.holytrinity.nerdchat.entity.ChatRoomGroupData;
 import com.holytrinity.nerdchat.entity.ChatRoomMember;
 import com.holytrinity.nerdchat.entity.User;
 import com.holytrinity.nerdchat.model.BasicChatMessageDto;
 import com.holytrinity.nerdchat.model.ChatRoomListEntry;
 import com.holytrinity.nerdchat.model.ChatRoomType;
-import com.holytrinity.nerdchat.model.rooms.CreateDirectChatResult;
+import com.holytrinity.nerdchat.model.MemberPermissions;
+import com.holytrinity.nerdchat.model.rooms.CreateChatResult;
 import com.holytrinity.nerdchat.repository.ChatMessageRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomRepository;
-import com.holytrinity.nerdchat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Tuple;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ChatRoomService {
-    @Autowired private UserService _users;
-    @Autowired private ChatMessageRepository _msgRepository;
-    @Autowired private ChatRoomRepository _roomRepository;
-    @Autowired private ChatRoomMemberRepository _memberRepository;
+    @Autowired
+    private UserService _users;
+    @Autowired
+    private ChatMessageRepository _msgRepository;
+    @Autowired
+    private ChatRoomRepository _roomRepository;
+    @Autowired
+    private ChatRoomMemberRepository _memberRepository;
 
 
     public String getChatRoomName(ChatRoom room, UUID userId) {
-        if(room.getType() != ChatRoomType.DIRECT)
+        if (room.getType() != ChatRoomType.DIRECT)
             return room.getCustomDisplayName();
         return _memberRepository.findFirstByChatRoom_IdAndUser_idNot(room.getId(), userId)
                 .map(x -> x.getUser().getFirstName() + " " + x.getUser().getLastName())
@@ -50,6 +53,8 @@ public class ChatRoomService {
                             m.map(BasicChatMessageDto::from).orElseGet(() -> BasicChatMessageDto.builder().content("").sentAt(x.getLastRead()).build()),
                             getChatRoomName(x.getChatRoom(), userId),
                             x.getChatRoom().getId(),
+                            x.getChatRoom().getType(),
+                            x.getPermissions(),
                             _msgRepository.countByChatRoom_idAndSentAtAfter(x.getChatRoom().getId(), x.getLastRead())
                     );
                 })
@@ -69,7 +74,7 @@ public class ChatRoomService {
     public Optional<ChatRoomMember> getRoomMember(UUID roomId, User user, boolean create) {
         return findRoomMember(roomId, user.getId())
                 .or(() -> {
-                    if(!create)
+                    if (!create)
                         return Optional.empty();
                     return Optional.of(_memberRepository.save(
                             ChatRoomMember.builder()
@@ -79,6 +84,18 @@ public class ChatRoomService {
                     ));
                 });
     }
+
+    public Pair<Boolean, ChatRoomMember> getRoomMemberCreated(UUID roomId, User user) {
+        var found = findRoomMember(roomId, user.getId());
+        return found.map(chatRoomMember -> Pair.of(false, chatRoomMember)).orElseGet(() -> Pair.of(true,
+                _memberRepository.save(ChatRoomMember.builder()
+                        .chatRoom(ChatRoom.builder().id(roomId).build())
+                        .user(user)
+                        .build())
+        ));
+
+    }
+
     public Optional<ChatRoomMember> getRoomMember(UUID roomId, UUID userId, boolean create) {
         return getRoomMember(roomId, User.builder().id(userId).build(), create);
 
@@ -94,26 +111,52 @@ public class ChatRoomService {
         var room = _roomRepository.save(
                 ChatRoom.builder().type(ChatRoomType.DIRECT).build()
         );
-        var members = users.stream().map(u -> ChatRoomMember.builder().user(u).chatRoom(room).build()).collect(Collectors.toList());
+        var members = users.stream().map(u -> ChatRoomMember.builder().permissions(MemberPermissions.ADMIN).user(u).chatRoom(room).build()).collect(Collectors.toList());
         _memberRepository.saveAll(members);
         room.setMembers(members);
         return room;
     }
 
-    public Pair<CreateDirectChatResult, Optional<ChatRoom>> createDirectChatByNickname(User user, String nickname) {
+    public Pair<CreateChatResult, Optional<ChatRoom>> createDirectChatByNickname(User user, String nickname) {
 
         try {
             var target = _users.findByNickname(nickname).orElseThrow();
-            if(target.getId() == user.getId())
+            if (target.getId() == user.getId())
                 throw new Exception("Can't add yourself");
             var existing = _roomRepository.findExistingChatRoomBetween(user.getId(), target.getId());
             var isNew = existing.isEmpty();
             var room = existing.orElseGet(() -> createDirectChat(user, target));
-            return Pair.of(new CreateDirectChatResult(room.getId(), isNew), isNew ? Optional.of(room) : Optional.empty());
+            return Pair.of(new CreateChatResult(room.getId(), isNew), isNew ? Optional.of(room) : Optional.empty());
 
-        }catch (Exception e) {
+        } catch (Exception e) {
 
         }
-        return Pair.of(new CreateDirectChatResult(), Optional.empty());
+        return Pair.of(new CreateChatResult(), Optional.empty());
+    }
+
+    public Pair<CreateChatResult, Optional<ChatRoom>> createGroupChat(User user, String groupName) {
+        var data = ChatRoomGroupData.builder().joinCode(groupName+"123").build();
+        var room =
+                ChatRoom.builder()
+                        .customDisplayName(groupName)
+                        .groupData(data)
+                        .type(ChatRoomType.GROUP)
+                        .build();
+        data.setChatRoom(room);
+        _roomRepository.save(room);
+        var member = _memberRepository.save(
+                ChatRoomMember.builder()
+                        .chatRoom(room)
+                        .permissions(MemberPermissions.ADMIN)
+                        .user(user)
+                        .build()
+        );
+        room.setMembers(List.of(member));
+        return Pair.of(new CreateChatResult(room.getId(), true), Optional.of(room));
+    }
+
+    public CreateChatResult joinChatByCode(User user, String code) {
+        var room = _roomRepository.findChatRoomByCode(code);
+        return room.map(chatRoom -> new CreateChatResult(chatRoom.getId(), getRoomMemberCreated(chatRoom.getId(), user).getFirst())).orElseGet(CreateChatResult::new);
     }
 }

@@ -6,20 +6,27 @@ class JoinChat extends Component {
   state = {
     chatCode: "",
     friend: "",
-    newChatName: ""
+    newChatName: "",
   };
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   onSubmitChatCode = (e) => {
-    this.setState({ chatCode: "" });
-    this.props.setJoinChatOpen(false);
+    this.context.api.joinChatByCode(this.state.chatCode).then((m) => {
+      if (m.success) {
+        this.setState({ chatCode: "" });
+        // join new Chat
+        this.props.setJoinChatOpen(false);
+      } else {
+        alert("Invalid code");
+      }
+    });
   };
 
   onSubmitNewChat = (e) => {
     this.setState({ newChatName: "" });
     this.props.setJoinChatOpen(false);
-  }
+  };
 
   onSubmitFriend = (e) => {
     // join new 1to1 chat with friend
@@ -32,9 +39,7 @@ class JoinChat extends Component {
           alert("User not found");
         }
       },
-      (err) => {
-        alert("jest większy problem nw byczq");
-      }
+      (err) => {}
     );
   };
 
@@ -47,8 +52,8 @@ class JoinChat extends Component {
             className="XButton"
             onClick={() => this.props.setJoinChatOpen(false)}
           />
-          <div style={{marginBottom:"30px"}}>
-            Join group chat with ChatCode! 
+          <div style={{ marginBottom: "30px" }}>
+            Join group chat with ChatCode!
             <input
               className="joinChatField"
               type="text"
@@ -64,7 +69,7 @@ class JoinChat extends Component {
               onClick={this.onSubmitChatCode}
             />
           </div>
-          <div style={{marginBottom:"30px"}}>
+          <div style={{ marginBottom: "30px" }}>
             Find your friend with his nick!
             <input
               className="joinChatField"

@@ -119,6 +119,32 @@ public class ChatController {
         });
     }
 
+    @MessageMapping("/create-room/group")
+    public void createRoomGroup(SimpMessageHeaderAccessor h, @Payload String groupName) throws Exception {
+        var user = _getUser(h);
+        user.ifPresent(value -> {
+            var res = roomService.createGroupChat(value, groupName);
+            res.getSecond().ifPresent(room -> {
+                for(var member : room.getMembers())
+                    _notifyUpdated(member.getUser().getId(), "new-room", room.getId());
+            });
+
+            _reply(h, res.getFirst());
+        });
+    }
+
+    @MessageMapping("/join-room/code")
+    public void joinRoomByCode(SimpMessageHeaderAccessor h, @Payload String code) throws Exception {
+        var user = _getUser(h);
+        user.ifPresent(value -> {
+            var res = roomService.joinChatByCode(value, code);
+            if(res.isNew) {
+                _notifyUpdated(value.getId(), "new-room", res.getChatRoomId());
+            }
+            _reply(h, res);
+        });
+    }
+
     @GetMapping("/chatroom/{roomId}/messages")
     public ResponseEntity<?> getChatMessages(@PathVariable  UUID roomId) {
         return ResponseEntity.ok(messageService.findByChatRoomId(roomId, Sort.by("sentAt").ascending()).stream()

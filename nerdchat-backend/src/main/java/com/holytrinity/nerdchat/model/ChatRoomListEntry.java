@@ -13,6 +13,8 @@ public class ChatRoomListEntry {
     public BasicChatMessageDto lastMessage;
     public String chatName;
     public UUID chatRoomId;
+    public ChatRoomType chatRoomType;
+    public MemberPermissions permissions;
     public long unreadCount;
 
 }

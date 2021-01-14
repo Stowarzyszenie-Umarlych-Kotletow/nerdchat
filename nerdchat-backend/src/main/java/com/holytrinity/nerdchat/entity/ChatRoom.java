@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,5 +27,7 @@ public class ChatRoom {
     private List<ChatRoomMember> members;
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatMessage> messages;
+    @OneToOne(mappedBy = "chatRoom", optional = true, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private ChatRoomGroupData groupData;
 
 }

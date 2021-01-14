@@ -47,25 +47,19 @@ public class DataSeeder implements ApplicationRunner {
                 .build());
 
         var users = new ArrayList<User>(List.of(userA, userB, userC));
-        var chatAB = chatRooms.save(ChatRoom.builder()
-                .type(ChatRoomType.DIRECT)
-                .build());
-        var chatAC = chatRooms.save(ChatRoom.builder()
-                .type(ChatRoomType.DIRECT)
-                .build());
+        var chatAB = chatRoomService.createDirectChat(userA, userB);
+        var chatAC = chatRoomService.createDirectChat(userA, userC);
 
-        var ab = chatRoomService.addToRoom(chatAB.getId(), userA, userB);
         chatMessageService.save(ChatMessage.builder()
                 .content("Hey!")
                 .chatRoom(chatAB)
-                .chatRoomMember(ab.getSecond())
+                .chatRoomMember(chatAB.getMembers().get(1))
                 .build());
 
-        var ac= chatRoomService.addToRoom(chatAC.getId(), userA, userC);
         chatMessageService.save(ChatMessage.builder()
                 .content("hello there")
                 .chatRoom(chatAC)
-                .chatRoomMember(ac.getSecond())
+                .chatRoomMember(chatAC.getMembers().get(1))
                 .build());
 
     }

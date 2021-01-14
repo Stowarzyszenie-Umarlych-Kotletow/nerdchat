@@ -5,15 +5,15 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class CreateDirectChatResult {
+public class CreateChatResult {
     public boolean isSuccess;
     public boolean isNew;
     public UUID chatRoomId;
 
-    public CreateDirectChatResult() {
+    public CreateChatResult() {
         isSuccess = false;
     }
-    public CreateDirectChatResult(UUID chatRoomId, boolean isNew) {
+    public CreateChatResult(UUID chatRoomId, boolean isNew) {
         this.chatRoomId = chatRoomId;
         isSuccess = true;
         isNew = isNew;
