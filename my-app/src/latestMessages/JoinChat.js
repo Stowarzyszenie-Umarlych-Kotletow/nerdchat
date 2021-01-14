@@ -24,8 +24,15 @@ class JoinChat extends Component {
   };
 
   onSubmitNewChat = (e) => {
-    this.setState({ newChatName: "" });
-    this.props.setJoinChatOpen(false);
+    this.context.api.createGroupChat(this.state.newChatName).then((m) => {
+      if (m.success) {
+        this.setState({ newChatName: "" });
+        // join new Chat
+        this.props.setJoinChatOpen(false);
+      } else {
+        alert("Could not create a new group.");
+      }
+    });
   };
 
   onSubmitFriend = (e) => {

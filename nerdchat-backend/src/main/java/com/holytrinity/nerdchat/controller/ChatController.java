@@ -138,7 +138,7 @@ public class ChatController {
         var user = _getUser(h);
         user.ifPresent(value -> {
             var res = roomService.joinChatByCode(value, code);
-            if(res.isNew) {
+            if(res.isNew()) {
                 _notifyUpdated(value.getId(), "new-room", res.getChatRoomId());
             }
             _reply(h, res);
