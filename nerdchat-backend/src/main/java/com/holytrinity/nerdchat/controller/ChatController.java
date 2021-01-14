@@ -2,6 +2,7 @@ package com.holytrinity.nerdchat.controller;
 
 import com.holytrinity.nerdchat.entity.ChatMessage;
 import com.holytrinity.nerdchat.entity.ChatRoom;
+import com.holytrinity.nerdchat.entity.User;
 import com.holytrinity.nerdchat.model.*;
 import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
 import com.holytrinity.nerdchat.repository.UserRepository;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,8 +36,9 @@ public class ChatController {
     @Autowired private UserService userService;
 
     @MessageMapping("/send-chat")
-    public void sendChat(@Payload SendChatMessage msg) {
-        System.out.println(msg.getContent());
+    public void sendChat(SimpMessageHeaderAccessor h, @Payload SendChatMessage msg) throws Exception {
+        var usrId = _getUserId(h);
+        msg.setSenderId(usrId);
         var chat = roomService.findById(msg.getChannelId());
         var member = roomService.getRoomMember(msg.getChannelId(), msg.getSenderId(), false);
         if(chat.isEmpty() || member.isEmpty())
@@ -47,22 +51,68 @@ public class ChatController {
         .build());
 
         var notification = BasicChatMessageDto.from(message);
-        System.out.println("/topic/channel/notify/" + msg.getChannelId().toString());
+
         messaging.convertAndSend("/topic/channel/notify/" + msg.getChannelId().toString(), notification);
     }
 
     @MessageMapping("/last-read")
-    public void setLastRead(@Payload SetLastRead msg) {
-        var member = roomService.getRoomMember(msg.getChannelId(), msg.getUserId(), false);
+    public void setLastRead(SimpMessageHeaderAccessor h, @Payload SetLastRead msg) {
+        var usrId = _getUserId(h);
+        var member = roomService.getRoomMember(msg.getChannelId(), usrId, false);
         if(member.isEmpty())
             return;
         var m = member.get();
         roomService.setLastRead(m);
+
         messaging.convertAndSendToUser(
-                msg.getUserId().toString().toLowerCase(),
+                usrId.toString().toLowerCase(),
                 "/queue/last-read",
                 new SetLastReadResponse(msg.getChannelId(), m.getLastRead())
         );
+    }
+
+    private <T> T _reply(SimpMessageHeaderAccessor h, T obj) {
+        messaging.convertAndSendToUser(
+                _getUserId(h).toString().toLowerCase(),
+                "/queue/r",
+                obj, new HashMap<>(){{
+                   put("r", h.getFirstNativeHeader("r"));
+                }});
+        return obj;
+    }
+
+    private <T> void _notifyUpdated(UUID uid, String type, T obj) {
+        messaging.convertAndSendToUser(
+                uid.toString().toLowerCase(),
+                "/queue/notify-updated",
+                obj, new HashMap<>(){{
+                    put("type", type);
+                }});
+    }
+
+    private Optional<User> _getUser(SimpMessageHeaderAccessor h) throws Exception {
+        return userService.findById(_getUserId(h));
+    }
+
+    private UUID _getUserId(SimpMessageHeaderAccessor h){
+        var str = h.getUser();
+        if (str == null)
+            return null;
+        return UUID.fromString(h.getUser().getName());
+    }
+
+    @MessageMapping("/create-room/direct")
+    public void createRoomDirect(SimpMessageHeaderAccessor h, @Payload String nickname) throws Exception {
+        var user = _getUser(h);
+        user.ifPresent(value -> {
+            var res = roomService.createDirectChatByNickname(value, nickname);
+            res.getSecond().ifPresent(room -> {
+                for(var member : room.getMembers())
+                    _notifyUpdated(member.getUser().getId(), "new-room", room.getId());
+            });
+
+            _reply(h, res.getFirst());
+        });
     }
 
     @GetMapping("/chatroom/{roomId}/messages")
@@ -89,19 +139,6 @@ public class ChatController {
         return ResponseEntity.notFound().build();
     }
 
-    @RequestMapping(value = "/chatroom/{chatId}/send", method = RequestMethod.POST)
-    public ResponseEntity<?> sendMessage(@PathVariable UUID chatId, @RequestBody SendChatMessage msg) {
-        var member = roomService.getRoomMember(chatId, msg.getSenderId(), false);
-        var sentMsg = messageService.save(ChatMessage.builder()
-        .chatRoomMember(member.get())
-        .chatRoom(ChatRoom.builder().id(chatId).build())
-        .content(msg.getContent())
-        .build());
-        var notification = BasicChatMessageDto.from(sentMsg);
-        //System.out.println(messaging == null);
-        //messaging.convertAndSend("/topic/channel/notify/" + msg.getChannelId().toString(), notification);
-        return ResponseEntity.ok(chatId);
-    }
 
 
 }

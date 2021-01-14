@@ -21,5 +21,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(anycorsFilter(), SessionManagementFilter.class).authorizeRequests().anyRequest().permitAll();
         http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
     }
 }

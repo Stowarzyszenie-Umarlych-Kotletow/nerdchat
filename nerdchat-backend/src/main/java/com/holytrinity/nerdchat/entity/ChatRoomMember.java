@@ -24,6 +24,7 @@ public class ChatRoomMember {
     @JoinColumn(name = "chatRoomId")
     private ChatRoom chatRoom;
     @ManyToOne
+    @JoinColumn(name = "userId")
     private User user;
     @OneToMany(mappedBy = "chatRoomMember")
     private List<ChatMessage> messages;

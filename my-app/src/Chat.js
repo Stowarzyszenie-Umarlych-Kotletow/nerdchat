@@ -6,13 +6,23 @@ import { getChatRoomList } from "./common/Api";
 import config from "./common/endpoints.json";
 import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
-import soundFile from './common/notif_2.wav';
-import { UserControlBox} from './latestMessages/userControlBox/UserControlBox';
+import soundFile from "./common/notif_2.wav";
 import { UserConfig } from "./context";
+import { configSetDefault } from "./common/config";
 export const ChatContext = React.createContext();
 
-
 var stompClient = null;
+var stompPromises = {};
+
+export function sendPromise(url, msg, timeout = 5000) {
+  return new Promise((resolve, reject) => {
+    let id = Math.random().toString(36).substring(2);
+    stompPromises[id] = { resolve, reject };
+    stompClient.send(url, { r: id }, JSON.stringify(msg));
+    setTimeout(() => reject(null), timeout);
+  });
+}
+
 export class Chat extends Component {
   state = {
     activeChatId: null,
@@ -42,9 +52,13 @@ export class Chat extends Component {
     this.setState({ subscribed: val });
   };
 
-  connect = () => {
+  connect = (token) => {
+    if (stompClient != null) {
+      stompClient.disconnect();
+      stompClient = null;
+    }
     stompClient = Stomp.over(() => new WebSocket(config.wsUrl));
-    stompClient.connect({}, this.onConnected, this.onError);
+    stompClient.connect({ "X-token": token }, this.onConnected, this.onError);
   };
   shouldBeSubscribed = (channel) => {
     return true;
@@ -82,12 +96,12 @@ export class Chat extends Component {
         }
       }
     }, this);
-    if(unread > 0){
-      document.title = String("(" + unread + ")") + " NerdChat";
-    }else{
+    if (unread > 0) {
+      document.title = "(" + unread + ") NerdChat";
+    } else {
       document.title = "NerdChat";
     }
-    
+
     this.setSubscribed(newSubs);
   };
 
@@ -115,6 +129,12 @@ export class Chat extends Component {
   };
 
   sendChat = (message) => {
+    sendPromise("/app/create-room/direct", "lepszykowal").then((m) => {
+      console.log(m);
+      if (m.isSuccess) {
+        this.setActiveChatId(m.chatRoomId);
+      }
+    });
     stompClient.send(
       "/app/send-chat",
       {},
@@ -139,11 +159,20 @@ export class Chat extends Component {
   };
 
   onLastRead = (msg) => {
-    console.log("on last read");
     let m = JSON.parse(msg.body);
     this.updateChatRoom(m.chatRoomId, (chat) => {
       return { unreadCount: 0 };
     });
+  };
+
+  onNotifyUpdated = (msg) => {
+    let m = JSON.parse(msg.body);
+    let type = msg.headers["type"];
+    if (type == "new-room") {
+      getChatRoomList(this.props.myUserId).then((rooms) =>
+        this.setChatRoomList(rooms)
+      );
+    }
   };
 
   onConnected = () => {
@@ -151,6 +180,25 @@ export class Chat extends Component {
     stompClient.subscribe(
       `/user/${this.props.myUserId}/queue/last-read`,
       this.onLastRead,
+      {}
+    );
+    stompClient.subscribe(
+      `/user/${this.props.myUserId}/queue/r`,
+      (msg) => {
+        let r = msg.headers["r"];
+        if (stompPromises[r] !== undefined) {
+          console.log(`Received promise ${r}`);
+          stompPromises[r].resolve(JSON.parse(msg.body));
+          delete stompPromises[r];
+        } else {
+          console.log(`Failed ${r}`);
+        }
+      },
+      {}
+    );
+    stompClient.subscribe(
+      `/user/${this.props.myUserId}/queue/notify-updated`,
+      this.onNotifyUpdated,
       {}
     );
     getChatRoomList(this.props.myUserId).then((rooms) =>
@@ -169,15 +217,13 @@ export class Chat extends Component {
     }
     this.updateRoomListFromMsg(m);
     const config = this.context;
-    if(config.currentStatus == "online"){
-      if(document.visibilityState !== "visible"){
+    if (config.currentStatus == "online") {
+      if (document.visibilityState !== "visible") {
         let audio = new Audio(soundFile);
         audio.play();
       }
     }
     console.log(config);
-    
-    
   };
 
   updateConfig = (cfg) => {
@@ -192,7 +238,7 @@ export class Chat extends Component {
     }
     if (pp.myUserId !== this.props.myUserId) {
       if (this.props.myUserId !== undefined) {
-        this.connect();
+        this.connect(this.props.myUserId);
       }
     }
   };
