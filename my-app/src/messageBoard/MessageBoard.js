@@ -14,6 +14,7 @@ export class MessageBoard extends Component {
     chatName: "",
     chatCode: "",
     messages: [],
+    openOptions: false
   };
 
   handleNewMessage = (msg) => {
@@ -40,13 +41,6 @@ export class MessageBoard extends Component {
     ).scrollTop = document.getElementById("MessageContainer").scrollHeight;
   };
 
-  openOptions = () => {
-    var visibility = document.getElementById("chatOptions").style.visibility;
-    if (visibility === "visible") visibility = "hidden";
-    else visibility = "visible";
-    document.getElementById("chatOptions").style.visibility = visibility;
-  }
-
   // Add Message to MessageBoard
   addMessage = (content) => {
     // create a new message object
@@ -68,8 +62,9 @@ export class MessageBoard extends Component {
                 id="chatName"
                 dataText={this.state.chatName}
               />
-              <div id="chatOptionsButton" onClick={this.openOptions} >
-                <div id="chatOptions" style={{color: this.context.textColorUser}}>
+              <div id="chatOptionsButton" onClick={() => this.setState({openOptions: !this.state.openOptions})} >
+                {
+                this.state.openOptions ? (<div id="chatOptions" style={{color: this.context.textColorUser}}>
                   <div id="copyOption" onClick={(e) => {e.stopPropagation(); navigator.clipboard.writeText(this.state.chatCode);}} dataText = {"Copy Chat Code to Clipboard"}/>
                   <input type="text" value="" id="clipboardAssistant" style={{display: "none"}}/> 
                   <label> Opcja 2 </label>
@@ -79,12 +74,20 @@ export class MessageBoard extends Component {
                   <label> Opcja 4 </label>
                   <br/>
                   <label> Opcja 5 </label>
-                </div>
+                </div>)
+                : null
+                }
               </div>
             </div>
-            <div id="MessageContainer">
+            <div id="MessageContainer" style={{color: this.context.textColorUser}}>
               <EmojiBox />
-              <Messages messages={this.state.messages} />
+              {this.props.activeChatId === null ?  
+              (
+              <div style={{fontSize: "40px", textAlign: "center"}}>
+                Choose a chat to start talking with your friends!
+                </div>) 
+              : <Messages messages={this.state.messages} />}
+              
             </div>
             {this.props.activeChatId === null ? null : <AddMessage addMessage={this.addMessage}/>}
           </div>

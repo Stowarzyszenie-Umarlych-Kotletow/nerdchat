@@ -87,7 +87,6 @@ a {
   text-align: left;
   word-wrap: break-word;
   padding-left: 10%;
-  visibility: hidden;
 }
 #copyOption:after {
   content: attr(dataText);

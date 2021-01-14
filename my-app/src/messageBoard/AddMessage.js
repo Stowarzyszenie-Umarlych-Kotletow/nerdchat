@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { ChatContext } from "../context";
 
 export class AddMessage extends Component {
   state = {
-    content: "",
-    visibility: true
+    content: ""
   };
 
   // function that submits a message
