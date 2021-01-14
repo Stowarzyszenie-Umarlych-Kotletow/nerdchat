@@ -49,3 +49,7 @@
     padding-left: 7%;
     text-align: center;
 }
+
+#newChatsButton:after {
+    content: attr(dataText);
+}

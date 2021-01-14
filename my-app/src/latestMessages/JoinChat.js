@@ -1,4 +1,4 @@
-import React, { Component, setState } from "react";
+import React, { Component } from "react";
 import { ChatContext } from "../context";
 import "./JoinChat.css";
 
@@ -6,15 +6,20 @@ class JoinChat extends Component {
   state = {
     chatCode: "",
     friend: "",
+    newChatName: ""
   };
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   onSubmitChatCode = (e) => {
     this.setState({ chatCode: "" });
-    // join new Chat
     this.props.setJoinChatOpen(false);
   };
+
+  onSubmitNewChat = (e) => {
+    this.setState({ newChatName: "" });
+    this.props.setJoinChatOpen(false);
+  }
 
   onSubmitFriend = (e) => {
     // join new 1to1 chat with friend
@@ -28,7 +33,7 @@ class JoinChat extends Component {
         }
       },
       (err) => {
-        alert("jest wienkszy problem nw byczq");
+        alert("jest większy problem nw byczq");
       }
     );
   };
@@ -42,39 +47,57 @@ class JoinChat extends Component {
             className="XButton"
             onClick={() => this.props.setJoinChatOpen(false)}
           />
-          <label> Enter Chat Code Here </label>
-          <input
-            className="joinChatField"
-            type="text"
-            name="chatCode"
-            value={this.state.chatCode}
-            placeholder="E. g. lion-lasagne-ford"
-            onChange={this.onChange}
-          />
-          <input
-            className="joinChatButton"
-            type="button"
-            value="Join Chat!"
-            onClick={this.onSubmitChatCode}
-          />
-          <br />
-          <br />
-          <label> Enter Your Friends Nickname Here </label>
-
-          <input
-            className="joinChatField"
-            type="text"
-            name="friend"
-            value={this.state.friend}
-            placeholder="E. g. miko3412"
-            onChange={this.onChange}
-          />
-          <input
-            className="joinChatButton"
-            type="button"
-            value="Chat With Friend!"
-            onClick={this.onSubmitFriend}
-          />
+          <div style={{marginBottom:"30px"}}>
+            Join group chat with ChatCode! 
+            <input
+              className="joinChatField"
+              type="text"
+              name="chatCode"
+              value={this.state.chatCode}
+              placeholder="Eg. d35ffa91"
+              onChange={this.onChange}
+            />
+            <input
+              className="joinChatButton"
+              type="button"
+              value="Join Chat!"
+              onClick={this.onSubmitChatCode}
+            />
+          </div>
+          <div style={{marginBottom:"30px"}}>
+            Find your friend with his nick!
+            <input
+              className="joinChatField"
+              type="text"
+              name="friend"
+              value={this.state.friend}
+              placeholder="Eg. miko3412"
+              onChange={this.onChange}
+            />
+            <input
+              className="joinChatButton"
+              type="button"
+              value="Chat With Friend!"
+              onClick={this.onSubmitFriend}
+            />
+          </div>
+          <div>
+            To make a new chat create a name!
+            <input
+              className="joinChatField"
+              type="text"
+              name="newChatName"
+              value={this.state.newChatName}
+              placeholder="Eg. Suuper chat name!"
+              onChange={this.onChange}
+            />
+            <input
+              className="joinChatButton"
+              type="button"
+              value="Create new chat!"
+              onClick={this.onSubmitNewChat}
+            />
+          </div>
         </div>
       </div>
     );
