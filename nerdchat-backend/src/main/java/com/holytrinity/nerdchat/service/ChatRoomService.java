@@ -104,6 +104,8 @@ public class ChatRoomService {
 
         try {
             var target = _users.findByNickname(nickname).orElseThrow();
+            if(target.getId() == user.getId())
+                throw new Exception("Can't add yourself");
             var existing = _roomRepository.findExistingChatRoomBetween(user.getId(), target.getId());
             var isNew = existing.isEmpty();
             var room = existing.orElseGet(() -> createDirectChat(user, target));

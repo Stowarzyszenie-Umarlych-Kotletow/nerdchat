@@ -94,11 +94,15 @@ public class ChatController {
         return userService.findById(_getUserId(h));
     }
 
-    private UUID _getUserId(SimpMessageHeaderAccessor h){
+    private UUID _getUserId(SimpMessageHeaderAccessor h) {
         var str = h.getUser();
         if (str == null)
             return null;
         return UUID.fromString(h.getUser().getName());
+    }
+
+    private String _getUserIdStr(SimpMessageHeaderAccessor h) {
+        return _getUserId(h).toString().toLowerCase();
     }
 
     @MessageMapping("/create-room/direct")

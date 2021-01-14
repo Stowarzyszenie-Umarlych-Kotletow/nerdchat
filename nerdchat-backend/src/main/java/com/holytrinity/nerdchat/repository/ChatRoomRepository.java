@@ -15,5 +15,8 @@ public interface ChatRoomRepository extends CrudRepository<ChatRoom, UUID> {
             "INNER JOIN ChatRoomMember m1 ON (m1.chatRoom.id=room.id AND m1.user.id=?1) " +
             "INNER JOIN ChatRoomMember m2 ON (m2.chatRoom.id=room.id AND m2.user.id=?2) " +
             "WHERE room.type=0")
-    Optional<ChatRoom> findExistingChatRoomBetween(UUID userId1, UUID userId2);
+    Optional<ChatRoom> _findExistingChatRoomBetween(UUID userId1, UUID userId2);
+    default Optional<ChatRoom> findExistingChatRoomBetween(UUID userId1, UUID userId2) {
+        return _findExistingChatRoomBetween(userId1, userId2);
+    }
 }
