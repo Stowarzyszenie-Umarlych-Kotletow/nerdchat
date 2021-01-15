@@ -36,8 +36,8 @@ const MessageItem = ({ message, myUserId }) => {
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
         </p>
         <h1>
-          {formatUrls(content).map(function(d){
-            return (d)
+          {formatUrls(content).map((d) => {
+            return (d);
           })}
         </h1>
       </div>
