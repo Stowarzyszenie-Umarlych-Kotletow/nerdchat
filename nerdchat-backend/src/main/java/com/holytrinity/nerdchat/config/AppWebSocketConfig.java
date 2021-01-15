@@ -2,9 +2,11 @@ package com.holytrinity.nerdchat.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.holytrinity.nerdchat.model.SimpUser;
+import com.holytrinity.nerdchat.model.UserClaim;
+import com.holytrinity.nerdchat.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -34,7 +36,8 @@ import java.util.UUID;
 public class AppWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(AppWebSocketConfig.class);
-
+    @Autowired
+    private UserService users;
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
@@ -48,9 +51,11 @@ public class AppWebSocketConfig implements WebSocketMessageBrokerConfigurer {
                     List<String> authorization = accessor.getNativeHeader("X-token");
 
                     String accessToken = authorization.get(0);
-                    var uid = UUID.fromString(accessToken);
-
-                    accessor.setUser(new SimpUser(uid));
+                    var user = users.findByToken(accessToken);
+                    if(user.isEmpty()) {
+                        return null;
+                    }
+                    accessor.setUser(new UserClaim(user.get().getId(), user.get().getNickname()));
                 }
                 return message;
             }

@@ -3,13 +3,13 @@ package com.holytrinity.nerdchat.model;
 import java.security.Principal;
 import java.util.UUID;
 
-public final class SimpUser implements Principal {
+public final class UserClaim implements Principal {
 
     private final String name;
     private final UUID id;
 
-    public SimpUser(UUID id) {
-        this.name = id.toString();
+    public UserClaim(UUID id, String name) {
+        this.name = name;
         this.id = id;
     }
 

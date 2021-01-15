@@ -11,12 +11,12 @@ class Messages extends Component {
     ) : (
       this.props.messages.map((message) => (
         <UserContext.Consumer>
-          {({ myUserId }) => {
+          {({ creds }) => {
             return (
               <MessageItem
                 key={message.messageId}
                 message={message}
-                myUserId={myUserId}
+                myUserId={creds.userId}
               />
             );
           }}

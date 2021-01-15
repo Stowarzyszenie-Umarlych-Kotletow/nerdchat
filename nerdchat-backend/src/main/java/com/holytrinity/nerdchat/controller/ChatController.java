@@ -98,12 +98,9 @@ public class ChatController {
         var str = h.getUser();
         if (str == null)
             return null;
-        return UUID.fromString(h.getUser().getName());
+        return ((UserClaim)str).getId();
     }
 
-    private String _getUserIdStr(SimpMessageHeaderAccessor h) {
-        return _getUserId(h).toString().toLowerCase();
-    }
 
     @MessageMapping("/create-room/direct")
     public void createRoomDirect(SimpMessageHeaderAccessor h, @Payload String nickname) throws Exception {
@@ -145,29 +142,7 @@ public class ChatController {
         });
     }
 
-    @GetMapping("/chatroom/{roomId}/messages")
-    public ResponseEntity<?> getChatMessages(@PathVariable  UUID roomId) {
-        return ResponseEntity.ok(messageService.findByChatRoomId(roomId, Sort.by("sentAt").ascending()).stream()
-                .map(x -> ChatMessageDto.from(x)).collect(Collectors.toList()));
-    }
 
-    @GetMapping("/message/{messageId}")
-    public ResponseEntity<?> getChatMessage(@PathVariable UUID messageId) {
-        return ResponseEntity.ok(messageService.findById(messageId));
-    }
-
-    @GetMapping("/chatroom/list/{userId}")
-    public ResponseEntity<?> getChatRooms(@PathVariable  UUID userId) {
-        return ResponseEntity.ok(roomService.getUserChatRoomList(userId));
-    }
-
-    @GetMapping("/user/id/by/nickname/{nickname}")
-    public ResponseEntity<?> getUserIdByNickname(@PathVariable String nickname) {
-        var user = userService.findByNickname(nickname);
-        if (user.isPresent())
-            return ResponseEntity.ok(user.get().getId());
-        return ResponseEntity.notFound().build();
-    }
 
 
 

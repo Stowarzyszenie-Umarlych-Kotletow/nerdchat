@@ -2,14 +2,11 @@ import "./Chat.css";
 import React, { Component } from "react";
 import ConversationBox from "./latestMessages/ConversationBox";
 import { MessageBoard } from "./messageBoard/MessageBoard";
-import { getChatRoomList, StompApi } from "./common/Api";
+import { HttpApi, StompApi } from "./common/Api";
 import config from "./common/endpoints.json";
 import { Stomp } from "@stomp/stompjs";
 import soundFile from "./common/notif_2.wav";
 import { UserConfig, ChatContext } from "./context";
-
-var stompClient = null;
-var api = new StompApi(null);
 
 export class Chat extends Component {
   state = {
@@ -40,21 +37,34 @@ export class Chat extends Component {
     this.setState({ subscribed: val });
   };
 
-  connect = (token) => {
-    api.disconnect();
-    stompClient = Stomp.over(() => new WebSocket(config.wsUrl));
-    api.setClient(stompClient);
-    stompClient.connect({ "X-token": token }, this.onConnected, this.onError);
+  connect = (creds) => {
+    let stomp = this.stomp;
+    stomp.disconnect();
+    let stompClient = Stomp.over(() => new WebSocket(config.wsUrl));
+    stomp.setClient(stompClient);
+    stompClient.connect(
+      { "X-token": creds.token },
+      this.onConnected,
+      this.onError
+    );
   };
   shouldBeSubscribed = (channel) => {
     return true;
   };
 
+  get stomp() {
+    return this.props.api.stomp;
+  }
+
+  get http() {
+    return this.props.api;
+  }
+
   subscribeObj = (channelId) => {
     let obj = this.state.subscribed[channelId];
     if (obj !== undefined && obj.active) return obj;
     obj = {
-      sub: api.subscribe(
+      sub: this.stomp.subscribe(
         `/topic/channel/notify/${channelId}`,
         this.onMessageReceived,
         {
@@ -76,7 +86,7 @@ export class Chat extends Component {
         newSubs[c.chatRoomId] = this.subscribeObj(c.chatRoomId);
       } else {
         let obj = newSubs[c.chatRoomId];
-        if (obj !== undefined && obj !==null && obj.active) {
+        if (obj !== undefined && obj !== null && obj.active) {
           obj.sub.unsubscribe();
           obj.active = false;
         }
@@ -115,11 +125,17 @@ export class Chat extends Component {
   };
 
   sendChat = (message) => {
-    api.sendChat(this.state.activeChatId, message);
+    /* sendPromise("/app/create-room/direct", "lepszykowal").then((m) => {
+      console.log(m);
+      if (m.isSuccess) {
+        this.setActiveChatId(m.chatRoomId);
+      }
+    });*/
+    this.stomp.sendChat(this.state.activeChatId, message);
   };
 
   setLastRead = (chatId) => {
-    api.setLastRead(chatId);
+    this.stomp.setLastRead(chatId);
   };
 
   onLastRead = (msg) => {
@@ -131,33 +147,28 @@ export class Chat extends Component {
 
   onNotifyUpdated = (msg) => {
     let type = msg.headers["type"];
-    if (type === "new-room") {
-      getChatRoomList(this.props.myUserId).then((rooms) =>
-        this.setChatRoomList(rooms)
-      );
+    if (type == "new-room") {
+      this.http.getChatRoomList().then((rooms) => this.setChatRoomList(rooms));
     }
   };
 
   onConnected = () => {
-    console.log("connected");
-    api.subscribe(
+    this.stomp.subscribe(
       `/user/${this.props.myUserId}/queue/last-read`,
       this.onLastRead,
       {}
     );
-    api.subscribe(
+    this.stomp.subscribe(
       `/user/${this.props.myUserId}/queue/r`,
-      (msg) => api.handleResponse(msg),
+      (msg) => this.stomp.handleResponse(msg),
       {}
     );
-    api.subscribe(
+    this.stomp.subscribe(
       `/user/${this.props.myUserId}/queue/notify-updated`,
       this.onNotifyUpdated,
       {}
     );
-    getChatRoomList(this.props.myUserId).then((rooms) =>
-      this.setChatRoomList(rooms)
-    );
+    this.http.getChatRoomList().then((rooms) => this.setChatRoomList(rooms));
   };
   onError = (err) => {
     console.log(err);
@@ -186,12 +197,12 @@ export class Chat extends Component {
 
   componentDidUpdate = (pp, ps) => {
     if (ps.chatRoomList !== this.state.chatRoomList) {
-      console.log("Lubię kotlety - ale nie mielone.");
-      if (api !==null && api.connected) this.updateSubscriptions();
+      if (this.stomp != null && this.stomp.connected)
+        this.updateSubscriptions();
     }
-    if (pp.myUserId !== this.props.myUserId) {
-      if (this.props.myUserId !== undefined) {
-        this.connect(this.props.myUserId);
+    if (pp.creds !== this.props.creds) {
+      if (this.props.creds.userId != null) {
+        this.connect(this.props.creds);
       }
     }
   };
@@ -206,7 +217,6 @@ export class Chat extends Component {
           chatRoomList: this.state.chatRoomList,
           setChatRoomList: this.setChatRoomList,
           sendChat: this.sendChat,
-          api,
         }}
       >
         <div id="MainContent" style={{ visibility: "hidden" }}>
@@ -215,8 +225,9 @@ export class Chat extends Component {
               ref={this.board}
               {...{
                 activeChatId: this.state.activeChatId,
-                myUserId: this.props.myUserId,
+                myUserId: this.props.creds.userId,
                 sendChat: this.sendChat,
+                api: this.http,
               }}
             />
           </div>

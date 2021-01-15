@@ -24,11 +24,21 @@ public class User {
     private String firstName;
     private String lastName;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    private UserCredentials credentials;
+
     @OneToMany(mappedBy = "user")
     private List<ChatRoomMember> chats;
+    @OneToMany(mappedBy = "user")
+    private List<UserAccessToken> accessTokens;
 
     public String getFullName() {
         return getFirstName() + " " + getLastName();
+    }
+
+    @Override
+    public String toString() {
+        return getFullName();
     }
 
 }

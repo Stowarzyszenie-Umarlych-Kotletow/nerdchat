@@ -15,32 +15,13 @@ const request = (options) => {
       if (!response.ok) {
         return Promise.reject(json);
       }
+      if (json.data !== undefined) {
+        return json.data;
+      }
       return json;
     })
   );
 };
-
-export function logIn(username, password) {
-  console.log(config);
-  return request({
-    url: config.apiUrl + "/user/id/by/nickname/" + encodeURI(username),
-    method: "GET",
-  });
-}
-
-export function getChatRoomList(userId) {
-  return request({
-    url: config.apiUrl + "/chatroom/list/" + encodeURI(userId),
-    method: "GET",
-  });
-}
-
-export function getMessages(chatId) {
-  return request({
-    url: config.apiUrl + "/chatroom/" + encodeURI(chatId) + "/messages",
-    method: "GET",
-  });
-}
 
 export function sendMessage(userId, chatId, content) {
   return request({
@@ -50,10 +31,66 @@ export function sendMessage(userId, chatId, content) {
   });
 }
 
+export class HttpApi {
+  constructor(creds, setCreds) {
+    this.stomp = new StompApi(this);
+    this.credentials = creds;
+    this.setCredentials = setCreds;
+    this.credsHandler = null;
+  }
+
+  get token() {
+    return this.credentials.token;
+  }
+
+  request(options) {
+    console.log(
+      `my token is ${this.token} oh wait its ${JSON.stringify(
+        this.credentials
+      )}`
+    );
+    if (this.token !== null) {
+      options.headers = { "X-Token": this.token };
+    }
+    return request(options);
+  }
+
+  requestGet(url) {
+    return this.request({ url: config.apiUrl + url, method: "GET" });
+  }
+  requestPost(url, body) {
+    console.log("HEY!" + config.apiUrl);
+    return this.request({
+      url: config.apiUrl + url,
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
+
+  createToken(nickname, password) {
+    return this.requestPost("/auth/create_token", {
+      nickname,
+      password,
+    }).then((m) => {
+      this.credentials = m;
+      this.setCredentials(m);
+    });
+  }
+
+  getChatRoomList() {
+    return this.requestGet("/user/chatrooms/list");
+  }
+
+  getChatRoomMessages(chatId) {
+    return this.requestGet(`/chatroom/${encodeURI(chatId)}/messages`);
+  }
+}
+
 export class StompApi {
-  constructor(api) {
-    this.api = api;
+  constructor(http) {
+    this.api = null;
     this.promises = {};
+    this.http = http;
   }
 
   sendPromise(url, msg, headers = {}, timeout = 5000) {

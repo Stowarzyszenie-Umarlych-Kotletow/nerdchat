@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./loginWindow.css";
-import { logIn } from "../common/Api";
+import { ChatContext, UserContext } from "../context";
 
 export class LoginWindow extends Component {
   state = {
@@ -8,10 +8,8 @@ export class LoginWindow extends Component {
     password: "",
   };
   onLogin = () => {
-    logIn(this.state.login, this.state.password).then(
+    this.context.api.createToken(this.state.login, this.state.password).then(
       (id) => {
-        this.props.setMyUserId(id);
-        this.props.setMyUserName(this.state.login);
         document.getElementById("loginWindow").style.visibility = "hidden";
         document.getElementById("MainContent").style.visibility = "visible";
       },
@@ -70,5 +68,7 @@ export class LoginWindow extends Component {
     );
   }
 }
+
+LoginWindow.contextType = UserContext;
 
 export default LoginWindow;
