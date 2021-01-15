@@ -89,6 +89,7 @@ a {
   padding-left: 10%;
 }
 #copyOption:after {
+  font-size: 20px;
   content: attr(datatext);
 }
 

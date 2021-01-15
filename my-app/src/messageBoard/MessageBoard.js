@@ -17,7 +17,7 @@ export class MessageBoard extends Component {
     openOptions: false,
     opemEmoji: false,
     chatCodeValid: false,
-    adminPermissions: false
+    adminPermissions: true
   };
 
   handleNewMessage = (msg) => {
