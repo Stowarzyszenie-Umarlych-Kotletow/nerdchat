@@ -62,7 +62,7 @@ export class LoginWindow extends Component {
           <input
             type="button"
             value="Register"
-            id="registerButton"
+            id="registerToggleButton"
             onClick={this.onRegister}
           />
         </div>
