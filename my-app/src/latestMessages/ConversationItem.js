@@ -3,8 +3,9 @@ import { useContext } from "react";
 import { ChatContext, UserConfig } from "../context";
 
 function wrapText(text) {
-  if (text != null && text.length > 25) {
-    let temp = text.substring(0, 25);
+  let len = 36;
+  if (text != null && text.length > len) {
+    let temp = text.substring(0, len);
     return temp + "...";
   }
   return text;
@@ -59,7 +60,11 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
                 }}
               >
                 <img
-                  src={`/assets/NerdchatDefPic${m.chatName.length % 9}.png`}
+                  src={
+                    m.chatRoomType === "GROUP"
+                      ? "/assets/NerdchatDefgGroupPic.png"
+                      : `/assets/NerdchatDefPic${m.chatName.length % 9}.png`
+                  }
                   alt={""}
                   style={{
                     height: "40px",
@@ -85,7 +90,9 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               {isToday ? date.toLocaleTimeString() : date.toDateString()}
             </div>
             <div className="latestMessageMessage">
-              {wrapText(m.lastMessage.content)}
+              {wrapText(
+                m.lastMessage.senderName + ": " + m.lastMessage.content
+              )}
             </div>
           </div>
         );
