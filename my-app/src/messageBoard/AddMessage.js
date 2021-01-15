@@ -46,8 +46,6 @@ export class AddMessage extends Component {
           type="button"
           value="😈"
           id="EmojiButton"
-          autoComplete="off"
-          autoCorrect="off"
           style={{
             flex: "1",
             fontSize: "20px",

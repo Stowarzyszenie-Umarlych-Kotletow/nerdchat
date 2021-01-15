@@ -96,7 +96,8 @@ a {
 #chatCodeField {
   padding: 5px; 
   height: 40px;
-  width: 95%; 
+  width: 70%;
+  margin-right: 5%; 
   padding-right: 5px; 
   background-color: transparent;
   border: 0;
@@ -104,6 +105,15 @@ a {
   outline: 0;
   font-weight: bold;
   font-size: 20px;
+}
+
+#chatCodeButton {
+  width: 20%;
+  background: transparent;
+  border: 0;
+  border: 1px solid #000;
+  border-radius: 7px ;
+  height: 40px;
 }
 
 #chatCodeFieldLabel {

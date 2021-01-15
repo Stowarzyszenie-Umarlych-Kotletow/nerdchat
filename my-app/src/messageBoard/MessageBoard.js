@@ -43,6 +43,10 @@ export class MessageBoard extends Component {
     ).scrollTop = document.getElementById("MessageContainer").scrollHeight;
   };
 
+  submitNewChatCode = () => {
+
+  }
+
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   switchOpenEmoji = () => {
@@ -84,6 +88,7 @@ export class MessageBoard extends Component {
                     onClick={(e) => e.stopPropagation()}
                   >
                     {this.state.adminPermissions ? (
+                      <div>
                       <input
                         id="chatCodeField"
                         type="text"
@@ -91,11 +96,17 @@ export class MessageBoard extends Component {
                         placeholder=""
                         value={this.state.chatCode}
                         style={{ color: this.context.textColorUser }}
-                        onClick={() =>
-                          navigator.clipboard.writeText(this.state.chatCode)
-                        }
+                        onClick={() => navigator.clipboard.writeText(this.state.chatCode)}
                         onChange={this.onChange}
                       />
+                      <input
+                        type="button"
+                        value="OK"
+                        id="chatCodeButton"
+                        onClick={this.props.submitNewChatCode}
+                        style={{ color: this.context.textColorUser }}
+                      />
+                      </div>
                     ) : (
                       <div
                         id="copyOption"
