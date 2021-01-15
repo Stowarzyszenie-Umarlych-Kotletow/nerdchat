@@ -10,7 +10,7 @@ const MessageItem = ({ message, myUserId }) => {
   const getStyle = () => {
     if (message.senderId === myUserId) {
       return {
-        fontSize: String(16 * cfg.fontSizeMultiplier) + "px",
+        fontSize: String(12 * cfg.fontSizeMultiplier) + "px",
         background: "#262626",
         color: cfg.textColorUser,
         marginLeft: "60%",
@@ -19,7 +19,7 @@ const MessageItem = ({ message, myUserId }) => {
       };
     } else {
       return {
-        fontSize: String(16 * cfg.fontSizeMultiplier) + "px",
+        fontSize: String(12 * cfg.fontSizeMultiplier) + "px",
         background: "#696969",
         color: cfg.textColorMain,
         marginLeft: "1%",
@@ -36,8 +36,8 @@ const MessageItem = ({ message, myUserId }) => {
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
         </div>
         <h1>
-          {formatUrls(content).map(function(d){
-            return (d)
+          {formatUrls(content).map((d) => {
+            return (d);
           })}
         </h1>
       </div>

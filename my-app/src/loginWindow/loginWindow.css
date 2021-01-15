@@ -52,7 +52,7 @@
     background-color: #888;
 }
 
-#registerButton {
+#registerToggleButton{
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
@@ -64,7 +64,7 @@
     border-radius: 5px;
 }
 
-#registerButton:hover {
+#registerToggleButton:hover {
     background-color: #888;
 }
 
