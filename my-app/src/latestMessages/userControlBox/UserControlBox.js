@@ -14,8 +14,7 @@ export class UserControlBox extends Component {
   static contextType = UserConfig; 
 
   onSettingsButtonClick = () => {
-    document.getElementById("EmojiBox").style.visibility = "hidden";
-    this.props.setSettingsOpen(true);
+    this.props.setSettingsOpen(!this.props.settingsOpen);
   };
 
   state = {

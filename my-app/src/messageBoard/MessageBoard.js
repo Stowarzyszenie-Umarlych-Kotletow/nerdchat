@@ -14,7 +14,8 @@ export class MessageBoard extends Component {
     chatName: "",
     chatCode: "",
     messages: [],
-    openOptions: false
+    openOptions: false,
+    opemEmoji: false
   };
 
   handleNewMessage = (msg) => {
@@ -40,6 +41,10 @@ export class MessageBoard extends Component {
       "MessageContainer"
     ).scrollTop = document.getElementById("MessageContainer").scrollHeight;
   };
+
+  switchOpenEmoji = () => {
+    this.setState({opemEmoji: !this.state.opemEmoji});
+  }
 
   // Add Message to MessageBoard
   addMessage = (content) => {
@@ -80,7 +85,7 @@ export class MessageBoard extends Component {
               </div>
             </div>
             <div id="MessageContainer" style={{color: this.context.textColorUser}}>
-              <EmojiBox />
+              {this.state.opemEmoji ? <EmojiBox  switchOpenEmoji={this.switchOpenEmoji}/> : null}
               {this.props.activeChatId === null ?  
               (
               <div style={{fontSize: "40px", textAlign: "center"}}>
@@ -89,7 +94,7 @@ export class MessageBoard extends Component {
               : <Messages messages={this.state.messages} />}
               
             </div>
-            {this.props.activeChatId === null ? null : <AddMessage addMessage={this.addMessage}/>}
+            {this.props.activeChatId === null ? null : <AddMessage addMessage={this.addMessage} switchOpenEmoji={this.switchOpenEmoji}/>}
           </div>
         </div>
       </div>

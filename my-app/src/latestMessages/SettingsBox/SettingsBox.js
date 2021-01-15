@@ -59,7 +59,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
         <div
           className="XButtonSettings"
           onClick={() => {
-            setSettingsOpen(false);
+            setSettingsOpen();
           }}
         ></div>
       </div>

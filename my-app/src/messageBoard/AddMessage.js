@@ -29,14 +29,6 @@ export class AddMessage extends Component {
   // function that handles changes in input field value
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-  // opening or closing emoji window
-  onEmojiButtonClick = () => {
-    var visibility = document.getElementById("EmojiBox").style.visibility;
-    if (visibility === "visible") visibility = "hidden";
-    else visibility = "visible";
-    document.getElementById("EmojiBox").style.visibility = visibility;
-  };
-
   // rendering two input elements, one text field and second a submit button
   render() {
     return (
@@ -62,7 +54,7 @@ export class AddMessage extends Component {
             backgroundColor: "#262626",
             border: "none",
           }}
-          onClick={this.onEmojiButtonClick}
+          onClick={this.props.switchOpenEmoji}
         />
         <input
           id="textField"

@@ -3,8 +3,11 @@
   z-index: 17;
   height: 70%;
   width: 50%;
-  left: 40%;
-  bottom: 25%;
+  margin: auto;
+  left: 10px;
+  right: 0;
+  bottom: 20px;
+  top: 0;
   background-color: #44444c;
 }
 #SettingsBoxHeaderContainer {
