@@ -13,7 +13,7 @@ export class LoginWindow extends Component {
         document.getElementById("loginWindow").style.visibility = "hidden";
         document.getElementById("MainContent").style.visibility = "visible";
       },
-      () => window.alert("Login failed")
+      (m) => window.alert(`Login failed (${m.message})`)
     );
   };
 
@@ -48,7 +48,9 @@ export class LoginWindow extends Component {
           onChange={this.onChange}
         />
         <small>
-          <a onClick={this.onForgotPassword} href="google.com">I forgot my password</a>
+          <a onClick={this.onForgotPassword} href="google.com">
+            I forgot my password
+          </a>
         </small>
         <div>
           <input
