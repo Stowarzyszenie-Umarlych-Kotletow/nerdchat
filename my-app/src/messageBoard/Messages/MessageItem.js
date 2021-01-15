@@ -31,10 +31,10 @@ const MessageItem = ({ message, myUserId }) => {
   return (
     <div>
       <div className="textbox" style={getStyle(id)}>
-        <p>
+        <div className="textHeader">
           {senderName} - &#9202;{" "}
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
-        </p>
+        </div>
         <h1>
           {formatUrls(content).map(function(d){
             return (d)

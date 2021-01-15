@@ -12,10 +12,12 @@ export class MessageBoard extends Component {
   static contextType = UserConfig;
   state = {
     chatName: "",
-    chatCode: "",
+    chatCode: "3fs32sa",
     messages: [],
     openOptions: false,
-    opemEmoji: false
+    opemEmoji: false,
+    chatCodeValid: true,
+    adminPermissions: true
   };
 
   handleNewMessage = (msg) => {
@@ -27,7 +29,7 @@ export class MessageBoard extends Component {
 
   componentDidMount = () => {};
 
-  componentDidUpdate = (prevProps, prevState) => {
+  componentDidUpdate = (prevProps) => {
     console.log("Active chat ID: " + this.props.activeChatId);
     if (
       prevProps.activeChatId !== this.props.activeChatId &&
@@ -42,10 +44,14 @@ export class MessageBoard extends Component {
     ).scrollTop = document.getElementById("MessageContainer").scrollHeight;
   };
 
+  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+  
+
+
   switchOpenEmoji = () => {
     this.setState({opemEmoji: !this.state.opemEmoji});
   }
-
+  
   // Add Message to MessageBoard
   addMessage = (content) => {
     // create a new message object
@@ -69,9 +75,29 @@ export class MessageBoard extends Component {
               />
               <div id="chatOptionsButton" onClick={() => this.setState({openOptions: !this.state.openOptions})} >
                 {
-                this.state.openOptions ? (<div id="chatOptions" style={{color: this.context.textColorUser}}>
-                  <div id="copyOption" onClick={(e) => {e.stopPropagation(); navigator.clipboard.writeText(this.state.chatCode);}} datatext = {"Copy Chat Code to Clipboard"}/>
-                  <input type="text" value="" id="clipboardAssistant" style={{display: "none"}}/> 
+                this.state.openOptions ? (<div id="chatOptions" style={{color: this.context.textColorUser}}  onClick={(e) => e.stopPropagation()} >
+                  {
+                    this.state.adminPermissions ? 
+                    <div>
+                      <input 
+                        id="chatCodeField" 
+                        type="text" 
+                        name="chatCode"  
+                        placeholder=""
+                        value={this.state.chatCode}
+                        style={{color: this.context.textColorUser}}
+                        onClick={() => navigator.clipboard.writeText(this.state.chatCode)}
+                        onChange={this.onChange}
+                        />
+                        <div id="chatCodeFieldLabel" datatext="ChatCode"/>
+                      </div>
+                    :  <div 
+                        id="copyOption" 
+                        onClick={() => navigator.clipboard.writeText(this.state.chatCode)} 
+                        datatext = {this.state.chatCode}
+                        />
+                   }
+                   {this.state.chatCodeValid ? null : <div id="invalidCodeError" datatext="Invalid or taken Code" />}
                   <label> Opcja 2 </label>
                   <br/>
                   <label> Opcja 3 </label>

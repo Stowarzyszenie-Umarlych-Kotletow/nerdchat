@@ -82,12 +82,46 @@ a {
   position:absolute;
   top: 44px;
   right: 0px;
-  width: 250px;
-  background-color: #262626cc;
+  width: 300px;
+  background-color: #262626ee;
   text-align: left;
   word-wrap: break-word;
   padding-left: 10%;
 }
 #copyOption:after {
+  content: attr(datatext);
+}
+
+#chatCodeField {
+  padding: 5px; 
+  height: 40px;
+  width: 95%; 
+  padding-right: 5px; 
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid gray;
+  outline: 0;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#chatCodeFieldLabel {
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+#chatCodeFieldLabel:after {
+  content: attr(datatext);
+}
+
+
+#invalidCodeError {
+  margin-bottom: 5px;
+  color: red;
+  font-size: 20px;
+}
+
+#invalidCodeError:after {
   content: attr(datatext);
 }
