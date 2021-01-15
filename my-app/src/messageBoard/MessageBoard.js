@@ -11,11 +11,13 @@ export class MessageBoard extends Component {
   static contextType = UserConfig;
   state = {
     chatName: "",
-    chatCode: "3fs32sa",
+    chatCode: "",
+    chatCodeInput: "",
     messages: [],
+    showOptions: false,
     openOptions: false,
     opemEmoji: false,
-    chatCodeValid: false,
+    chatCodeValid: true,
     adminPermissions: true,
   };
 
@@ -28,7 +30,7 @@ export class MessageBoard extends Component {
 
   componentDidMount = () => {};
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps, ps) => {
     console.log("Active chat ID: " + this.props.activeChatId);
     if (
       prevProps.activeChatId !== this.props.activeChatId &&
@@ -38,16 +40,47 @@ export class MessageBoard extends Component {
         .getChatRoomMessages(this.props.activeChatId)
         .then((m) => this.setState({ messages: m }));
     }
+
+    if (this.props.activeChatId != null && this.props.roomList != null) {
+      for (let chat of this.props.roomList) {
+        if (chat.chatRoomId === this.props.activeChatId) {
+          let chatCode = chat.joinCode;
+          let chatName = chat.chatName;
+          let showOptions = chat.joinCode !== "";
+          if (
+            chatCode !== this.state.chatCode ||
+            chatName !== this.state.chatName ||
+            showOptions !== this.state.showOptions
+          )
+            this.setState({
+              chatCode,
+              chatName,
+              chatCodeInput: chatCode,
+              showOptions,
+            });
+          break;
+        }
+      }
+    }
+    if (this.props.activeChatId !== prevProps.activeChatId) {
+      this.setState({ openOptions: false });
+    }
     document.getElementById(
       "MessageContainer"
     ).scrollTop = document.getElementById("MessageContainer").scrollHeight;
   };
 
   submitNewChatCode = () => {
+    this.props.api.stomp
+      .setChatroomCode(this.props.activeChatId, this.state.chatCodeInput)
+      .then((m) => {
+        this.setState({ chatCodeValid: false });
+      });
+  };
 
-  }
-
-  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value, chatCodeValid: true });
+  };
 
   switchOpenEmoji = () => {
     this.setState({ opemEmoji: !this.state.opemEmoji });
@@ -76,6 +109,7 @@ export class MessageBoard extends Component {
             <div id="chatHeader">
               <div id="chatName" datatext={this.state.chatName} />
               <div
+                className={this.state.showOptions ? "" : "hidden"}
                 id="chatOptionsButton"
                 onClick={() =>
                   this.setState({ openOptions: !this.state.openOptions })
@@ -89,23 +123,25 @@ export class MessageBoard extends Component {
                   >
                     {this.state.adminPermissions ? (
                       <div>
-                      <input
-                        id="chatCodeField"
-                        type="text"
-                        name="chatCode"
-                        placeholder=""
-                        value={this.state.chatCode}
-                        style={{ color: this.context.textColorUser }}
-                        onClick={() => navigator.clipboard.writeText(this.state.chatCode)}
-                        onChange={this.onChange}
-                      />
-                      <input
-                        type="button"
-                        value="OK"
-                        id="chatCodeButton"
-                        onClick={this.props.submitNewChatCode}
-                        style={{ color: this.context.textColorUser }}
-                      />
+                        <input
+                          id="chatCodeField"
+                          type="text"
+                          name="chatCodeInput"
+                          placeholder=""
+                          value={this.state.chatCodeInput}
+                          style={{ color: this.context.textColorUser }}
+                          onClick={() =>
+                            navigator.clipboard.writeText(this.state.chatCode)
+                          }
+                          onChange={this.onChange}
+                        />
+                        <input
+                          type="button"
+                          value="OK"
+                          id="chatCodeButton"
+                          onClick={this.submitNewChatCode}
+                          style={{ color: this.context.textColorUser }}
+                        />
                       </div>
                     ) : (
                       <div
@@ -129,13 +165,6 @@ export class MessageBoard extends Component {
                         datatext="Invalid or taken Code"
                       />
                     )}
-                    <label> Opcja 2 </label>
-                    <br />
-                    <label> Opcja 3 </label>
-                    <br />
-                    <label> Opcja 4 </label>
-                    <br />
-                    <label> Opcja 5 </label>
                   </div>
                 ) : null}
               </div>

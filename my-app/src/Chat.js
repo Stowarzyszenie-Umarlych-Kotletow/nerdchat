@@ -235,6 +235,7 @@ export class Chat extends Component {
                 myUserId: this.props.creds.userId,
                 sendChat: this.sendChat,
                 api: this.http,
+                roomList: this.state.chatRoomList,
               }}
             />
           </div>

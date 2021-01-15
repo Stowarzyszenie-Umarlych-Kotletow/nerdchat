@@ -1,4 +1,3 @@
-
 import "./ConversationItem.css";
 import { useContext } from "react";
 import { ChatContext, UserConfig } from "../context";
@@ -24,7 +23,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
           (today.getDate(), today.getMonth(), today.getFullYear());
         let ifShaded = m.chatRoomId === chatContext.activeChatId;
         let opacity = ifShaded ? "0.6" : "1.0";
-          return (
+        return (
           <div
             className="latestMessage"
             key={m.chatRoomId}
@@ -38,7 +37,6 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
             }}
             onClick={(e) => {
               setActiveChatId(m.chatRoomId);
-              console.log(chatContext);
               setLastRead(m.chatRoomId);
               // change chat name
               document

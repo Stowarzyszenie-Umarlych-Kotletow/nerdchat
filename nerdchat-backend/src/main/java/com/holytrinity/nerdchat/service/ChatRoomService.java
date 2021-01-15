@@ -116,7 +116,7 @@ public class ChatRoomService {
     }
 
     public ChatRoom createDirectChat(User u1, User u2) {
-        var users = u1.getId() == u2.getId() ? List.of(u1) : List.of(u1, u2);
+        var users = u1.getId().equals(u2.getId()) ? List.of(u1) : List.of(u1, u2);
         var room = _roomRepository.save(
                 ChatRoom.builder().type(ChatRoomType.DIRECT).build()
         );
@@ -144,7 +144,7 @@ public class ChatRoomService {
     }
 
     public Pair<CreateChatResult, Optional<ChatRoom>> createGroupChat(User user, String groupName) {
-        var code = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
+        var code = RandomStringUtils.randomAlphanumeric(6).toLowerCase();
         var data = ChatRoomGroupData.builder().joinCode(code).build();
         var room =
                 ChatRoom.builder()
@@ -177,7 +177,8 @@ public class ChatRoomService {
             throw new MessagingException("Room not found");
         if(code.length() < 3)
             throw new MessagingException("Invalid code");
-        if(_groupRepository.existsByJoinCode(code))
+        var group = _groupRepository.findFirstByJoinCode(code);
+        if(group.isPresent() && !group.get().getChatRoom().getId().equals(roomId))
             throw new MessagingException("Code in use. Try another one.");
         String finalCode = code;
         room.ifPresent(r -> {
