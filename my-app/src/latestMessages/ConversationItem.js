@@ -90,7 +90,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               {isToday ? date.toLocaleTimeString() : date.toDateString()}
             </div>
             <div className="latestMessageMessage">
-              {wrapText(
+              {wrapText(m.lastMessage.senderName === null ? null :
                 m.lastMessage.senderName + ": " + m.lastMessage.content
               )}
             </div>
