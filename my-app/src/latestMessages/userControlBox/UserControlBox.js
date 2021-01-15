@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./UserControlBox.css";
 import { UserConfig } from "../../context";
 import { UserContext } from "../../context";
-    
 
 var statusDisplayName = {
   online: "🔔",
@@ -10,8 +9,7 @@ var statusDisplayName = {
 };
 
 export class UserControlBox extends Component {
-
-  static contextType = UserConfig; 
+  static contextType = UserConfig;
 
   onSettingsButtonClick = () => {
     this.props.setSettingsOpen(!this.props.settingsOpen);
@@ -24,13 +22,12 @@ export class UserControlBox extends Component {
       afk: "yellow",
       busy: "red",
     },
-    profilePicIndex: 8
+    profilePicIndex: 8,
   };
 
   getCurrentState = () => {
     return this.state.currentStatus;
-  }
-
+  };
 
   getColorFromStatus = () => {
     return this.state.status[this.state.currentStatus];
@@ -48,20 +45,24 @@ export class UserControlBox extends Component {
   };
 
   render() {
-  return (
+    return (
       <div
         id="userControlBox"
         style={{
           backgroundColor: this.context.colorAccents,
           color: this.context.textColorMain,
           fontSize: String(24 * this.context.fontSizeMultiplier) + "px",
-          paddingTop: "5px"
+          paddingTop: "5px",
         }}
       >
-        <img id="userProfilePic" src={`/assets/NerdchatDefPic${this.state.profilePicIndex}.png`} alt={""} />
+        <img
+          id="userProfilePic"
+          src={`/assets/NerdchatDefPic${this.state.profilePicIndex}.png`}
+          alt={""}
+        />
         <div id="userInfo">
           <UserContext.Consumer>
-            {({ myUserName }) => <div id="userName" datatext={myUserName} />}
+            {({ creds }) => <div id="userName" datatext={creds.nickname} />}
           </UserContext.Consumer>
 
           <div
