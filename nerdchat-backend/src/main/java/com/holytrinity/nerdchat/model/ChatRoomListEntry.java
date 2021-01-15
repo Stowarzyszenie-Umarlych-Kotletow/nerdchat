@@ -16,5 +16,6 @@ public class ChatRoomListEntry {
     public ChatRoomType chatRoomType;
     public MemberPermissions permissions;
     public long unreadCount;
+    public String joinCode;
 
 }

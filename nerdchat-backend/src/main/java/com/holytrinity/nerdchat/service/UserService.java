@@ -6,6 +6,7 @@ import com.holytrinity.nerdchat.entity.UserCredentials;
 import com.holytrinity.nerdchat.repository.UserAccessTokenRepository;
 import com.holytrinity.nerdchat.repository.UserRepository;
 import com.holytrinity.nerdchat.utils.Encryption;
+import com.holytrinity.nerdchat.utils.TrimUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +53,7 @@ public class UserService {
 
     public boolean checkNickname(String nickname) {
         return nickname.length() > 1 && nickname.length() <= 16
-                && nickname.equals(nickname.replaceAll("[^A-Za-z0-9_]", ""));
+                && nickname.toLowerCase().equals(TrimUtils.sanitize(nickname));
     }
 
     public boolean checkNicknameFree(String nickname) {

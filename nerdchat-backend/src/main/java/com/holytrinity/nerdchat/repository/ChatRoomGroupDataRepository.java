@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface ChatRoomGroupDataRepository extends CrudRepository<ChatRoomGroupData, UUID> {
+    boolean existsByJoinCode(String code);
 }

@@ -154,6 +154,10 @@ export class StompApi {
     );
   }
 
+  setChatroomCode(chatRoomId, joinCode) {
+    return this.sendPromise("/app/manage-room/code", { chatRoomId, joinCode });
+  }
+
   joinDirectChat(nickname) {
     return this.sendPromise("/app/create-room/direct", nickname);
   }

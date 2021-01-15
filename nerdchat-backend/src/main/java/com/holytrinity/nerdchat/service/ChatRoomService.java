@@ -10,10 +10,16 @@ import com.holytrinity.nerdchat.model.ChatRoomType;
 import com.holytrinity.nerdchat.model.MemberPermissions;
 import com.holytrinity.nerdchat.model.rooms.CreateChatResult;
 import com.holytrinity.nerdchat.repository.ChatMessageRepository;
+import com.holytrinity.nerdchat.repository.ChatRoomGroupDataRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomRepository;
+import com.holytrinity.nerdchat.utils.TrimUtils;
+import javassist.NotFoundException;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
+import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,6 +35,8 @@ public class ChatRoomService {
     private ChatRoomRepository _roomRepository;
     @Autowired
     private ChatRoomMemberRepository _memberRepository;
+    @Autowired
+    private ChatRoomGroupDataRepository _groupRepository;
 
 
     public String getChatRoomName(ChatRoom room, UUID userId) {
@@ -55,8 +63,9 @@ public class ChatRoomService {
                             x.getChatRoom().getId(),
                             x.getChatRoom().getType(),
                             x.getPermissions(),
-                            _msgRepository.countByChatRoom_idAndSentAtAfter(x.getChatRoom().getId(), x.getLastRead())
-                    );
+                            _msgRepository.countByChatRoom_idAndSentAtAfter(x.getChatRoom().getId(), x.getLastRead()),
+                                    x.getChatRoom().getType() == ChatRoomType.DIRECT ? "" : x.getChatRoom().getGroupData().getJoinCode());
+
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -135,7 +144,8 @@ public class ChatRoomService {
     }
 
     public Pair<CreateChatResult, Optional<ChatRoom>> createGroupChat(User user, String groupName) {
-        var data = ChatRoomGroupData.builder().joinCode(groupName+"123").build();
+        var code = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
+        var data = ChatRoomGroupData.builder().joinCode(code).build();
         var room =
                 ChatRoom.builder()
                         .customDisplayName(groupName)
@@ -158,5 +168,23 @@ public class ChatRoomService {
     public CreateChatResult joinChatByCode(User user, String code) {
         var room = _roomRepository.findChatRoomByCode(code);
         return room.map(chatRoom -> new CreateChatResult(chatRoom.getId(), getRoomMemberCreated(chatRoom.getId(), user).getFirst())).orElseGet(CreateChatResult::new);
+    }
+
+    public String setChatroomCode(UUID roomId, String code) throws MessagingException {
+        code = TrimUtils.sanitize(code);
+        var room = _roomRepository.findById(roomId);
+        if(room.isEmpty())
+            throw new MessagingException("Room not found");
+        if(code.length() < 3)
+            throw new MessagingException("Invalid code");
+        if(_groupRepository.existsByJoinCode(code))
+            throw new MessagingException("Code in use. Try another one.");
+        String finalCode = code;
+        room.ifPresent(r -> {
+            var data = r.getGroupData();
+            data.setJoinCode(finalCode);
+            _groupRepository.save(data);
+        });
+        return code;
     }
 }
