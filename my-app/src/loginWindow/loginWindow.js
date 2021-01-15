@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./loginWindow.css";
 import { ChatContext, UserContext } from "../context";
+import { windowType } from "../App";
 
 export class LoginWindow extends Component {
   state = {
@@ -10,16 +11,14 @@ export class LoginWindow extends Component {
   onLogin = () => {
     this.context.api.createToken(this.state.login, this.state.password).then(
       (id) => {
-        document.getElementById("loginWindow").style.visibility = "hidden";
-        document.getElementById("MainContent").style.visibility = "visible";
+        this.props.setOpenWindow(windowType.chat);
       },
       (m) => window.alert(`Login failed (${m.message})`)
     );
   };
 
   onRegister = () => {
-    //document.getElementById("loginWindow").style.visibility = 'hidden';
-    document.getElementById("registrationWindow").style.visibility = "visible";
+    this.props.setOpenWindow(windowType.register);
   };
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });

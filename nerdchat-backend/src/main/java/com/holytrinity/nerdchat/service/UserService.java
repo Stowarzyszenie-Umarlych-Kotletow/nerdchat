@@ -41,4 +41,22 @@ public class UserService {
         tokens.save(token);
         return token.getToken().toString().toLowerCase();
     }
+
+    public String sanitizeNickname(String nickname) {
+        return nickname.toLowerCase().trim();
+    }
+
+    public User newModel(String nickname, String firstName, String lastName) {
+        return User.builder().firstName(firstName.trim()).lastName(lastName.trim()).nickname(sanitizeNickname(nickname)).build();
+    }
+
+    public boolean checkNickname(String nickname) {
+        return nickname.length() > 1 && nickname.length() <= 16
+                && nickname.equals(nickname.replaceAll("[^A-Za-z0-9_]", ""));
+    }
+
+    public boolean checkNicknameFree(String nickname) {
+        return !users.existsByNickname(sanitizeNickname(nickname));
+    }
+
 }

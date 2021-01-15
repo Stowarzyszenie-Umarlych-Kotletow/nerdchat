@@ -17,4 +17,5 @@ public interface UserRepository extends CrudRepository<User, UUID> {
     Optional<User> findByToken(UUID token, Date createdFrom);
     @Query("SELECT c FROM UserCredentials c INNER JOIN User u ON (u.id=c.user.id) WHERE LOWER(u.nickname)=LOWER(?1)")
     Optional<UserCredentials> findCredentials(String nickname);
+    boolean existsByNickname(String nickname);
 }

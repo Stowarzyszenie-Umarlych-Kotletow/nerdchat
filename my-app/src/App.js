@@ -20,6 +20,9 @@ const getDefaultConfig = () => {
     currentStatus: "online",
   };
 };
+
+export const windowType = { login: 1, register: 2, chat: 3 };
+
 const App = () => {
   const [config, setConfig] = useState(getDefaultConfig());
   const [creds, setCreds] = useState({
@@ -27,6 +30,7 @@ const App = () => {
     token: null,
     nickname: null,
   });
+  const [openWindow, setOpenWindow] = useState(windowType.login);
   const [api, setApi] = useState(
     new HttpApi(Object.assign({}, creds), setCreds)
   );
@@ -36,9 +40,22 @@ const App = () => {
     <UserConfig.Provider value={config}>
       <UserContext.Provider value={{ api, creds }}>
         <div>
-          <LoginWindow {...{ api }} />
-          <RegistrationWindow />
-          <Chat {...{ api, creds, setConfig, myUserId: creds.userId }} />
+          {openWindow === windowType.login ? (
+            <LoginWindow {...{ api, setOpenWindow }} />
+          ) : openWindow === windowType.register ? (
+            <RegistrationWindow {...{ api, setOpenWindow }} />
+          ) : null}
+          <div className={openWindow === windowType.chat ? "" : "hidden"}>
+            <Chat
+              {...{
+                api,
+                setOpenWindow,
+                creds,
+                setConfig,
+                myUserId: creds.userId,
+              }}
+            />
+          </div>
         </div>
       </UserContext.Provider>
     </UserConfig.Provider>

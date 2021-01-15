@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ChatContext } from "../context";
+import { ChatContext, UserContext } from "../context";
 import "./JoinChat.css";
 
 class JoinChat extends Component {
@@ -12,7 +12,7 @@ class JoinChat extends Component {
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   onSubmitChatCode = () => {
-    this.context.api.joinChatByCode(this.state.chatCode).then((m) => {
+    this.context.api.stomp.joinChatByCode(this.state.chatCode).then((m) => {
       if (m.success) {
         this.setState({ chatCode: "" });
         // join new Chat
@@ -24,7 +24,7 @@ class JoinChat extends Component {
   };
 
   onSubmitNewChat = () => {
-    this.context.api.createGroupChat(this.state.newChatName).then((m) => {
+    this.context.api.stomp.createGroupChat(this.state.newChatName).then((m) => {
       if (m.success) {
         this.setState({ newChatName: "" });
         // join new Chat
@@ -37,16 +37,14 @@ class JoinChat extends Component {
 
   onSubmitFriend = () => {
     // join new 1to1 chat with friend
-    this.context.api.joinDirectChat(this.state.friend).then(
-      (m) => {
-        if (m.success) {
-          this.props.setJoinChatOpen(false);
-          this.setState({ friend: "" });
-        } else {
-          alert("User not found");
-        }
+    this.context.api.stomp.joinDirectChat(this.state.friend).then((m) => {
+      if (m.success) {
+        this.props.setJoinChatOpen(false);
+        this.setState({ friend: "" });
+      } else {
+        alert("User not found");
       }
-    );
+    });
   };
 
   //✎
@@ -115,6 +113,6 @@ class JoinChat extends Component {
   }
 }
 
-JoinChat.contextType = ChatContext;
+JoinChat.contextType = UserContext;
 
 export default JoinChat;

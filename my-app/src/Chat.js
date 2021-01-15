@@ -219,7 +219,7 @@ export class Chat extends Component {
           sendChat: this.sendChat,
         }}
       >
-        <div id="MainContent" style={{ visibility: "hidden" }}>
+        <div id="MainContent">
           <div id="messagesContent">
             <MessageBoard
               ref={this.board}

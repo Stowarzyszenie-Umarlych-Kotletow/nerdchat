@@ -84,6 +84,14 @@ export class HttpApi {
   getChatRoomMessages(chatId) {
     return this.requestGet(`/chatroom/${encodeURI(chatId)}/messages`);
   }
+  createAccount(nickname, firstName, lastName, password) {
+    return this.requestPost("/auth/register_account", {
+      nickname,
+      firstName,
+      lastName,
+      password,
+    });
+  }
 }
 
 export class StompApi {

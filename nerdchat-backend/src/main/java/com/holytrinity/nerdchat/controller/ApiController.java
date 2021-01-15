@@ -45,11 +45,11 @@ public class ApiController {
     }
 
     private <T> ResponseEntity<ApiResponse<T>> error(String error) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<T>(error));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<T>(null, error));
     }
 
     private <T> ResponseEntity<ApiResponse<T>> notfound(String error) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<T>(error));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<T>(null, error));
     }
 
     @GetMapping("/chatroom/{roomId}/messages")

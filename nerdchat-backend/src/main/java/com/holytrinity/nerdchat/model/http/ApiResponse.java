@@ -12,10 +12,10 @@ public class ApiResponse<T> {
         setData(data);
         setSuccess(true);
     }
-
-    public ApiResponse(String error) {
-        setSuccess(false);
+    public ApiResponse(T data, String error) {
+        setData(data);
         setMessage(error);
+        setSuccess(false);
     }
 
     public ApiResponse() {
