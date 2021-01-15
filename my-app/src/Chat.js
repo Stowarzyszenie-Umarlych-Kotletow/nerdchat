@@ -200,7 +200,7 @@ export class Chat extends Component {
       if (this.stomp != null && this.stomp.connected)
         this.updateSubscriptions();
     }
-    if (pp.creds !== this.props.creds) {
+    if (pp.creds !== this.props.creds && pp.creds.token !== this.props.creds) {
       if (this.props.creds.userId != null) {
         this.connect(this.props.creds);
       }

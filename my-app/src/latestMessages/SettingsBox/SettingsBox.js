@@ -6,7 +6,6 @@ import "./SettingsBox.css";
 import { UserConfig } from "../../context";
 import InputColor from "react-input-color";
 
-
 const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   const config = useContext(UserConfig);
   const SliderWithTooltip = createSliderWithTooltip(Slider);
@@ -22,7 +21,6 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
       e = 1.0;
     }
     setLocalCfg(Object.assign({}, localCfg, { fontSizeMultiplier: e }));
-    return;
   };
 
   const onColorChanged = (name, color) => {
@@ -31,15 +29,15 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
 
   useEffect(() => {
     setLocalCfg(Object.assign({}, config));
-  });
-
+  }, []);
 
   // change profile pic
   const changeProfilePic = (pic_id) => {
     console.log(pic_id);
-    document.getElementById("userProfilePic").setAttribute("src", `/assets/NerdchatDefPic${pic_id}.png`)
+    document
+      .getElementById("userProfilePic")
+      .setAttribute("src", `/assets/NerdchatDefPic${pic_id}.png`);
   };
-
 
   let marks = {
     0.7: "70%",
@@ -125,15 +123,20 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
           <br />
           <label>Profile pictures</label>
           <br />
-          <img src={`/assets/NerdchatDefPic1.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(1)}/>
-          <img src={`/assets/NerdchatDefPic2.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(2)}/>
-          <img src={`/assets/NerdchatDefPic3.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(3)}/>
-          <img src={`/assets/NerdchatDefPic4.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(4)}/>
-          <img src={`/assets/NerdchatDefPic5.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(5)}/>
-          <img src={`/assets/NerdchatDefPic6.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(6)}/>
-          <img src={`/assets/NerdchatDefPic7.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(7)}/>
-          <img src={`/assets/NerdchatDefPic8.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(8)}/>
-          <img src={`/assets/NerdchatDefPic9.png`} alt="" style={{height: "80px", width:"80px", marginRight: "5px"}} onClick={() => changeProfilePic(9)}/>
+          {(() => {
+            let arr = [];
+            for (let i = 1; i <= 9; i++) {
+              arr.push(
+                <img
+                  src={`/assets/NerdchatDefPic${i}.png`}
+                  alt=""
+                  style={{ height: "80px", width: "80px", marginRight: "5px" }}
+                  onClick={() => changeProfilePic(i)}
+                />
+              );
+            }
+            return arr;
+          })()}
         </div>
       </div>
       <div id="SettingsSave">
