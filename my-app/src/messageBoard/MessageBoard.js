@@ -16,8 +16,8 @@ export class MessageBoard extends Component {
     messages: [],
     openOptions: false,
     opemEmoji: false,
-    chatCodeValid: true,
-    adminPermissions: true
+    chatCodeValid: false,
+    adminPermissions: false
   };
 
   handleNewMessage = (msg) => {
@@ -78,25 +78,24 @@ export class MessageBoard extends Component {
                 this.state.openOptions ? (<div id="chatOptions" style={{color: this.context.textColorUser}}  onClick={(e) => e.stopPropagation()} >
                   {
                     this.state.adminPermissions ? 
-                    <div>
-                      <input 
-                        id="chatCodeField" 
-                        type="text" 
-                        name="chatCode"  
-                        placeholder=""
-                        value={this.state.chatCode}
-                        style={{color: this.context.textColorUser}}
-                        onClick={() => navigator.clipboard.writeText(this.state.chatCode)}
-                        onChange={this.onChange}
-                        />
-                        <div id="chatCodeFieldLabel" datatext="ChatCode"/>
-                      </div>
-                    :  <div 
-                        id="copyOption" 
-                        onClick={() => navigator.clipboard.writeText(this.state.chatCode)} 
-                        datatext = {this.state.chatCode}
-                        />
+                    <input 
+                      id="chatCodeField" 
+                      type="text" 
+                      name="chatCode"  
+                      placeholder=""
+                      value={this.state.chatCode}
+                      style={{color: this.context.textColorUser}}
+                      onClick={() => navigator.clipboard.writeText(this.state.chatCode)}
+                      onChange={this.onChange}
+                    /> 
+                    :  
+                    <div 
+                      id="copyOption" 
+                      onClick={() => navigator.clipboard.writeText(this.state.chatCode)} 
+                      datatext = {this.state.chatCode}
+                    />
                    }
+                   <div id="chatCodeFieldLabel" datatext="ChatCode - click to copy!"  onClick={() => navigator.clipboard.writeText(this.state.chatCode)}/>
                    {this.state.chatCodeValid ? null : <div id="invalidCodeError" datatext="Invalid or taken Code" />}
                   <label> Opcja 2 </label>
                   <br/>
