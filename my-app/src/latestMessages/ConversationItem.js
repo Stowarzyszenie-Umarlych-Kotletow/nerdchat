@@ -1,7 +1,7 @@
 
 import "./ConversationItem.css";
 import { useContext } from "react";
-import { UserConfig } from "../context";
+import { ChatContext, UserConfig } from "../context";
 
 function wrapText(text) {
   if (text != null && text.length > 25) {
@@ -13,6 +13,7 @@ function wrapText(text) {
 
 const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
   const cfg = useContext(UserConfig);
+  const chatContext = useContext(ChatContext);
   return chatRoomList === undefined
     ? null
     : chatRoomList.map((m) => {
@@ -21,7 +22,9 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
         let isToday =
           (date.getDate(), date.getMonth(), date.getFullYear()) ===
           (today.getDate(), today.getMonth(), today.getFullYear());
-        return (
+        let ifShaded = m.chatRoomId === chatContext.activeChatId;
+        let opacity = ifShaded ? "0.6" : "1.0";
+          return (
           <div
             className="latestMessage"
             key={m.chatRoomId}
@@ -31,9 +34,11 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               fontSize: String(16 * cfg.fontSizeMultiplier) + "px",
               paddingTop: "5px",
               paddingLeft: "5px",
+              opacity: opacity,
             }}
             onClick={(e) => {
               setActiveChatId(m.chatRoomId);
+              console.log(chatContext);
               setLastRead(m.chatRoomId);
               // change chat name
               document
