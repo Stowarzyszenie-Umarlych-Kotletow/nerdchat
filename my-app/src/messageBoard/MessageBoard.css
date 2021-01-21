@@ -87,7 +87,9 @@ a {
   text-align: left;
   word-wrap: break-word;
   padding-left: 10%;
+  padding-bottom: 20px;
 }
+
 #copyOption:after {
   font-size: 20px;
   content: attr(datatext);
@@ -96,7 +98,7 @@ a {
 #chatCodeField {
   padding: 5px; 
   height: 40px;
-  width: 70%;
+  width: 72%;
   margin-right: 5%; 
   padding-right: 5px; 
   background-color: transparent;
@@ -107,8 +109,8 @@ a {
   font-size: 20px;
 }
 
-#chatCodeButton {
-  width: 20%;
+.optionButton {
+  width: 98%;
   background: transparent;
   border: 0;
   border: 1px solid #000;
