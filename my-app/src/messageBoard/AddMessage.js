@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export class AddMessage extends Component {
   state = {
-    content: ""
+    content: "",
   };
 
   // function that submits a message
@@ -54,6 +54,31 @@ export class AddMessage extends Component {
           }}
           onClick={this.props.switchOpenEmoji}
         />
+        <input
+          type="button"
+          value="📎"
+          id="FileButton"
+          style={{
+            flex: "1",
+            fontSize: "20px",
+            backgroundColor: "#262626",
+            border: "none",
+          }}
+          onClick={this.props.switchOpenFile}
+        />
+        {/* <input
+          type="file"
+          //value="📎"
+          accept=".txt"
+          id="file-input"
+          style={{
+            flex: "1",
+            fontSize: "20px",
+            backgroundColor: "#262626",
+            border: "none",
+          }}
+          onChange={this.onFileButtonClicked}
+        /> */}
         <input
           id="textField"
           type="text"
