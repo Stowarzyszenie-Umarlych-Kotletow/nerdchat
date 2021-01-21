@@ -7,3 +7,13 @@
     bottom: 50px;
     background-color: #444c;
 }
+.file-input {
+    height: 95%;
+    width: 100%;
+    /* background-color: #444c; */
+}
+.size-label {
+    width: 100%;
+    /* background-color: #444c; */
+}
+
