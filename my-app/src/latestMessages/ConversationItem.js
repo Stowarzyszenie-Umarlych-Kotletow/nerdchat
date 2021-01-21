@@ -1,6 +1,7 @@
 import "./ConversationItem.css";
 import { useContext } from "react";
 import { ChatContext, UserConfig } from "../context";
+import {getEmojiFromLabels} from "../messageBoard/Messages/MessageItemTools";
 
 function wrapText(text) {
   let len = 36;
@@ -91,7 +92,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
             </div>
             <div className="latestMessageMessage">
               {wrapText(m.lastMessage.senderName === null ? null :
-                m.lastMessage.senderName + ": " + m.lastMessage.content
+                m.lastMessage.senderName + ": " + getEmojiFromLabels(m.lastMessage.content)
               )}
             </div>
           </div>
