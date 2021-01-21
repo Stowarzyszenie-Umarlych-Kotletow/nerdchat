@@ -47,7 +47,7 @@ export class CreatePollBox extends Component {
                     id="pollNameInputField"
                     type="text"
                     name="pollName"
-                    placeholder="Write a message..."
+                    placeholder="Write a poll name..."
                     value={this.state.pollName}
                     onChange={this.onChange}
                 />
@@ -60,7 +60,7 @@ export class CreatePollBox extends Component {
                         class="pollOptionNameInputField"
                         type="text"
                         name={id}
-                        placeholder="Write a message..."
+                        placeholder="Write an option name..."
                         value={pollOption}
                         onChange={this.onChangeOption}
                     />
