@@ -16,7 +16,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   };
 
   const resetSettings = () => {
-    
+
   };
 
   const logoutUser = () => {
@@ -137,7 +137,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
                 <img
                   src={`/assets/NerdchatDefPic${i}.png`}
                   alt=""
-                  style={{ height: "80px", width: "80px", marginRight: "5px" }}
+                  style={{ height: "100px", width: "100px", marginRight: "10px" }}
                   onClick={() => changeProfilePic(i)}
                 />
               );
@@ -146,7 +146,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
           })()}
         </div>
       </div>
-      <div style={{height: "30px", display: "flex", flexDirection: "row", justifyContent: "space-around", paddingLeft: "15px", paddingRight: "15px"}}>
+      <div style={{height: "10%", minHeight: "40px", display: "flex", flexDirection: "row", justifyContent: "space-around", padding: "10px"}}>
         <input
           type="button"
           value="Save changes"
