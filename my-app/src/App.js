@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Chat from "./Chat";
 import LoginWindow from "./loginWindow/loginWindow";
 import RegistrationWindow from "./loginWindow/registrationWindow/registrationWindow";
-import { getChatRoomList, HttpApi } from "./common/Api";
+import { HttpApi } from "./common/Api";
 import { UserConfig, UserContext } from "./context";
 const getDefaultConfig = () => {
   return {
@@ -29,7 +29,7 @@ const App = () => {
     nickname: null,
   });
   const [openWindow, setOpenWindow] = useState(windowType.login);
-  const [api, setApi] = useState(
+  const [api] = useState(
     new HttpApi(Object.assign({}, creds), setCreds)
   );
 
@@ -42,7 +42,7 @@ const App = () => {
           (data) => {
             api.updateCredentials(data);
           },
-          (err) => {
+          () => {
             window.localStorage.clear();
           }
         );

@@ -16,6 +16,10 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
     updateConfig(Object.assign({}, localCfg));
   };
 
+  const logoutUser = () => {
+    // logout user
+  }
+
   const onFontSizeChanged = (e) => {
     if (e == null) {
       e = 1.0;
@@ -137,16 +141,21 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
             }
             return arr;
           })()}
+          
         </div>
-      </div>
-      <div id="SettingsSave">
         <input
           type="button"
           value="Save changes"
           id="saveSettingsButton"
           onClick={saveSettings}
-        ></input>
+        />
       </div>
+      <input
+          type="button"
+          value="Logout"
+          id="logoutButton"
+          onClick={logoutUser}
+        />
     </div>
   );
 };
