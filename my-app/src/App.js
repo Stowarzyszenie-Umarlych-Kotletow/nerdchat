@@ -37,7 +37,6 @@ const App = () => {
     if (window.localStorage) {
       let token = window.localStorage.getItem("token");
       let nickname = window.localStorage.getItem("nickname");
-      console.log(`stuff read: ${token} ${nickname}`);
       if (token !== null && nickname !== null) {
         api.refreshToken(nickname, token).then(
           (data) => {

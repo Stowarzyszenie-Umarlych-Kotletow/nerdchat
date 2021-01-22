@@ -23,6 +23,11 @@ public class Emoji {
     private String label;
     private String dataText;
 
+    public Emoji(String label, String data) {
+        this.label = label;
+        this.dataText = data;
+    }
+
     @OneToMany(mappedBy = "emoji")
     private List<ChatMessageReaction> reactions;
 }

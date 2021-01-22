@@ -3,9 +3,11 @@ package com.holytrinity.nerdchat.controller;
 import com.holytrinity.nerdchat.entity.User;
 import com.holytrinity.nerdchat.entity.UserChatConfig;
 import com.holytrinity.nerdchat.model.ChatMessageDto;
+import com.holytrinity.nerdchat.model.EmojiDto;
 import com.holytrinity.nerdchat.model.UserChatConfigDto;
 import com.holytrinity.nerdchat.model.http.ApiResponse;
 import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
+import com.holytrinity.nerdchat.repository.EmojiRepository;
 import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
 import com.holytrinity.nerdchat.service.UserService;
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -28,8 +32,6 @@ import java.util.stream.Collectors;
 public class ApiController {
     @Autowired
     private SimpUserRegistry users;
-    @Autowired
-    private EntityManager entities;
     @Autowired
     private SimpMessagingTemplate messaging;
     @Autowired
@@ -40,6 +42,8 @@ public class ApiController {
     private ChatRoomMemberRepository roomMemberRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EmojiRepository emojis;
 
     private User getUser() {
         return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -98,6 +102,11 @@ public class ApiController {
         BeanUtils.copyProperties(body, cfg);
         userService.save(user);
         return ok(true);
+    }
+
+    @GetMapping("/global/emojis")
+    public ResponseEntity<?> getEmojiTable() {
+        return ok(emojis.findAllDto());
     }
 
 }

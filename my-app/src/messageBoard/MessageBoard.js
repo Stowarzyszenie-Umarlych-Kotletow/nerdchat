@@ -193,7 +193,11 @@ export class MessageBoard extends Component {
               style={{ color: this.context.textColorUser }}
             >
               {this.state.openEmoji ? (
-                <EmojiBox switchOpenEmoji={this.switchOpenEmoji} />
+                <EmojiBox
+                  {...{
+                    switchOpenEmoji: this.switchOpenEmoji,
+                  }}
+                />
               ) : null}
               {this.props.activeChatId === null ? (
                 <div style={{ fontSize: "40px", textAlign: "center" }}>

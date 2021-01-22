@@ -102,6 +102,9 @@ export class HttpApi {
   logout() {
     this.setCredentials({ nickname: null, token: null });
   }
+  getEmojiTable() {
+    return this.requestGet("/global/emojis");
+  }
 }
 
 export class StompApi {

@@ -13,6 +13,7 @@ export class Chat extends Component {
     activeChatId: null,
     chatRoomList: [],
     subscribed: {},
+    emojis: [],
   };
 
   constructor(props) {
@@ -217,6 +218,21 @@ export class Chat extends Component {
     });
   };
 
+  updateEmojis = () => {
+    this.http.getEmojiTable().then(
+      (m) => {
+        this.setState({ emojis: m });
+      },
+      (err) => {
+        setTimeout(this.updateEmojis, 5000);
+      }
+    );
+  };
+
+  componentDidMount = () => {
+    this.updateEmojis();
+  };
+
   componentDidUpdate = (pp, ps) => {
     if (ps.chatRoomList !== this.state.chatRoomList) {
       if (this.stomp != null && this.stomp.connected)
@@ -240,6 +256,7 @@ export class Chat extends Component {
           chatRoomList: this.state.chatRoomList,
           setChatRoomList: this.setChatRoomList,
           sendChat: this.sendChat,
+          emojis: this.state.emojis,
         }}
       >
         <div id="MainContent">
@@ -252,6 +269,7 @@ export class Chat extends Component {
                 sendChat: this.sendChat,
                 api: this.http,
                 roomList: this.state.chatRoomList,
+                emojis: this.state.emojis,
               }}
             />
           </div>

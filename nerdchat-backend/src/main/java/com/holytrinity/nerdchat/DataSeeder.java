@@ -26,7 +26,7 @@ public class DataSeeder implements ApplicationRunner {
     @Autowired private ChatRoomService chatRoomService;
     @Autowired private ChatMessageService chatMessageService;
     @Autowired private ChatMessageRepository chatMessages;
-
+    @Autowired private EmojiRepository emojis;
 
     public void run(ApplicationArguments args) {
 
@@ -64,6 +64,8 @@ public class DataSeeder implements ApplicationRunner {
                 .chatRoom(chatAC)
                 .chatRoomMember(chatAC.getMembers().get(1))
                 .build());
+        emojis.saveAll(List.of(new Emoji("jamesmay", "\uD83D\uDC22"), new Emoji("heart", "❤️")));
+
         //dump();
     }
 }
