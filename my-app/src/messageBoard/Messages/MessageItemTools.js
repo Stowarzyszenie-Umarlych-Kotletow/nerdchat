@@ -26,27 +26,34 @@ function formatUrls(data) {
   return results;
 }
 
-function getEmojiFromLabels(data) {
-  const idk = {
-    ":angry:": "😠",
-    ":shlong:": "🍆",
-  }
+function getEmojiFromLabels(data, emojis) {
   let slices = data.split(" ");
   let newData = [];
-  let r = /:[a-z]*:/gi;
-  let regex = new RegExp(r);
-  for( let i = 0; i < slices.length; i++){
-    if(slices[i].match(regex)){
-      if(Object.keys(idk).includes(slices[i])){
-        newData.push(idk[slices[i]]);
-      }else{
+  let r = /:([a-z]+):/gi;
+  let findEmoji = (text) => {
+    if (emojis.length !== undefined) {
+      for (let emoji of emojis) {
+        if (emoji.label === text) {
+          return emoji.dataText;
+        }
+      }
+    }
+    return null;
+  };
+  for (let i = 0; i < slices.length; i++) {
+    let match = r.exec(slices[i]);
+    if (match !== null) {
+      let emoji = findEmoji(match[1]);
+      if (emoji !== null) {
+        newData.push(emoji);
+      } else {
         newData.push(slices[i]);
       }
-    }else{
+    } else {
       newData.push(slices[i]);
     }
   }
-  return newData.join(' ');
+  return newData.join(" ");
 }
 
-export {formatUrls, getEmojiFromLabels};
+export { formatUrls, getEmojiFromLabels };

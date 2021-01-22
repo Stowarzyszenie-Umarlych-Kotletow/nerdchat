@@ -96,7 +96,10 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
                   ? null
                   : m.lastMessage.senderName +
                       ": " +
-                      getEmojiFromLabels(m.lastMessage.content)
+                      getEmojiFromLabels(
+                        m.lastMessage.content,
+                        chatContext.emojis
+                      )
               )}
             </div>
           </div>

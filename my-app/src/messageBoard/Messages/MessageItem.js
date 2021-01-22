@@ -1,11 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import PropTypes from "prop-types";
 import "./MessageItem.css";
-import { UserConfig } from "../../context";
+import { UserConfig, ChatContext } from "../../context";
 import { formatUrls, getEmojiFromLabels } from "./MessageItemTools";
 
 const MessageItem = ({ message, myNick }) => {
   const cfg = useContext(UserConfig);
+  const chat = useContext(ChatContext);
   // get style of message box depending on whose information is it
   const getStyle = () => {
     if (message.senderNickname === myNick) {
@@ -54,7 +55,7 @@ const MessageItem = ({ message, myNick }) => {
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
         </div>
         <h1>
-          {formatUrls(getEmojiFromLabels(content)).map((d) => {
+          {formatUrls(getEmojiFromLabels(content, chat.emojis)).map((d) => {
             return d;
           })}
         </h1>
