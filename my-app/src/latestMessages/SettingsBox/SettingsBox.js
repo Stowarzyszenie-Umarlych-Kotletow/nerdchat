@@ -15,6 +15,10 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
     updateConfig(Object.assign({}, localCfg));
   };
 
+  const resetSettings = () => {
+    
+  };
+
   const logoutUser = () => {
     // logout user
   }
@@ -140,21 +144,29 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
             }
             return arr;
           })()}
-          
         </div>
+      </div>
+      <div style={{height: "30px", display: "flex", flexDirection: "row", justifyContent: "space-around", paddingLeft: "15px", paddingRight: "15px"}}>
         <input
           type="button"
           value="Save changes"
           id="saveSettingsButton"
           onClick={saveSettings}
         />
-      </div>
-      <input
+        <input
+          type="button"
+          value="Reset Settings"
+          id="resetSettingsButton"
+          onClick={resetSettings}
+        />
+
+        <input
           type="button"
           value="Logout"
           id="logoutButton"
           onClick={logoutUser}
         />
+       </div> 
     </div>
   );
 };
