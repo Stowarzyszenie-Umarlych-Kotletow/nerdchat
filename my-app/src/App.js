@@ -33,6 +33,34 @@ const App = () => {
     new HttpApi(Object.assign({}, creds), setCreds)
   );
 
+  useEffect(() => {
+    if (window.localStorage) {
+      let token = window.localStorage.getItem("token");
+      let nickname = window.localStorage.getItem("nickname");
+      console.log(`stuff read: ${token} ${nickname}`);
+      if (token !== null && nickname !== null) {
+        api.refreshToken(nickname, token).then(
+          (data) => {
+            api.updateCredentials(data);
+          },
+          (err) => {
+            window.localStorage.clear();
+          }
+        );
+      }
+    }
+  }, []);
+  useEffect(() => {
+    if (creds.token !== null) {
+      setOpenWindow(windowType.chat);
+      window.localStorage.setItem("token", creds.token);
+      window.localStorage.setItem("nickname", creds.nickname);
+    } else {
+      setOpenWindow(windowType.login);
+      window.localStorage.clear();
+    }
+  }, [creds]);
+
   Notification.requestPermission();
   return (
     <UserConfig.Provider value={config}>

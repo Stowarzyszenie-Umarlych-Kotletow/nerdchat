@@ -66,6 +66,12 @@ public class AuthController {
         return ok(new CreateTokenResponse(user.getNickname(), token));
     }
 
+    @PostMapping("/auth/refresh_token")
+    public ResponseEntity<?> authCreateToken(@RequestBody CreateTokenResponse model) {
+        var user = userService.findByToken(model.getToken());
+        return user.map(u -> u.getNickname().equalsIgnoreCase(model.getNickname()) ? ok(model) : error("Invalid token")).orElseGet(() -> error("Invalid token"));
+    }
+
     @PostMapping("/auth/register_account")
     public ResponseEntity<?> registerAccount(@RequestBody CreateAccountRequest model) {
         var user = userService.newModel(model.getNickname(), model.getFirstName(), model.getLastName());

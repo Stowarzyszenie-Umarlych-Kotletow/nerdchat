@@ -200,9 +200,7 @@ export class Chat extends Component {
 
   updateConfig = (cfg) => {
     this.props.setConfig(cfg);
-    this.http.postChatConfig(cfg).then((m) => {
-      console.log("poszło : ddd");
-    });
+    this.http.postChatConfig(cfg);
   };
 
   onSessionReady = () => {

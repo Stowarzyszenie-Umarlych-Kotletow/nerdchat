@@ -47,7 +47,10 @@ export class HttpApi {
     }
     return request(options);
   }
-
+  updateCredentials(creds) {
+    this.credentials = creds;
+    this.setCredentials(creds);
+  }
   requestGet(url) {
     return this.request({ url: config.apiUrl + url, method: "GET" });
   }
@@ -64,8 +67,13 @@ export class HttpApi {
       nickname,
       password,
     }).then((m) => {
-      this.credentials = m;
-      this.setCredentials(m);
+      this.updateCredentials(m);
+    });
+  }
+  refreshToken(nickname, token) {
+    return this.requestPost("/auth/refresh_token", {
+      nickname,
+      token,
     });
   }
 
@@ -89,6 +97,10 @@ export class HttpApi {
   }
   postChatConfig(cfg) {
     return this.requestPost("/user/chat_config", cfg);
+  }
+
+  logout() {
+    this.setCredentials({ nickname: null, token: null });
   }
 }
 
