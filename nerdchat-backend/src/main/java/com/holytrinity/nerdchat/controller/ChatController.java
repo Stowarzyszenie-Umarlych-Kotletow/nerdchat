@@ -35,8 +35,6 @@ public class ChatController {
     @Autowired
     private UserService userService;
 
-    private User _userCached;
-
     @MessageMapping("/send-chat")
     public void sendChat(SimpMessageHeaderAccessor h, @Payload SendChatMessage msg) throws Exception {
         var usrId = _getUserId(h);
@@ -72,7 +70,7 @@ public class ChatController {
 
     private <T> T _reply(SimpMessageHeaderAccessor h, T obj) {
         messaging.convertAndSendToUser(
-                Integer.toString(_getUserId(h)),
+                _getUserName(h),
                 "/queue/r",
                 obj, new HashMap<>() {{
                     put("r", h.getFirstNativeHeader("r"));
@@ -96,10 +94,7 @@ public class ChatController {
     }
 
     private Optional<User> _getUser(SimpMessageHeaderAccessor h) throws Exception {
-        if(_userCached != null)
-            return Optional.of(_userCached);
         var ret = userService.findById(_getUserId(h));
-        ret.ifPresent(u -> _userCached = u);
         return ret;
     }
 
@@ -108,6 +103,13 @@ public class ChatController {
         if (str == null)
             return -1;
         return ((UserClaim) str).getId();
+    }
+
+    private String _getUserName(SimpMessageHeaderAccessor h) {
+        var str = h.getUser();
+        if (str == null)
+            return null;
+        return ((UserClaim) str).getName();
     }
 
 

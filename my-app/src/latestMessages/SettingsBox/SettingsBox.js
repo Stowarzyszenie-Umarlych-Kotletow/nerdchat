@@ -3,11 +3,12 @@ import Slider, { createSliderWithTooltip } from "rc-slider";
 import "rc-slider/assets/index.css";
 import "react-dropdown/style.css";
 import "./SettingsBox.css";
-import { UserConfig } from "../../context";
+import { UserConfig, UserContext } from "../../context";
 import InputColor from "react-input-color";
 
 const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   const config = useContext(UserConfig);
+  const user = useContext(UserContext);
   const SliderWithTooltip = createSliderWithTooltip(Slider);
   const [localCfg, setLocalCfg] = useState({ fontSizeMultiplier: "1.0" });
 
@@ -17,7 +18,9 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
 
   const logoutUser = () => {
     // logout user
-  }
+    user.api.logout();
+    window.location.reload();
+  };
 
   const onFontSizeChanged = (e) => {
     if (e == null) {
@@ -140,7 +143,6 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
             }
             return arr;
           })()}
-          
         </div>
         <input
           type="button"
@@ -150,11 +152,11 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
         />
       </div>
       <input
-          type="button"
-          value="Logout"
-          id="logoutButton"
-          onClick={logoutUser}
-        />
+        type="button"
+        value="Logout"
+        id="logoutButton"
+        onClick={logoutUser}
+      />
     </div>
   );
 };

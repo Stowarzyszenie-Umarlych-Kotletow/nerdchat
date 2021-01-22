@@ -81,7 +81,6 @@ export class Chat extends Component {
     let newSubs = {};
     let unread = 0;
     this.state.chatRoomList.forEach((c) => {
-      console.log(c);
       unread += c.unreadCount;
       if (this.shouldBeSubscribed(c)) {
         newSubs[c.chatRoomId] = this.subscribeObj(c.chatRoomId);
@@ -243,6 +242,9 @@ export class Chat extends Component {
         this.onSessionReady();
         this.connect(this.props.creds);
       }
+    }
+    if (this.props.creds.token === null) {
+      this.stomp.disconnect();
     }
   };
 
