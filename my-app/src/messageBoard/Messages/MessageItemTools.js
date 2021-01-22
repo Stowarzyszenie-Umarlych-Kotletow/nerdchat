@@ -29,7 +29,8 @@ function formatUrls(data) {
 function getEmojiFromLabels(data, emojis) {
   let slices = data.split(" ");
   let newData = [];
-  let r = /:([a-z]+):/gi;
+  let r = /:([a-z_\.]+):/gi;
+
   let findEmoji = (text) => {
     if (emojis.length !== undefined) {
       for (let emoji of emojis) {
@@ -41,17 +42,12 @@ function getEmojiFromLabels(data, emojis) {
     return null;
   };
   for (let i = 0; i < slices.length; i++) {
-    let match = r.exec(slices[i]);
-    if (match !== null) {
-      let emoji = findEmoji(match[1]);
-      if (emoji !== null) {
-        newData.push(emoji);
-      } else {
-        newData.push(slices[i]);
-      }
-    } else {
-      newData.push(slices[i]);
-    }
+    let str = slices[i];
+    str = str.replace(r, (match, p1, offset, str) => {
+      let emoji = findEmoji(p1);
+      return emoji !== null ? emoji : match;
+    });
+    newData.push(str);
   }
   return newData.join(" ");
 }

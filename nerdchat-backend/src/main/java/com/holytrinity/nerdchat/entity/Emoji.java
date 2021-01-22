@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -20,7 +18,9 @@ public class Emoji {
     @Id
     @GeneratedValue
     private int id;
+    @Column(unique = true)
     private String label;
+    @Column(unique = true)
     private String dataText;
 
     public Emoji(String label, String data) {

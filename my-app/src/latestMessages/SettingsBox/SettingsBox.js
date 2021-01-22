@@ -12,7 +12,6 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   const [localCfg, setLocalCfg] = useState({ fontSizeMultiplier: "1.0" });
 
   const saveSettings = () => {
-    console.log(localCfg);
     updateConfig(Object.assign({}, localCfg));
   };
 
