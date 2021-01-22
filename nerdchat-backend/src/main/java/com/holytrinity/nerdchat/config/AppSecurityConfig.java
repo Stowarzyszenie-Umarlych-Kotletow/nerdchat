@@ -36,7 +36,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 addFilterBefore(anycorsFilter(), AuthFilter.class).
                 authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/auth/**", "/ws/**").permitAll()
+                .antMatchers("/auth/**", "/ws/**", "/h2-console/**").permitAll()
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
