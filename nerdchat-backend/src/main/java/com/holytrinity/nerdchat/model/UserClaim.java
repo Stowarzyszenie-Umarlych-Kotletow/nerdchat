@@ -6,9 +6,9 @@ import java.util.UUID;
 public final class UserClaim implements Principal {
 
     private final String name;
-    private final UUID id;
+    private final int id;
 
-    public UserClaim(UUID id, String name) {
+    public UserClaim(int id, String name) {
         this.name = name;
         this.id = id;
     }
@@ -17,8 +17,7 @@ public final class UserClaim implements Principal {
     public String getName() {
         return name;
     }
-
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 }

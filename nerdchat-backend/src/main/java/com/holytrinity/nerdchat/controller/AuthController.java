@@ -63,7 +63,7 @@ public class AuthController {
         var user = creds.get().getUser();
         var token = userService.createToken(user);
 
-        return ok(new CreateTokenResponse(user.getNickname(), user.getId(), token));
+        return ok(new CreateTokenResponse(user.getNickname(), token));
     }
 
     @PostMapping("/auth/register_account")

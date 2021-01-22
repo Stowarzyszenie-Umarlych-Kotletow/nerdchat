@@ -1,22 +1,20 @@
 package com.holytrinity.nerdchat;
 
-import com.holytrinity.nerdchat.entity.ChatMessage;
-import com.holytrinity.nerdchat.entity.ChatRoom;
-import com.holytrinity.nerdchat.entity.User;
-import com.holytrinity.nerdchat.entity.UserCredentials;
+import com.holytrinity.nerdchat.entity.*;
 import com.holytrinity.nerdchat.model.ChatRoomType;
 import com.holytrinity.nerdchat.repository.*;
 import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.schema.TargetType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,6 +26,7 @@ public class DataSeeder implements ApplicationRunner {
     @Autowired private ChatRoomService chatRoomService;
     @Autowired private ChatMessageService chatMessageService;
     @Autowired private ChatMessageRepository chatMessages;
+
 
     public void run(ApplicationArguments args) {
 
@@ -65,6 +64,6 @@ public class DataSeeder implements ApplicationRunner {
                 .chatRoom(chatAC)
                 .chatRoomMember(chatAC.getMembers().get(1))
                 .build());
-
+        //dump();
     }
 }

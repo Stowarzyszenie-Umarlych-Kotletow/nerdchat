@@ -23,14 +23,6 @@ const request = (options) => {
   );
 };
 
-export function sendMessage(userId, chatId, content) {
-  return request({
-    url: config.apiUrl + "/chatroom/" + encodeURI(chatId) + "/send",
-    method: "POST",
-    body: JSON.stringify({ content, chatId, senderId: userId }),
-  });
-}
-
 export class HttpApi {
   constructor(creds, setCreds) {
     this.stomp = new StompApi(this);
@@ -44,11 +36,6 @@ export class HttpApi {
   }
 
   request(options) {
-    console.log(
-      `my token is ${this.token} oh wait its ${JSON.stringify(
-        this.credentials
-      )}`
-    );
     if (this.token !== null) {
       options.headers = { "X-Token": this.token };
     }

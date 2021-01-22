@@ -14,17 +14,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BasicChatMessageDto {
-    private UUID messageId;
+    private int messageId;
     private UUID chatRoomId;
-    private UUID senderId;
+    private int senderId;
+    private String senderNickname;
     private String senderName;
     private String content;
     private Date sentAt;
 
     public static BasicChatMessageDto from(ChatMessage msg) {
         return new BasicChatMessageDto(msg.getId(),
-                msg.getChatRoom().getId(),
-                msg.getChatRoomMember().getUser().getId(),
+                msg.getChatRoom().getPublicId(),
+                msg.getChatRoomMember().getId(),
+                msg.getChatRoomMember().getUser().getNickname(),
                 msg.getChatRoomMember().getUser().getFullName(),
                 msg.getContent(),
                 msg.getSentAt());

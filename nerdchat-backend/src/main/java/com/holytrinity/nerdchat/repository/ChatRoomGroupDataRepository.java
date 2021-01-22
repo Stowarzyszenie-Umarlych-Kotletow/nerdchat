@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ChatRoomGroupDataRepository extends CrudRepository<ChatRoomGroupData, UUID> {
+public interface ChatRoomGroupDataRepository extends CrudRepository<ChatRoomGroupData, Integer> {
     Optional<ChatRoomGroupData> findFirstByJoinCode(String code);
 }

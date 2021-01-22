@@ -8,13 +8,13 @@ import java.util.UUID;
 public class CreateChatResult {
     private boolean isSuccess;
     private boolean isNew;
-    private UUID chatRoomId;
+    private UUID chatRoomPublicId;
 
     public CreateChatResult() {
         isSuccess = false;
     }
     public CreateChatResult(UUID chatRoomId, boolean isNew) {
-        this.chatRoomId = chatRoomId;
+        this.chatRoomPublicId = chatRoomId;
         isSuccess = true;
         this.isNew = isNew;
     }

@@ -26,7 +26,6 @@ export const windowType = { login: 1, register: 2, chat: 3 };
 const App = () => {
   const [config, setConfig] = useState(getDefaultConfig());
   const [creds, setCreds] = useState({
-    userId: null,
     token: null,
     nickname: null,
   });
@@ -52,7 +51,7 @@ const App = () => {
                 setOpenWindow,
                 creds,
                 setConfig,
-                myUserId: creds.userId,
+                myNick: creds.nickname,
               }}
             />
           </div>

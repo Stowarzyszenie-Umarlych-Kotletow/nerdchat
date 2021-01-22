@@ -11,8 +11,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ChatRoomMemberRepository extends PagingAndSortingRepository<ChatRoomMember, UUID> {
-    List<ChatRoomMember> findByUser_id(UUID userId);
-    Optional<ChatRoomMember> findFirstByChatRoom_IdAndUser_idNot(UUID chatRoomid, UUID user);
-    Optional<ChatRoomMember> findFirstByChatRoom_IdAndUser_id(UUID chatRoomid, UUID user);
+public interface ChatRoomMemberRepository extends PagingAndSortingRepository<ChatRoomMember, Integer> {
+    List<ChatRoomMember> findByUser_id(int userId);
+    Optional<ChatRoomMember> findFirstByChatRoom_IdAndUser_idNot(int chatRoomid, int userId);
+    Optional<ChatRoomMember> findFirstByChatRoom_IdAndUser_id(int chatRoomid, int userId);
 }

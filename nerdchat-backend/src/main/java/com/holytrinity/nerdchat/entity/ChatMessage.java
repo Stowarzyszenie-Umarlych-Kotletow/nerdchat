@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ChatMessage {
     @Id
     @GeneratedValue
-    private UUID id;
+    private int id;
 
     private String content;
     @CreationTimestamp
@@ -31,4 +31,8 @@ public class ChatMessage {
     private ChatRoom chatRoom;
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoomMember chatRoomMember;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "chatMessage")
+    private ChatMessagePoll poll;
+
 }

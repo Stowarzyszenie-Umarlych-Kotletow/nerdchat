@@ -14,13 +14,14 @@ import java.util.UUID;
 
 @Repository
 public interface ChatMessageRepository
-        extends PagingAndSortingRepository<ChatMessage, UUID> {
+        extends PagingAndSortingRepository<ChatMessage, Integer> {
 
-    List<ChatMessage> findByChatRoom_id(UUID chatRoomId, Sort sort);
-    Optional<ChatMessage> findFirstByChatRoom_id(UUID chatRoomId, Sort sort);
-    long countByChatRoom_idAndSentAtAfter(UUID chatRoomId, Date sentAfter);
+    List<ChatMessage> findByChatRoom_id(int chatRoomId, Sort sort);
+    List<ChatMessage> findByChatRoom_publicId(UUID chatRoomId, Sort sort);
+    Optional<ChatMessage> findFirstByChatRoom_id(int chatRoomId, Sort sort);
+    long countByChatRoom_idAndSentAtAfter(int chatRoomId, Date sentAfter);
 
-    default Optional<ChatMessage> findLastInChatRoom(UUID chatRoomId) {
+    default Optional<ChatMessage> findLastInChatRoom(int chatRoomId) {
         return findFirstByChatRoom_id(chatRoomId, Sort.by("sentAt").descending());
     }
 }

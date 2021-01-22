@@ -33,7 +33,7 @@ public class UserService {
         var created = Instant.now().minus(24, ChronoUnit.HOURS);
         return users.findByToken(tid, Date.from(created));
     }
-    public Optional<User> findById(UUID id) { return users.findById(id); }
+    public Optional<User> findById(int id) { return users.findById(id); }
     public boolean verifyPassword(UserCredentials creds, String password) {
         return Encryption.verifyPassphrase(password, creds.getPasswordHash());
     }

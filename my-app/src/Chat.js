@@ -154,17 +154,17 @@ export class Chat extends Component {
 
   onConnected = () => {
     this.stomp.subscribe(
-      `/user/${this.props.myUserId}/queue/last-read`,
+      `/user/${this.props.myNick}/queue/last-read`,
       this.onLastRead,
       {}
     );
     this.stomp.subscribe(
-      `/user/${this.props.myUserId}/queue/r`,
+      `/user/${this.props.myNick}/queue/r`,
       (msg) => this.stomp.handleResponse(msg),
       {}
     );
     this.stomp.subscribe(
-      `/user/${this.props.myUserId}/queue/notify-updated`,
+      `/user/${this.props.myNick}/queue/notify-updated`,
       this.onNotifyUpdated,
       {}
     );
@@ -208,7 +208,7 @@ export class Chat extends Component {
         this.updateSubscriptions();
     }
     if (pp.creds !== this.props.creds && pp.creds.token !== this.props.creds) {
-      if (this.props.creds.userId != null) {
+      if (this.props.creds.token != null) {
         this.connect(this.props.creds);
       }
     }
@@ -218,7 +218,7 @@ export class Chat extends Component {
     return (
       <ChatContext.Provider
         value={{
-          myUserId: this.props.myUserId,
+          myNick: this.props.myNick,
           activeChatId: this.state.activeChatId,
           setActiveChatId: this.setActiveChatId,
           chatRoomList: this.state.chatRoomList,
@@ -232,7 +232,7 @@ export class Chat extends Component {
               ref={this.board}
               {...{
                 activeChatId: this.state.activeChatId,
-                myUserId: this.props.creds.userId,
+                myNick: this.props.creds.nickname,
                 sendChat: this.sendChat,
                 api: this.http,
                 roomList: this.state.chatRoomList,

@@ -10,6 +10,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CreateTokenResponse {
     private String nickname;
-    private UUID userId;
     private String token;
 }

@@ -24,11 +24,15 @@ public class ChatMessageService {
         return msg;
     }
 
-    public List<ChatMessage> findByChatRoomId(UUID chatRoomId, Sort sort) {
+    public List<ChatMessage> findByChatRoomId(int chatRoomId, Sort sort) {
         return _msgRepository.findByChatRoom_id(chatRoomId, sort);
     }
 
-    public Optional<ChatMessage> findById(UUID id) {
+    public List<ChatMessage> findByChatRoomId(UUID chatRoomId, Sort sort) {
+        return _msgRepository.findByChatRoom_publicId(chatRoomId, sort);
+    }
+
+    public Optional<ChatMessage> findById(int id) {
         return _msgRepository.findById(id);
     }
 }

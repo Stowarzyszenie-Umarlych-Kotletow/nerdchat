@@ -19,7 +19,7 @@ import java.util.UUID;
 public class ChatRoomGroupData {
     @Id
     @GeneratedValue
-    private UUID id;
+    private int id;
 
     @OneToOne(optional = true, fetch = FetchType.LAZY)
     private ChatRoom chatRoom;

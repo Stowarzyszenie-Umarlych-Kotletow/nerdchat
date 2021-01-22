@@ -39,7 +39,7 @@ public class ChatRoomService {
     private ChatRoomGroupDataRepository _groupRepository;
 
 
-    public String getChatRoomName(ChatRoom room, UUID userId) {
+    public String getChatRoomName(ChatRoom room, int userId) {
         if (room.getType() != ChatRoomType.DIRECT)
             return room.getCustomDisplayName();
         return _memberRepository.findFirstByChatRoom_IdAndUser_idNot(room.getId(), userId)
@@ -52,7 +52,7 @@ public class ChatRoomService {
         _memberRepository.save(member);
     }
 
-    public List<ChatRoomListEntry> getUserChatRoomList(UUID userId) {
+    public List<ChatRoomListEntry> getUserChatRoomList(int userId) {
         return _memberRepository.findByUser_id(userId).stream()
                 .sorted(Comparator.comparing(ChatRoomMember::getLastRead).reversed())
                 .map(x -> {
@@ -60,7 +60,7 @@ public class ChatRoomService {
                     return new ChatRoomListEntry(
                             m.map(BasicChatMessageDto::from).orElseGet(() -> BasicChatMessageDto.builder().content("").sentAt(x.getLastRead()).build()),
                             getChatRoomName(x.getChatRoom(), userId),
-                            x.getChatRoom().getId(),
+                            x.getChatRoom().getPublicId(),
                             x.getChatRoom().getType(),
                             x.getPermissions(),
                             _msgRepository.countByChatRoom_idAndSentAtAfter(x.getChatRoom().getId(), x.getLastRead()),
@@ -71,16 +71,19 @@ public class ChatRoomService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<ChatRoom> findById(UUID roomId) {
+    public Optional<ChatRoom> findById(int roomId) {
         return _roomRepository.findById(roomId);
     }
+    public Optional<ChatRoom> findById(UUID roomId) {
+        return _roomRepository.findByPublicId(roomId);
+    }
 
-    public Optional<ChatRoomMember> findRoomMember(UUID roomId, UUID userId) {
+    public Optional<ChatRoomMember> findRoomMember(int roomId, int userId) {
         return _memberRepository.findFirstByChatRoom_IdAndUser_id(roomId, userId);
     }
 
 
-    public Optional<ChatRoomMember> getRoomMember(UUID roomId, User user, boolean create) {
+    public Optional<ChatRoomMember> getRoomMember(int roomId, User user, boolean create) {
         return findRoomMember(roomId, user.getId())
                 .or(() -> {
                     if (!create)
@@ -94,7 +97,7 @@ public class ChatRoomService {
                 });
     }
 
-    public Pair<Boolean, ChatRoomMember> getRoomMemberCreated(UUID roomId, User user) {
+    public Pair<Boolean, ChatRoomMember> getRoomMemberCreated(int roomId, User user) {
         var found = findRoomMember(roomId, user.getId());
         return found.map(chatRoomMember -> Pair.of(false, chatRoomMember)).orElseGet(() -> Pair.of(true,
                 _memberRepository.save(ChatRoomMember.builder()
@@ -105,18 +108,19 @@ public class ChatRoomService {
 
     }
 
-    public Optional<ChatRoomMember> getRoomMember(UUID roomId, UUID userId, boolean create) {
+    public Optional<ChatRoomMember> getRoomMember(int roomId, int userId, boolean create) {
         return getRoomMember(roomId, User.builder().id(userId).build(), create);
-
     }
 
-    public Pair<ChatRoomMember, ChatRoomMember> addToRoom(UUID roomId, User userA, User userB) {
-        return Pair.of(getRoomMember(roomId, userA, true).orElseThrow(),
-                getRoomMember(roomId, userB, true).orElseThrow());
+    public Optional<ChatRoomMember> getRoomMember(UUID roomId, int userId, boolean create) {
+        var ret = _roomRepository.findByPublicId(roomId)
+                .flatMap(m -> getRoomMember(m.getId(), User.builder().id(userId).build(), create));
+        return ret;
     }
+
 
     public ChatRoom createDirectChat(User u1, User u2) {
-        var users = u1.getId().equals(u2.getId()) ? List.of(u1) : List.of(u1, u2);
+        var users = u1.getId() == u2.getId() ? List.of(u1) : List.of(u1, u2);
         var room = _roomRepository.save(
                 ChatRoom.builder().type(ChatRoomType.DIRECT).build()
         );
@@ -135,7 +139,7 @@ public class ChatRoomService {
             var existing = _roomRepository.findExistingChatRoomBetween(user.getId(), target.getId());
             var isNew = existing.isEmpty();
             var room = existing.orElseGet(() -> createDirectChat(user, target));
-            return Pair.of(new CreateChatResult(room.getId(), isNew), isNew ? Optional.of(room) : Optional.empty());
+            return Pair.of(new CreateChatResult(room.getPublicId(), isNew), isNew ? Optional.of(room) : Optional.empty());
 
         } catch (Exception e) {
 
@@ -162,23 +166,23 @@ public class ChatRoomService {
                         .build()
         );
         room.setMembers(List.of(member));
-        return Pair.of(new CreateChatResult(room.getId(), true), Optional.of(room));
+        return Pair.of(new CreateChatResult(room.getPublicId(), true), Optional.of(room));
     }
 
     public CreateChatResult joinChatByCode(User user, String code) {
         var room = _roomRepository.findChatRoomByCode(code);
-        return room.map(chatRoom -> new CreateChatResult(chatRoom.getId(), getRoomMemberCreated(chatRoom.getId(), user).getFirst())).orElseGet(CreateChatResult::new);
+        return room.map(chatRoom -> new CreateChatResult(chatRoom.getPublicId(), getRoomMemberCreated(chatRoom.getId(), user).getFirst())).orElseGet(CreateChatResult::new);
     }
 
     public String setChatroomCode(UUID roomId, String code) throws MessagingException {
         code = TrimUtils.sanitize(code);
-        var room = _roomRepository.findById(roomId);
+        var room = _roomRepository.findByPublicId(roomId);
         if(room.isEmpty())
             throw new MessagingException("Room not found");
         if(code.length() < 3)
             throw new MessagingException("Invalid code");
         var group = _groupRepository.findFirstByJoinCode(code);
-        if(group.isPresent() && !group.get().getChatRoom().getId().equals(roomId))
+        if(group.isPresent() && group.get().getChatRoom().getId() != room.get().getId())
             throw new MessagingException("Code in use. Try another one.");
         String finalCode = code;
         room.ifPresent(r -> {

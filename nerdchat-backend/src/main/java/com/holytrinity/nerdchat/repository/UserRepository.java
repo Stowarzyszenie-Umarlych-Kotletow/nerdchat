@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, UUID> {
+public interface UserRepository extends CrudRepository<User, Integer> {
     Optional<User> findByNickname(String nickname);
     @Query("SELECT u FROM User u INNER JOIN UserAccessToken t ON (t.user.id=u.id) WHERE t.token=?1 AND t.createdAt >= ?2")
     Optional<User> findByToken(UUID token, Date createdFrom);

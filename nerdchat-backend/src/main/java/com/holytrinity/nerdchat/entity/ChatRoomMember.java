@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ChatRoomMember {
     @Id
     @GeneratedValue
-    private UUID id;
+    private int id;
     @ManyToOne
     @JoinColumn(name = "chatRoomId")
     private ChatRoom chatRoom;
@@ -30,6 +30,9 @@ public class ChatRoomMember {
     private User user;
     @OneToMany(mappedBy = "chatRoomMember")
     private List<ChatMessage> messages;
+    @OneToMany(mappedBy = "chatRoomMember")
+    private List<ChatMessageReaction> reactions;
+
     @CreationTimestamp
     private Date lastRead;
     private MemberPermissions permissions;

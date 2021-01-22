@@ -16,16 +16,18 @@ import java.util.UUID;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue
+    private int id;
 
     @Column(unique = true)
     private String nickname;
     private String firstName;
     private String lastName;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.PERSIST)
     private UserCredentials credentials;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.PERSIST)
+    private UserChatConfig config;
 
     @OneToMany(mappedBy = "user")
     private List<ChatRoomMember> chats;

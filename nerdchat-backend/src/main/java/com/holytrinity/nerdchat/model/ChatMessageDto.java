@@ -14,9 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatMessageDto {
-    private UUID messageId;
+    private int messageId;
     private UUID chatRoomId;
-    private UUID senderId;
+    private String senderNickname;
     private String senderName;
     private Date sentAt;
     private ChatMessageStatus status;
@@ -24,8 +24,8 @@ public class ChatMessageDto {
 
     public static ChatMessageDto from(ChatMessage msg) {
         return new ChatMessageDto(msg.getId(),
-                msg.getChatRoom().getId(),
-                msg.getChatRoomMember().getUser().getId(),
+                msg.getChatRoom().getPublicId(),
+                msg.getChatRoomMember().getUser().getNickname(),
                 msg.getChatRoomMember().getUser().getFullName(),
                 msg.getSentAt(),
                 msg.getMessageStatus(),

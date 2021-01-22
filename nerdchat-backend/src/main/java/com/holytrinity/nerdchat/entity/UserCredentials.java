@@ -20,10 +20,10 @@ import java.util.UUID;
 public class UserCredentials {
     @Id
     @GeneratedValue
-    private UUID id;
+    private int id;
 
     @OneToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
     private User user;
 
     @UpdateTimestamp
@@ -37,6 +37,6 @@ public class UserCredentials {
 
     @Override
     public String toString() {
-        return "User credentials #" + id.toString();
+        return "User credentials #" + id;
     }
 }

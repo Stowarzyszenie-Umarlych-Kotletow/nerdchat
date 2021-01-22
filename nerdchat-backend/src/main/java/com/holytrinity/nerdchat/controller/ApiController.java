@@ -16,6 +16,7 @@ import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
@@ -59,10 +60,6 @@ public class ApiController {
                 .map(x -> ChatMessageDto.from(x)).collect(Collectors.toList()));
     }
 
-    @GetMapping("/message/{messageId}")
-    public ResponseEntity<?> getChatMessage(@PathVariable UUID messageId) {
-        return ok(messageService.findById(messageId));
-    }
 
     @GetMapping("/user/chatrooms/list")
     public ResponseEntity<?> getChatRooms() {
@@ -77,4 +74,10 @@ public class ApiController {
             return ok(user.get().getId());
         return notfound("");
     }
+
+    @GetMapping("/user/chat_config")
+    public ResponseEntity<?> getChatConfig() {
+        return ok(null);
+    }
+
 }
