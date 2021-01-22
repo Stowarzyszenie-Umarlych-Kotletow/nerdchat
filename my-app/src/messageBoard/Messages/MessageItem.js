@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import "./MessageItem.css";
 import { UserConfig } from "../../context";
-import formatUrls from "./MessageItemTools";
+import { formatUrls, getEmojiFromLabels } from "./MessageItemTools";
 
 const MessageItem = ({ message, myNick }) => {
   const cfg = useContext(UserConfig);
@@ -54,7 +54,7 @@ const MessageItem = ({ message, myNick }) => {
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
         </div>
         <h1>
-          {formatUrls(content).map((d) => {
+          {formatUrls(getEmojiFromLabels(content)).map((d) => {
             return d;
           })}
         </h1>
