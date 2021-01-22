@@ -4,6 +4,7 @@ import "rc-slider/assets/index.css";
 import "react-dropdown/style.css";
 import "./SettingsBox.css";
 import { UserConfig, UserContext } from "../../context";
+import { getDefaultConfig } from "../../App";
 import InputColor from "react-input-color";
 
 const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
@@ -14,6 +15,10 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
 
   const saveSettings = () => {
     updateConfig(Object.assign({}, localCfg));
+  };
+
+  const resetSettings = () => {
+    updateConfig(getDefaultConfig());
   };
 
   const logoutUser = () => {
@@ -39,7 +44,6 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
 
   // change profile pic
   const changeProfilePic = (pic_id) => {
-    console.log(pic_id);
     document
       .getElementById("userProfilePic")
       .setAttribute("src", `/assets/NerdchatDefPic${pic_id}.png`);
@@ -144,19 +148,37 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
             return arr;
           })()}
         </div>
+      </div>
+      <div
+        style={{
+          height: "30px",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          paddingLeft: "15px",
+          paddingRight: "15px",
+        }}
+      >
         <input
           type="button"
           value="Save changes"
           id="saveSettingsButton"
           onClick={saveSettings}
         />
+        <input
+          type="button"
+          value="Reset Settings"
+          id="resetSettingsButton"
+          onClick={resetSettings}
+        />
+
+        <input
+          type="button"
+          value="Logout"
+          id="logoutButton"
+          onClick={logoutUser}
+        />
       </div>
-      <input
-        type="button"
-        value="Logout"
-        id="logoutButton"
-        onClick={logoutUser}
-      />
     </div>
   );
 };

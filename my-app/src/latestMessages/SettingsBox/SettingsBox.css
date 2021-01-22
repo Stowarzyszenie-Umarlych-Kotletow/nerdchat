@@ -87,19 +87,6 @@ p {
   border-color: #ff5f00;
 }
 
-#saveSettingsButton {
-  width: 30%;
-  height: 30px;
-  font-size: 16px;
-  background-color: #33333c;
-  color: #fff;
-  border: 0;
-}
-
-#saveSettingsButton:hover {
-  background-color: #3336;
-  color: white;
-}
 
 #colorPicker1 {
   width: 40%;
@@ -144,10 +131,22 @@ p {
   z-index: 13;
 }
 
+
+#saveSettingsButton {
+  width: 40%;
+  font-size: 16px;
+  background-color: #33333c;
+  color: #fff;
+  border: 0;
+}
+
+#saveSettingsButton:hover {
+  background-color: #3336;
+  color: white;
+}
+
 #logoutButton {
-  width: 30%;
-  height: 30px;
-  margin-left: 15px;
+  width: 20%;
   background: transparent;
   border: 0;
   border: 1px solid #a52f2f;
@@ -157,4 +156,12 @@ p {
   color:#a52f2f;
 }
 
+
+#resetSettingsButton {
+  width: 30%;
+  font-size: 16px;
+  background-color: #33333c;
+  color: #fff;
+  border: 0;
+}
 
