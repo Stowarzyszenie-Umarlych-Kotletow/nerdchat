@@ -1,12 +1,15 @@
 package com.holytrinity.nerdchat.controller;
 
 import com.holytrinity.nerdchat.entity.User;
+import com.holytrinity.nerdchat.entity.UserChatConfig;
 import com.holytrinity.nerdchat.model.ChatMessageDto;
+import com.holytrinity.nerdchat.model.UserChatConfigDto;
 import com.holytrinity.nerdchat.model.http.ApiResponse;
 import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
 import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
 import com.holytrinity.nerdchat.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -15,10 +18,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,8 @@ import java.util.stream.Collectors;
 public class ApiController {
     @Autowired
     private SimpUserRegistry users;
+    @Autowired
+    private EntityManager entities;
     @Autowired
     private SimpMessagingTemplate messaging;
     @Autowired
@@ -77,7 +81,23 @@ public class ApiController {
 
     @GetMapping("/user/chat_config")
     public ResponseEntity<?> getChatConfig() {
-        return ok(null);
+        var user = getUser();
+        var cfg = user.getConfig();
+        if(cfg == null)
+            return notfound("no config");
+        return ok(UserChatConfigDto.from(cfg));
+    }
+
+    @PostMapping("/user/chat_config")
+    public ResponseEntity<?> postChatConfig(@RequestBody UserChatConfigDto body) {
+        var user = getUser();
+        var cfg = user.getConfig();
+        if(cfg == null) {
+            user.setConfig(cfg = UserChatConfig.builder().user(user).build());
+        }
+        BeanUtils.copyProperties(body, cfg);
+        userService.save(user);
+        return ok(true);
     }
 
 }

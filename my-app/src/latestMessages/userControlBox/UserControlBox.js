@@ -49,7 +49,7 @@ export class UserControlBox extends Component {
       <div
         id="userControlBox"
         style={{
-          backgroundColor: this.context.colorAccents,
+          backgroundColor: this.context.accentsColor,
           color: this.context.textColorMain,
           fontSize: String(24 * this.context.fontSizeMultiplier) + "px",
           paddingTop: "5px",

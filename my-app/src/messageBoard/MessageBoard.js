@@ -6,7 +6,7 @@ import AddMessage from "./AddMessage";
 import React from "react";
 import { UserConfig } from "../context";
 import EmojiBox from "./EmojiBox/EmojiBox";
-import CreatePollBox from "./CreatePollBox"
+import CreatePollBox from "./CreatePollBox";
 
 export class MessageBoard extends Component {
   static contextType = UserConfig;
@@ -106,7 +106,7 @@ export class MessageBoard extends Component {
     return (
       <div
         style={{
-          backgroundColor: this.context.colorBackground,
+          backgroundColor: this.context.backgroundColor,
           height: "100%",
         }}
       >
@@ -146,10 +146,12 @@ export class MessageBoard extends Component {
                           value="Set Code"
                           className="optionButton"
                           onClick={this.submitNewChatCode}
-                          style={{ color: this.context.textColorUser, width: "20%" }}
+                          style={{
+                            color: this.context.textColorUser,
+                            width: "20%",
+                          }}
                         />
                       </div>
-                      
                     ) : (
                       <div
                         id="copyOption"
@@ -173,12 +175,15 @@ export class MessageBoard extends Component {
                       />
                     )}
                     <input
-                        type="button"
-                        value="Create a poll"
-                        className="optionButton"
-                        onClick={this.switchOpenCreatePoll}
-                        style={{ color: this.context.textColorUser, marginTop: "10px"}}
-                      />
+                      type="button"
+                      value="Create a poll"
+                      className="optionButton"
+                      onClick={this.switchOpenCreatePoll}
+                      style={{
+                        color: this.context.textColorUser,
+                        marginTop: "10px",
+                      }}
+                    />
                   </div>
                 ) : null}
               </div>
@@ -205,12 +210,10 @@ export class MessageBoard extends Component {
               />
             )}
           </div>
-
         </div>
-        {this.state.openCreatePoll?
-        <CreatePollBox switchOpenCreatePoll={this.switchOpenCreatePoll}/>
-        : null
-        }
+        {this.state.openCreatePoll ? (
+          <CreatePollBox switchOpenCreatePoll={this.switchOpenCreatePoll} />
+        ) : null}
       </div>
     );
   }

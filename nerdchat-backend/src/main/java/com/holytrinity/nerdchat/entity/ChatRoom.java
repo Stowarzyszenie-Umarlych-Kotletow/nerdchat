@@ -21,7 +21,7 @@ public class ChatRoom {
     @Id
     @GeneratedValue
     private int id;
-    
+
     @Column(unique = true, nullable = false)
     @Builder.Default private UUID publicId = UUID.randomUUID();
 

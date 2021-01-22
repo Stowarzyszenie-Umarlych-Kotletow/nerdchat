@@ -82,13 +82,13 @@ const MessageItem = ({ message, myNick }) => {
 
                 <div
                   className="pollBarTrack"
-                  style={{ backgroundColor: cfg.colorBackground }}
+                  style={{ backgroundColor: cfg.backgroundColor }}
                 >
                   <div
                     className="pollBar"
                     style={{
                       width: String((100 * option.value) / pollValuesSum) + "%",
-                      backgroundColor: cfg.colorAccents,
+                      backgroundColor: cfg.accentsColor,
                     }}
                   />
                 </div>

@@ -18,7 +18,7 @@ const ConversationBox = ({ updateConfig, setLastRead }) => {
           <div
             id="appTitleBox"
             style={{
-              backgroundColor: cfg.colorAccents,
+              backgroundColor: cfg.accentsColor,
               color: cfg.textColorMain,
               zIndex: "1",
               fontSize: "30px",

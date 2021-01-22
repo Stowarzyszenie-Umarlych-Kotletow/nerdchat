@@ -29,7 +29,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
             className="latestMessage"
             key={m.chatRoomId}
             style={{
-              backgroundColor: cfg.colorAccents,
+              backgroundColor: cfg.accentsColor,
               color: cfg.textColorMain,
               fontSize: String(16 * cfg.fontSizeMultiplier) + "px",
               paddingTop: "5px",
@@ -90,8 +90,10 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
               {isToday ? date.toLocaleTimeString() : date.toDateString()}
             </div>
             <div className="latestMessageMessage">
-              {wrapText(m.lastMessage.senderName === null ? null :
-                m.lastMessage.senderName + ": " + m.lastMessage.content
+              {wrapText(
+                m.lastMessage.senderName === null
+                  ? null
+                  : m.lastMessage.senderName + ": " + m.lastMessage.content
               )}
             </div>
           </div>

@@ -2,6 +2,7 @@ package com.holytrinity.nerdchat.service;
 
 import com.holytrinity.nerdchat.entity.User;
 import com.holytrinity.nerdchat.entity.UserAccessToken;
+import com.holytrinity.nerdchat.entity.UserChatConfig;
 import com.holytrinity.nerdchat.entity.UserCredentials;
 import com.holytrinity.nerdchat.repository.UserAccessTokenRepository;
 import com.holytrinity.nerdchat.repository.UserRepository;
@@ -58,6 +59,11 @@ public class UserService {
 
     public boolean checkNicknameFree(String nickname) {
         return !users.existsByNickname(sanitizeNickname(nickname));
+    }
+
+    public Optional<UserChatConfig> getUserConfig(int userId){return users.findConfig(userId);}
+    public void save(User user) {
+        users.save(user);
     }
 
 }

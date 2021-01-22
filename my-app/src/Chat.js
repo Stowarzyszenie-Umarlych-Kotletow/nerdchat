@@ -200,6 +200,23 @@ export class Chat extends Component {
 
   updateConfig = (cfg) => {
     this.props.setConfig(cfg);
+    this.http.postChatConfig(cfg).then((m) => {
+      console.log("poszło : ddd");
+    });
+  };
+
+  onSessionReady = () => {
+    this.http.getChatConfig().then((cfg) => {
+      var newCfg = this.props.config;
+      Object.keys(cfg).forEach((v, i) => {
+        if (cfg[v] !== null) {
+          newCfg[v] = cfg[v];
+        }
+      }, this);
+      console.log("GOT CONFIG");
+      console.log(cfg);
+      this.props.setConfig(newCfg);
+    });
   };
 
   componentDidUpdate = (pp, ps) => {
@@ -209,6 +226,7 @@ export class Chat extends Component {
     }
     if (pp.creds !== this.props.creds && pp.creds.token !== this.props.creds) {
       if (this.props.creds.token != null) {
+        this.onSessionReady();
         this.connect(this.props.creds);
       }
     }

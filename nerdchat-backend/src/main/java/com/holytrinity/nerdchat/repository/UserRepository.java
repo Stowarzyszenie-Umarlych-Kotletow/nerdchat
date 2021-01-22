@@ -1,6 +1,7 @@
 package com.holytrinity.nerdchat.repository;
 
 import com.holytrinity.nerdchat.entity.User;
+import com.holytrinity.nerdchat.entity.UserChatConfig;
 import com.holytrinity.nerdchat.entity.UserCredentials;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,5 +18,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     Optional<User> findByToken(UUID token, Date createdFrom);
     @Query("SELECT c FROM UserCredentials c INNER JOIN User u ON (u.id=c.user.id) WHERE LOWER(u.nickname)=LOWER(?1)")
     Optional<UserCredentials> findCredentials(String nickname);
+    @Query("SELECT c FROM UserChatConfig c INNER JOIN User u ON (u.id=c.user.id) WHERE u.id=?1")
+    Optional<UserChatConfig> findConfig(int id);
     boolean existsByNickname(String nickname);
 }

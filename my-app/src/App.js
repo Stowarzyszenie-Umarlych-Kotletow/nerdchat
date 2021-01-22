@@ -4,7 +4,6 @@ import Chat from "./Chat";
 import LoginWindow from "./loginWindow/loginWindow";
 import RegistrationWindow from "./loginWindow/registrationWindow/registrationWindow";
 import { getChatRoomList, HttpApi } from "./common/Api";
-import { configSetDefault, configImport } from "./common/config";
 import { UserConfig, UserContext } from "./context";
 const getDefaultConfig = () => {
   return {
@@ -13,8 +12,8 @@ const getDefaultConfig = () => {
     textColorMain: "#1f1f2e", // 1f1f2e - 696969
     textColorUser: "#f5f5f5", //f5f5f5
     // background colors
-    colorAccents: "#6f9", // 66ff99 - ffc933  - ff99cc
-    colorBackground: "#333", // 333333
+    accentsColor: "#6f9", // 66ff99 - ffc933  - ff99cc
+    backgroundColor: "#333", // 333333
     // time
     twelweHourFormating: false,
     currentStatus: "online",
@@ -50,6 +49,7 @@ const App = () => {
                 api,
                 setOpenWindow,
                 creds,
+                config,
                 setConfig,
                 myNick: creds.nickname,
               }}

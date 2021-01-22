@@ -81,8 +81,8 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
             <label>Primary Color</label>
             <br />
             <InputColor
-              initialValue={config.colorBackground}
-              onChange={(c) => onColorChanged("colorBackground", c.hex)}
+              initialValue={config.backgroundColor}
+              onChange={(c) => onColorChanged("backgroundColor", c.hex)}
               placement="right"
             />
           </div>
@@ -90,8 +90,8 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
             <label>Accent color</label>
             <br />
             <InputColor
-              initialValue={config.colorAccents}
-              onChange={(c) => onColorChanged("colorAccents", c.hex)}
+              initialValue={config.accentsColor}
+              onChange={(c) => onColorChanged("accentsColor", c.hex)}
               placement="right"
             />
             {/*<input id="accentColorPicker" type="color"></input>*/}

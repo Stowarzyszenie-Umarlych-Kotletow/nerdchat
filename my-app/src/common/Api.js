@@ -6,10 +6,16 @@ const request = (options) => {
   if (options.setContentType !== false) {
     headers.append("Content-Type", "application/json");
   }
+  if (options.headers) {
+    Object.keys(options.headers).forEach((v, i) => {
+      headers.append(v, options.headers[v]);
+    });
+    delete options["headers"];
+  }
 
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
-
+  console.log(options);
   return fetch(options.url, options).then((response) =>
     response.json().then((json) => {
       if (!response.ok) {
@@ -46,7 +52,6 @@ export class HttpApi {
     return this.request({ url: config.apiUrl + url, method: "GET" });
   }
   requestPost(url, body) {
-    console.log("HEY!" + config.apiUrl);
     return this.request({
       url: config.apiUrl + url,
       method: "POST",
@@ -78,6 +83,12 @@ export class HttpApi {
       lastName,
       password,
     });
+  }
+  getChatConfig() {
+    return this.requestGet("/user/chat_config");
+  }
+  postChatConfig(cfg) {
+    return this.requestPost("/user/chat_config", cfg);
   }
 }
 
