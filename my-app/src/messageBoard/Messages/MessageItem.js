@@ -27,7 +27,33 @@ const MessageItem = ({ message, myUserId }) => {
     }
   };
 
+
+
+
+
+  const hasPoll = false;
+  const pollData = {
+    pollName: "Poll name",
+    options: [
+      {
+        name: "Option 1",
+        value: 5
+      },
+      {
+        name: "Option 2",
+        value: 2
+      }
+    ]
+  }
+
+
+
+
+
+
   const { senderName, sentAt, content, id } = message;
+  let pollValuesSum = 0;
+  for (let i = 0; i<pollData.options.length; i++) pollValuesSum += pollData.options[i].value;
   return (
     <div>
       <div className="textbox" style={getStyle(id)}>
@@ -40,7 +66,35 @@ const MessageItem = ({ message, myUserId }) => {
             return (d);
           })}
         </h1>
+        {hasPoll?
+      <div className="pollBox">
+        <label style={{
+          fontSize: String(16 * cfg.fontSizeMultiplier) + "px",
+          fontWeight: "bold"
+          }}> Ankieta - {pollData.pollName} </label>
+        {
+          pollData.options.map((option, id) => (
+            <div className="pollOption"style={{
+              fontSize: String(14 * cfg.fontSizeMultiplier) + "px",
+              fontWeight: "bold"
+              }}>
+              <input type="checkbox" id={"box-" + id} />
+              <label for ={"box-" + id}>{option.name}</label>
+
+              
+              <div className="pollBarTrack" style={{backgroundColor: cfg.colorBackground }}>
+                <div className="pollBar" style={{width: String(100 * option.value / pollValuesSum) + "%", backgroundColor: cfg.colorAccents}} /> 
+              </div>
+            </div>
+          )
+
+        )}
+
+      </div> 
+      : null
+      }
       </div>
+     
     </div>
   );
 };

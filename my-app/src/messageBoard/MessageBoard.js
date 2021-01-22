@@ -3,9 +3,10 @@ import "./MessageBoard.css";
 import "../common/scrollbar.css";
 import Messages from "./Messages/Messages";
 import AddMessage from "./AddMessage";
-import React, { useEffect } from "react";
+import React from "react";
 import { UserConfig } from "../context";
 import EmojiBox from "./EmojiBox/EmojiBox";
+import CreatePollBox from "./CreatePollBox"
 
 export class MessageBoard extends Component {
   static contextType = UserConfig;
@@ -16,7 +17,8 @@ export class MessageBoard extends Component {
     messages: [],
     showOptions: false,
     openOptions: false,
-    opemEmoji: false,
+    openEmoji: false,
+    openCreatePoll: false,
     chatCodeValid: true,
     adminPermissions: true,
   };
@@ -83,7 +85,11 @@ export class MessageBoard extends Component {
   };
 
   switchOpenEmoji = () => {
-    this.setState({ opemEmoji: !this.state.opemEmoji });
+    this.setState({ openEmoji: !this.state.openEmoji });
+  };
+
+  switchOpenCreatePoll = () => {
+    this.setState({ openCreatePoll: !this.state.openCreatePoll });
   };
 
   // Add Message to MessageBoard
@@ -137,12 +143,13 @@ export class MessageBoard extends Component {
                         />
                         <input
                           type="button"
-                          value="OK"
-                          id="chatCodeButton"
+                          value="Set Code"
+                          className="optionButton"
                           onClick={this.submitNewChatCode}
-                          style={{ color: this.context.textColorUser }}
+                          style={{ color: this.context.textColorUser, width: "20%" }}
                         />
                       </div>
+                      
                     ) : (
                       <div
                         id="copyOption"
@@ -165,6 +172,13 @@ export class MessageBoard extends Component {
                         datatext="Invalid or taken Code"
                       />
                     )}
+                    <input
+                        type="button"
+                        value="Create a poll"
+                        className="optionButton"
+                        onClick={this.switchOpenCreatePoll}
+                        style={{ color: this.context.textColorUser, marginTop: "10px"}}
+                      />
                   </div>
                 ) : null}
               </div>
@@ -173,7 +187,7 @@ export class MessageBoard extends Component {
               id="MessageContainer"
               style={{ color: this.context.textColorUser }}
             >
-              {this.state.opemEmoji ? (
+              {this.state.openEmoji ? (
                 <EmojiBox switchOpenEmoji={this.switchOpenEmoji} />
               ) : null}
               {this.props.activeChatId === null ? (
@@ -191,7 +205,12 @@ export class MessageBoard extends Component {
               />
             )}
           </div>
+
         </div>
+        {this.state.openCreatePoll?
+        <CreatePollBox switchOpenCreatePoll={this.switchOpenCreatePoll}/>
+        : null
+        }
       </div>
     );
   }

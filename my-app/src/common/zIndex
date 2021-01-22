@@ -1,6 +1,6 @@
 0 MainContent
 15 EmojiBar
 16 JoinConversation
-17 SettingsBox, chatOptions
+17 SettingsBox, chatOptions, createNewPollBox
 18 LoginWindow
 19 RegistrationWindow
