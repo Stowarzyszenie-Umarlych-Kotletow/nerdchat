@@ -3,17 +3,23 @@
     z-index: 16;
     /* height: 5%; */
     width: 30%;
+    min-width: 350px;
     left: 27%;
     bottom: 50px;
     background-color: #444c;
 }
-.file-input {
+
+#file-input {
     height: 95%;
     width: 100%;
-    /* background-color: #444c; */
+    flex: 1;
+    font-size: 24px;
+    border: none;
+    padding: 5px;
 }
-.size-label {
+
+#size-label {
     width: 100%;
-    /* background-color: #444c; */
+    font-size: 24px;
 }
 

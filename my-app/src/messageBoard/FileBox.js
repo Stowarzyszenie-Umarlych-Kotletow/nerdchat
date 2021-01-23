@@ -22,20 +22,13 @@ class FileBox extends Component {
 
   render() {
     return (
-      <div id="FileBox">
+      <div id="FileBox" style={{
+        // backgroundColor: this.context.backgroundColor
+      }}>
         <input
           type="file"
           accept=".txt"
           id="file-input"
-          style={{
-            flex: "1",
-            fontSize: "24px",
-            // backgroundColor: "#444c",
-            border: "none",
-            padding: "5px",
-            height: "95%",
-            width: "100%",
-          }}
           onChange={this.onFileButtonClicked}
         />
         <label id="size-label"></label>
