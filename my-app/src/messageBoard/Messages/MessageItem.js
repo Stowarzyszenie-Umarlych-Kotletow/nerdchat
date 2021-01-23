@@ -4,7 +4,7 @@ import "./MessageItem.css";
 import { UserConfig, ChatContext } from "../../context";
 import { formatUrls, getEmojiFromLabels } from "./MessageItemTools";
 
-const MessageItem = ({ message, myNick }) => {
+const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
   const cfg = useContext(UserConfig);
   const chat = useContext(ChatContext);
   // get style of message box depending on whose information is it
@@ -27,6 +27,27 @@ const MessageItem = ({ message, myNick }) => {
       };
     }
   };
+
+  let reactions = {
+    "🩸": 1, 
+    "🦙": 1333, 
+    "🦠": 19,
+    "🐢": 213,
+    "❤️": 2
+  }
+
+  const getReations = () => {
+
+
+
+    let result = Object.keys(reactions).sort(function (a, b) { return reactions[b] - reactions[a]; }).slice(0, 3);
+    let reactionString = ""
+    result.forEach((key) => {
+        reactionString += key + " " + String(reactions[key]) + " "
+    })
+
+    return reactionString
+  }
 
   const hasPoll = false;
   const pollData = {
@@ -54,7 +75,7 @@ const MessageItem = ({ message, myNick }) => {
           {senderName} - &#9202;{" "}
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
         </div>
-        <h1>
+        <h1 style={{marginBottom: "10px"}}>
           {formatUrls(getEmojiFromLabels(content, chat.emojis)).map((d) => {
             return d;
           })}
@@ -97,6 +118,14 @@ const MessageItem = ({ message, myNick }) => {
             ))}
           </div>
         ) : null}
+        <div className="reactions" datatext={getReations()} style={{fontSize: String(11 * cfg.fontSizeMultiplier) + "px"}} onClick={() => showReactions(reactions)}>
+        <input
+          type="button"
+          value="+"
+          className="newReactionButton"
+          onClick={(e) => {e.stopPropagation(); addReaction();}}
+        />
+        </div>
       </div>
     </div>
   );

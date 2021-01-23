@@ -7,10 +7,11 @@
     border-radius: 10px;
     display:inline-block;
     padding: 15px;
-    margin-bottom: 10px;
     text-decoration: none;
     max-width: 40%;
     word-wrap: break-word;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
 }
 .textHeader {
     padding-left: 1px;
@@ -22,6 +23,7 @@
     border: 0;
     border: 1px solid #eee;
     border-radius: 7px ;
+    margin-bottom: 10px;
     word-wrap: break-word;
     padding: 3%;
     -webkit-tap-highlight-color: transparent;
@@ -85,4 +87,25 @@ input[type="checkbox"]:checked + label:before {
   border-left-color: transparent;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.reactions {
+  position: absolute;
+  bottom: 2px;
+  display: table;
+  background-color: #ccc3;
+  border-radius: 7px ;
+  font-size: 11px;
+  word-wrap: break-word;
+}
+
+.reactions::after {
+  content: attr(datatext);
+}
+
+.newReactionButton {
+  width: 20px;
+  background-color: #ccc3;
+  border-radius: 7px ;
+  font-size: 12px;
 }
