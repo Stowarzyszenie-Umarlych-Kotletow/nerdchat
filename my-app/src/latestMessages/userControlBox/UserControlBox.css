@@ -39,14 +39,15 @@
   content: attr(data-text);
 }
 
-#settingsIcon {
+#settingsIconBlock {
   flex: 1;
   font-size: 26px;
   text-align: center;
   justify-content: center;
   align-items: center;
   height: 61px;
-  border-radius: 20px;
+  padding-top: 6px;
+  border-radius: 15px;
 }
 
 #settingsIcon:hover {

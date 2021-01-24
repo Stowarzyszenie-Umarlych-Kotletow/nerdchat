@@ -26,6 +26,7 @@ export class LoginWindow extends Component {
   onForgotPassword = () => {
     // TODO: 'forgotten password handling'
     console.log("forgot my password, send help");
+    window.alert('Please contact the administrator');
   };
 
   render() {
