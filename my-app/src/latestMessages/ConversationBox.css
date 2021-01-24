@@ -18,6 +18,11 @@
     font-weight: bold;
     overflow-x: hidden;
 }
+
+#appTitleBoxText {
+    margin-left: 15px;
+}
+
 /* Latest Messages text */
 #textLatestMessages {
     text-align: center;

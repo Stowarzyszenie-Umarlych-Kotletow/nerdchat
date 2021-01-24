@@ -47,6 +47,8 @@
   background: #282828;
   border-radius: 7px;
   position: relative;
+  justify-content: center;
+  padding-top: 3px;
 }
 
 .XButtonSettings::after {
