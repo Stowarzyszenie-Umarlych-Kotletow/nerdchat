@@ -17,16 +17,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "user_credentials")
 public class UserCredentials {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "userId")
+    @OneToOne(cascade=CascadeType.PERSIST, optional = false)
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "creds_users_fk"))
     private User user;
 
     @UpdateTimestamp
+    @Column(nullable = false)
     private Date changedAt;
     private String passwordHash;
 

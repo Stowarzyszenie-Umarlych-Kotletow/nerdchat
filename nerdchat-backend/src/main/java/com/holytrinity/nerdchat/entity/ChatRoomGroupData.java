@@ -16,14 +16,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "chat_groups")
 public class ChatRoomGroupData {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(optional = true, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(name = "groups_rooms_fk"))
     private ChatRoom chatRoom;
-    @Column(unique = true)
+    @Column(unique = true, length = 15)
     private String joinCode;
 
 }

@@ -14,13 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "emojis")
 public class Emoji {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(unique = true)
+    @Column(unique = true, length=32)
     private String label;
-    @Column(unique = true)
+    @Column(unique = true, columnDefinition = "NVARCHAR(8)")
     private String dataText;
 
     public Emoji(String label, String data) {

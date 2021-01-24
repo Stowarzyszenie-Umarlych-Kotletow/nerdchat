@@ -23,10 +23,11 @@ public class ChatMessageDto {
     private String content;
 
     public static ChatMessageDto from(ChatMessage msg) {
+        var member = msg.getChatRoomMember();
         return new ChatMessageDto(msg.getId(),
-                msg.getChatRoom().getPublicId(),
-                msg.getChatRoomMember().getUser().getNickname(),
-                msg.getChatRoomMember().getUser().getFullName(),
+                member.getChatRoom().getPublicId(),
+                member.getUser().getNickname(),
+                member.getUser().getFullName(),
                 msg.getSentAt(),
                 msg.getMessageStatus(),
                 msg.getContent());

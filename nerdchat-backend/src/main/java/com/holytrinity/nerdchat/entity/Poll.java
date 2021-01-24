@@ -7,25 +7,28 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ChatMessagePoll {
+@Table(name = "polls")
+public class Poll {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int id;
     public String questionText;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "chatMessageId", nullable = false)
-    private ChatMessage chatMessage;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "polls_users_fk"))
+    private User author;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "messagePoll")
+    private List<ChatMessage> chatMessages;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "poll", cascade = CascadeType.PERSIST)
-    private List<ChatMessagePollAnswer> answers;
+    private List<PollAnswer> answers;
 
 
 }

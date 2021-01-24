@@ -16,12 +16,12 @@ import java.util.UUID;
 public interface ChatMessageRepository
         extends PagingAndSortingRepository<ChatMessage, Integer> {
 
-    List<ChatMessage> findByChatRoom_id(int chatRoomId, Sort sort);
-    List<ChatMessage> findByChatRoom_publicId(UUID chatRoomId, Sort sort);
-    Optional<ChatMessage> findFirstByChatRoom_id(int chatRoomId, Sort sort);
-    long countByChatRoom_idAndSentAtAfter(int chatRoomId, Date sentAfter);
+    List<ChatMessage> findByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
+    List<ChatMessage> findByChatRoomMember_ChatRoom_publicId(UUID chatRoomId, Sort sort);
+    Optional<ChatMessage> findFirstByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
+    long countByChatRoomMember_ChatRoom_idAndSentAtAfter(int chatRoomId, Date sentAfter);
 
     default Optional<ChatMessage> findLastInChatRoom(int chatRoomId) {
-        return findFirstByChatRoom_id(chatRoomId, Sort.by("sentAt").descending());
+        return findFirstByChatRoomMember_ChatRoom_id(chatRoomId, Sort.by("sentAt").descending());
     }
 }

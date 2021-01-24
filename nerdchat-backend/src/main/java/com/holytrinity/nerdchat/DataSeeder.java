@@ -28,8 +28,7 @@ public class DataSeeder implements ApplicationRunner {
     @Autowired private ChatMessageRepository chatMessages;
     @Autowired private EmojiRepository emojis;
 
-    public void run(ApplicationArguments args) {
-
+    private void seed() {
         var userA = User.builder()
                 .firstName("Jan")
                 .lastName("Kowalski")
@@ -47,7 +46,7 @@ public class DataSeeder implements ApplicationRunner {
                 .build();
         var users = new ArrayList<User>(List.of(userA, userB, userC));
         credentials.saveAll(
-            users.stream().map(u -> new UserCredentials(u, "ziemniak")).collect(Collectors.toList())
+                users.stream().map(u -> new UserCredentials(u, "ziemniak")).collect(Collectors.toList())
         );
 
         var chatAB = chatRoomService.createDirectChat(userA, userB);
@@ -55,17 +54,18 @@ public class DataSeeder implements ApplicationRunner {
 
         chatMessageService.save(ChatMessage.builder()
                 .content("Hey!")
-                .chatRoom(chatAB)
                 .chatRoomMember(chatAB.getMembers().get(1))
                 .build());
 
         chatMessageService.save(ChatMessage.builder()
                 .content("hello there")
-                .chatRoom(chatAC)
                 .chatRoomMember(chatAC.getMembers().get(1))
                 .build());
         emojis.saveAll(List.of(new Emoji("jamesmay", "\uD83D\uDC22"), new Emoji("heart", "❤️")));
 
-        //dump();
+    }
+
+    public void run(ApplicationArguments args) {
+        //seed();
     }
 }

@@ -8,31 +8,29 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ChatMessagePollVote implements Serializable {
+@Table(name = "poll_votes")
+public class PollVote implements Serializable {
     @Id
-    @Column(name = "voterId")
+    @Column(name = "voter_id")
     private int voterId;
     @Id
-    @Column(name = "answerId")
+    @Column(name = "answer_id")
     private int answerId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "voterId", nullable = false)
-    private ChatRoomMember voter;
-
+    @JoinColumn(name = "voter_id", nullable = false, foreignKey = @ForeignKey(name = "votes_users_fk"))
+    private User voter;
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "answerId", nullable = false)
-    private ChatMessagePollAnswer answer;
-
+    @JoinColumn(name = "answer_id", nullable = false, foreignKey = @ForeignKey(name = "votes_answers_fk"))
+    private PollAnswer answer;
 
 
 }

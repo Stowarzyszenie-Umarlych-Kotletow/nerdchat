@@ -1,7 +1,9 @@
 package com.holytrinity.nerdchat.repository;
 
 import com.holytrinity.nerdchat.entity.ChatRoom;
+import com.holytrinity.nerdchat.model.ChatRoomListEntry;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -28,4 +30,7 @@ public interface ChatRoomRepository extends CrudRepository<ChatRoom, Integer> {
     default Optional<ChatRoom> findExistingChatRoomBetween(int userId1, int userId2) {
         return _findExistingChatRoomBetween(userId1, userId2);
     }
+
+    @Procedure(value = "GET_USER_ROOM_DATA")
+    List<ChatRoomListEntry> getShitOn(int user_id);
 }

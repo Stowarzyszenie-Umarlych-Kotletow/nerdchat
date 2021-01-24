@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,13 +16,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "user_access_tokens")
 public class UserAccessToken {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "UUID")
+    @Column(length = 16)
     private UUID token;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "userId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "tokens_users_fk"))
     private User user;
 
     @CreationTimestamp

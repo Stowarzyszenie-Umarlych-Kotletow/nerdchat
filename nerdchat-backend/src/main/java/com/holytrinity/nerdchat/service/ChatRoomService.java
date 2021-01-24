@@ -17,11 +17,16 @@ import com.holytrinity.nerdchat.utils.TrimUtils;
 import javassist.NotFoundException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.text.RandomStringGenerator;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,6 +42,8 @@ public class ChatRoomService {
     private ChatRoomMemberRepository _memberRepository;
     @Autowired
     private ChatRoomGroupDataRepository _groupRepository;
+    @Autowired
+    private EntityManager _entity;
 
 
     public String getChatRoomName(ChatRoom room, int userId) {
@@ -52,7 +59,7 @@ public class ChatRoomService {
         _memberRepository.save(member);
     }
 
-    public List<ChatRoomListEntry> getUserChatRoomList(int userId) {
+    /*public List<ChatRoomListEntry> getUserChatRoomList_old(int userId) {
         return _memberRepository.findByUser_id(userId).stream()
                 .sorted(Comparator.comparing(ChatRoomMember::getLastRead).reversed())
                 .map(x -> {
@@ -63,13 +70,13 @@ public class ChatRoomService {
                             x.getChatRoom().getPublicId(),
                             x.getChatRoom().getType(),
                             x.getPermissions(),
-                            _msgRepository.countByChatRoom_idAndSentAtAfter(x.getChatRoom().getId(), x.getLastRead()),
+                            _msgRepository.countByChatRoomMember_ChatRoom_idAndSentAtAfter(x.getChatRoom().getId(), x.getLastRead()),
                                     x.getChatRoom().getType() == ChatRoomType.DIRECT ? "" : x.getChatRoom().getGroupData().getJoinCode());
 
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-    }
+    }*/
 
     public Optional<ChatRoom> findById(int roomId) {
         return _roomRepository.findById(roomId);
@@ -191,5 +198,17 @@ public class ChatRoomService {
             _groupRepository.save(data);
         });
         return code;
+    }
+
+    public List<ChatRoomListEntry> getUserChatRoomList(int userId) {
+
+        var query = _entity.createStoredProcedureQuery("GET_USER_ROOM_DATA", "ChatRoomListEntries");
+        query.registerStoredProcedureParameter("v_user_id", int.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("out_cur", void.class, ParameterMode.REF_CURSOR);
+        query.setParameter("v_user_id", userId);
+
+
+        var list = query.getResultList();
+        return list;
     }
 }

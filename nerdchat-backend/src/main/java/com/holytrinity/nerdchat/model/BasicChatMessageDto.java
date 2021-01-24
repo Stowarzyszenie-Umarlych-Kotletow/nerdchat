@@ -23,11 +23,12 @@ public class BasicChatMessageDto {
     private Date sentAt;
 
     public static BasicChatMessageDto from(ChatMessage msg) {
+        var member = msg.getChatRoomMember();
         return new BasicChatMessageDto(msg.getId(),
-                msg.getChatRoom().getPublicId(),
-                msg.getChatRoomMember().getId(),
-                msg.getChatRoomMember().getUser().getNickname(),
-                msg.getChatRoomMember().getUser().getFullName(),
+                member.getChatRoom().getPublicId(),
+                member.getId(),
+                member.getUser().getNickname(),
+                member.getUser().getFullName(),
                 msg.getContent(),
                 msg.getSentAt());
     }

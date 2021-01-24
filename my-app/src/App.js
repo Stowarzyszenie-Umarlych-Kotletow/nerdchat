@@ -5,7 +5,7 @@ import LoginWindow from "./loginWindow/loginWindow";
 import RegistrationWindow from "./loginWindow/registrationWindow/registrationWindow";
 import { HttpApi } from "./common/Api";
 import { UserConfig, UserContext } from "./context";
-const getDefaultConfig = () => {
+export const getDefaultConfig = () => {
   return {
     // text
     fontSizeMultiplier: 1,
@@ -29,9 +29,7 @@ const App = () => {
     nickname: null,
   });
   const [openWindow, setOpenWindow] = useState(windowType.login);
-  const [api] = useState(
-    new HttpApi(Object.assign({}, creds), setCreds)
-  );
+  const [api] = useState(new HttpApi(Object.assign({}, creds), setCreds));
 
   useEffect(() => {
     if (window.localStorage) {

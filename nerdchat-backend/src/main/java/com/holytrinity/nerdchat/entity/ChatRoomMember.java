@@ -18,15 +18,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "room_members")
 public class ChatRoomMember {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
-    @JoinColumn(name = "chatRoomId")
+    @JoinColumn(name = "room_id", foreignKey = @ForeignKey(name = "members_rooms_fk"))
     private ChatRoom chatRoom;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "members_users_fk"))
     private User user;
     @OneToMany(mappedBy = "chatRoomMember")
     private List<ChatMessage> messages;
@@ -35,5 +36,10 @@ public class ChatRoomMember {
 
     @CreationTimestamp
     private Date lastRead;
+    @CreationTimestamp
+    private Date joinedAt;
+    private Date leftAt;
+
+    @Enumerated(EnumType.STRING)
     private MemberPermissions permissions;
 }

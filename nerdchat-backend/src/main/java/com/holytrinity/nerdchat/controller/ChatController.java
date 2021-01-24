@@ -17,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
@@ -42,14 +43,13 @@ public class ChatController {
         if (member.isEmpty())
             return;
         var message = messageService.save(ChatMessage.builder()
-                .chatRoom(member.get().getChatRoom())
                 .chatRoomMember(member.get())
                 .content(msg.getContent())
                 .sentAt(new Date())
                 .build());
 
         var notification = BasicChatMessageDto.from(message);
-        _notifyChannel(message.getChatRoom().getPublicId(), "message", notification);
+        _notifyChannel(member.get().getChatRoom().getPublicId(), "message", notification);
     }
 
     @MessageMapping("/last-read")
