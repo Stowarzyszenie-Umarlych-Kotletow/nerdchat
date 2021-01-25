@@ -32,7 +32,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<ChatRoomMember> chats;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<UserAccessToken> accessTokens;
 
     public String getFullName() {

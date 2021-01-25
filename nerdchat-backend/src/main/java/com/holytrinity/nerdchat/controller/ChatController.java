@@ -16,6 +16,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Date;
@@ -24,6 +25,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Controller
+@Transactional
 public class ChatController {
     @Autowired
     private SimpMessagingTemplate messaging;
@@ -39,33 +41,34 @@ public class ChatController {
     @MessageMapping("/send-chat")
     public void sendChat(SimpMessageHeaderAccessor h, @Payload SendChatMessage msg) throws Exception {
         var usrId = _getUserId(h);
-        var member = roomService.findById(msg.getChannelId()).flatMap(m -> roomService.getRoomMember(m.getId(), usrId, false));
-        if (member.isEmpty())
-            return;
-        var message = messageService.save(ChatMessage.builder()
-                .chatRoomMember(member.get())
-                .content(msg.getContent())
-                .sentAt(new Date())
-                .build());
+         roomService.findRoomMember(msg.getChannelId(), usrId).ifPresent(member -> {
+             var message = messageService.save(ChatMessage.builder()
+                     .chatRoomMember(member)
+                     .content(msg.getContent())
+                     .sentAt(new Date())
+                     .build());
 
-        var notification = BasicChatMessageDto.from(message);
-        _notifyChannel(member.get().getChatRoom().getPublicId(), "message", notification);
+             var notification = ChatMessageDto.from(message);
+             _notifyChannel(msg.getChannelId(), "message", notification);
+         });
+
     }
 
     @MessageMapping("/last-read")
     public void setLastRead(SimpMessageHeaderAccessor h, @Payload SetLastRead msg) throws Exception {
         var user = _getUser(h).orElseThrow();
-        var member = roomService.getRoomMember(msg.getChannelId(), user.getId(), false);
-        if (member.isEmpty())
-            return;
-        var m = member.get();
-        roomService.setLastRead(m);
-
-        messaging.convertAndSendToUser(
-                user.getNickname().toLowerCase(),
-                "/queue/last-read",
-                new SetLastReadResponse(msg.getChannelId(), m.getLastRead())
+        roomService.findRoomMember(msg.getChannelId(), user.getId()).ifPresent(
+                m -> {
+                    roomService.setLastRead(m);
+                    messaging.convertAndSendToUser(
+                            user.getNickname().toLowerCase(),
+                            "/queue/last-read",
+                            new SetLastReadResponse(msg.getChannelId(), new Date())
+                    );
+                }
         );
+
+
     }
 
     private <T> T _reply(SimpMessageHeaderAccessor h, T obj) {
@@ -155,7 +158,7 @@ public class ChatController {
 
     @MessageMapping("/manage-room/code")
     public void editRoomCode(SimpMessageHeaderAccessor h, @Payload EditRoomCodeRequest model) throws Exception {
-        var member = roomService.getRoomMember(model.getChatRoomId(), _getUserId(h), false);
+        var member = roomService.findRoomMember(model.getChatRoomId(), _getUserId(h));
         if (member.isEmpty() || member.get().getPermissions() != MemberPermissions.ADMIN) {
             _reply(h, "No permissions");
             return;

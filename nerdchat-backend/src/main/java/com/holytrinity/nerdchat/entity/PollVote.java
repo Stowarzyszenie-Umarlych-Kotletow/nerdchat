@@ -17,11 +17,8 @@ import java.io.Serializable;
 @Table(name = "poll_votes")
 public class PollVote implements Serializable {
     @Id
-    @Column(name = "voter_id")
-    private int voterId;
-    @Id
-    @Column(name = "answer_id")
-    private int answerId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "voter_id", nullable = false, foreignKey = @ForeignKey(name = "votes_users_fk"))

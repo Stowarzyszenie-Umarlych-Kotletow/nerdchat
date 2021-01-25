@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -18,7 +19,12 @@ public class Poll {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int id;
+
     public String questionText;
+    public boolean isMultichoice;
+
+    public Date createdAt;
+    public Date expiresAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "polls_users_fk"))
@@ -27,7 +33,7 @@ public class Poll {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "messagePoll")
     private List<ChatMessage> chatMessages;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "poll", cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "poll", cascade = CascadeType.PERSIST)
     private List<PollAnswer> answers;
 
 

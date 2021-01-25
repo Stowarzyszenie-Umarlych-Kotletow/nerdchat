@@ -43,7 +43,7 @@ public class ChatRoomListEntry implements Serializable {
         unreadCount = unread.longValue();
         joinCode = join_code;
         lastMessage = new BasicChatMessageDto(
-          msg_id.intValue(), chatRoomId, 0, msg_nickname, msg_name, msg_content, msg_sent_at
+          msg_id.intValue(), 0, msg_nickname, msg_name, msg_content, msg_sent_at
         );
     }
 

@@ -15,7 +15,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class BasicChatMessageDto {
     private int messageId;
-    private UUID chatRoomId;
     private int senderId;
     private String senderNickname;
     private String senderName;
@@ -25,11 +24,19 @@ public class BasicChatMessageDto {
     public static BasicChatMessageDto from(ChatMessage msg) {
         var member = msg.getChatRoomMember();
         return new BasicChatMessageDto(msg.getId(),
-                member.getChatRoom().getPublicId(),
                 member.getId(),
                 member.getUser().getNickname(),
                 member.getUser().getFullName(),
                 msg.getContent(),
                 msg.getSentAt());
+    }
+
+    public BasicChatMessageDto(int messageId, int senderId, String senderNickname, String senderfName, String senderlName, String content, Date sentAt) {
+        this.messageId = messageId;
+        this.senderId = senderId;
+        this.senderNickname = senderNickname;
+        this.senderName = senderfName + " " + senderlName;
+        this.content = content;
+        this.sentAt = sentAt;
     }
 }

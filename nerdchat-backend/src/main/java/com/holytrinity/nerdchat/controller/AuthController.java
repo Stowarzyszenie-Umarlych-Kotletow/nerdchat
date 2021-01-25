@@ -19,12 +19,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
+@Transactional
 public class AuthController {
     @Autowired
     private SimpMessagingTemplate messaging;

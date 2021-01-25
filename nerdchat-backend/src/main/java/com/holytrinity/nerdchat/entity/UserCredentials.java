@@ -27,8 +27,7 @@ public class UserCredentials {
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "creds_users_fk"))
     private User user;
 
-    @UpdateTimestamp
-    @Column(nullable = false)
+    //@UpdateTimestamp
     private Date changedAt;
     private String passwordHash;
 

@@ -34,7 +34,7 @@ public class UploadedFile {
     private String checksum;
     private String name;
 
-    @CreationTimestamp
+    //@CreationTimestamp
     @Column(nullable = false)
     private Date uploadedAt;
 

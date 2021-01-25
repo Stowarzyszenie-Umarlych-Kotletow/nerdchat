@@ -34,9 +34,9 @@ public class ChatRoomMember {
     @OneToMany(mappedBy = "chatRoomMember")
     private List<ChatMessageReaction> reactions;
 
-    @CreationTimestamp
+    //@CreationTimestamp
     private Date lastRead;
-    @CreationTimestamp
+    //@CreationTimestamp
     private Date joinedAt;
     private Date leftAt;
 

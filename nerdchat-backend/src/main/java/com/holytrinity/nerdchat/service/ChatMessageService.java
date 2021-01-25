@@ -1,6 +1,7 @@
 package com.holytrinity.nerdchat.service;
 
 import com.holytrinity.nerdchat.entity.ChatMessage;
+import com.holytrinity.nerdchat.model.BasicChatMessageDto;
 import com.holytrinity.nerdchat.model.ChatMessageStatus;
 import com.holytrinity.nerdchat.repository.ChatMessageRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomRepository;
@@ -28,8 +29,8 @@ public class ChatMessageService {
         return _msgRepository.findByChatRoomMember_ChatRoom_id(chatRoomId, sort);
     }
 
-    public List<ChatMessage> findByChatRoomId(UUID chatRoomId, Sort sort) {
-        return _msgRepository.findByChatRoomMember_ChatRoom_publicId(chatRoomId, sort);
+    public List<BasicChatMessageDto> findByChatRoomId(UUID chatRoomId) {
+        return _msgRepository.findMessagesInChatRoom(chatRoomId);
     }
 
     public Optional<ChatMessage> findById(int id) {

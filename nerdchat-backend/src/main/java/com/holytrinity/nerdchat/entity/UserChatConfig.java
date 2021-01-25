@@ -31,6 +31,8 @@ public class UserChatConfig {
     private String backgroundColor;
     @Column(precision = 3)
     private float fontSizeMultiplier;
+    @Column(precision = 4)
+    private int randomSeed;
     private boolean showNotifications;
 
 }

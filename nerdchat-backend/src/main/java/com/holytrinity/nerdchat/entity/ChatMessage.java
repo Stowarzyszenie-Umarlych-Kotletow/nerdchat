@@ -45,4 +45,8 @@ public class ChatMessage {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "message")
     private List<ChatMessageAttachment> attachments;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "chatMessage")
+    private List<ChatMessageReaction> reactions;
+
 }

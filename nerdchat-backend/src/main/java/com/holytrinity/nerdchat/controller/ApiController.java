@@ -20,6 +20,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -29,6 +30,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
+@Transactional
 public class ApiController {
     @Autowired
     private SimpUserRegistry users;
@@ -64,8 +66,7 @@ public class ApiController {
     @GetMapping("/chatroom/{roomId}/messages")
     public ResponseEntity<?> getChatMessages(@PathVariable UUID roomId) {
 
-        return ok(messageService.findByChatRoomId(roomId, Sort.by("sentAt").ascending()).stream()
-                .map(x -> ChatMessageDto.from(x)).collect(Collectors.toList()));
+        return ok(messageService.findByChatRoomId(roomId));
     }
 
 

@@ -27,6 +27,6 @@ public class UserAccessToken {
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "tokens_users_fk"))
     private User user;
 
-    @CreationTimestamp
+    //@CreationTimestamp
     private Date createdAt;
 }

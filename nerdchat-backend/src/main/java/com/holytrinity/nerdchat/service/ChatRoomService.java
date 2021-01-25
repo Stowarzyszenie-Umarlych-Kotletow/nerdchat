@@ -45,42 +45,15 @@ public class ChatRoomService {
     @Autowired
     private EntityManager _entity;
 
-
-    public String getChatRoomName(ChatRoom room, int userId) {
-        if (room.getType() != ChatRoomType.DIRECT)
-            return room.getCustomDisplayName();
-        return _memberRepository.findFirstByChatRoom_IdAndUser_idNot(room.getId(), userId)
-                .map(x -> x.getUser().getFirstName() + " " + x.getUser().getLastName())
-                .orElse("Yourself");
-    }
-
     public void setLastRead(ChatRoomMember member) {
         member.setLastRead(new Date());
         _memberRepository.save(member);
     }
 
-    /*public List<ChatRoomListEntry> getUserChatRoomList_old(int userId) {
-        return _memberRepository.findByUser_id(userId).stream()
-                .sorted(Comparator.comparing(ChatRoomMember::getLastRead).reversed())
-                .map(x -> {
-                    var m = _msgRepository.findLastInChatRoom(x.getChatRoom().getId());
-                    return new ChatRoomListEntry(
-                            m.map(BasicChatMessageDto::from).orElseGet(() -> BasicChatMessageDto.builder().content("").sentAt(x.getLastRead()).build()),
-                            getChatRoomName(x.getChatRoom(), userId),
-                            x.getChatRoom().getPublicId(),
-                            x.getChatRoom().getType(),
-                            x.getPermissions(),
-                            _msgRepository.countByChatRoomMember_ChatRoom_idAndSentAtAfter(x.getChatRoom().getId(), x.getLastRead()),
-                                    x.getChatRoom().getType() == ChatRoomType.DIRECT ? "" : x.getChatRoom().getGroupData().getJoinCode());
-
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }*/
-
     public Optional<ChatRoom> findById(int roomId) {
         return _roomRepository.findById(roomId);
     }
+
     public Optional<ChatRoom> findById(UUID roomId) {
         return _roomRepository.findByPublicId(roomId);
     }
@@ -89,52 +62,14 @@ public class ChatRoomService {
         return _memberRepository.findFirstByChatRoom_IdAndUser_id(roomId, userId);
     }
 
-
-    public Optional<ChatRoomMember> getRoomMember(int roomId, User user, boolean create) {
-        return findRoomMember(roomId, user.getId())
-                .or(() -> {
-                    if (!create)
-                        return Optional.empty();
-                    return Optional.of(_memberRepository.save(
-                            ChatRoomMember.builder()
-                                    .chatRoom(ChatRoom.builder().id(roomId).build())
-                                    .user(user)
-                                    .build()
-                    ));
-                });
-    }
-
-    public Pair<Boolean, ChatRoomMember> getRoomMemberCreated(int roomId, User user) {
-        var found = findRoomMember(roomId, user.getId());
-        return found.map(chatRoomMember -> Pair.of(false, chatRoomMember)).orElseGet(() -> Pair.of(true,
-                _memberRepository.save(ChatRoomMember.builder()
-                        .chatRoom(ChatRoom.builder().id(roomId).build())
-                        .user(user)
-                        .build())
-        ));
-
-    }
-
-    public Optional<ChatRoomMember> getRoomMember(int roomId, int userId, boolean create) {
-        return getRoomMember(roomId, User.builder().id(userId).build(), create);
-    }
-
-    public Optional<ChatRoomMember> getRoomMember(UUID roomId, int userId, boolean create) {
-        var ret = _roomRepository.findByPublicId(roomId)
-                .flatMap(m -> getRoomMember(m.getId(), User.builder().id(userId).build(), create));
-        return ret;
+    public Optional<ChatRoomMember> findRoomMember(UUID roomId, int userId) {
+        return _memberRepository.findFirstByChatRoom_PublicIdAndUser_id(roomId, userId);
     }
 
 
-    public ChatRoom createDirectChat(User u1, User u2) {
-        var users = u1.getId() == u2.getId() ? List.of(u1) : List.of(u1, u2);
-        var room = _roomRepository.save(
-                ChatRoom.builder().type(ChatRoomType.DIRECT).build()
-        );
-        var members = users.stream().map(u -> ChatRoomMember.builder().permissions(MemberPermissions.ADMIN).user(u).chatRoom(room).build()).collect(Collectors.toList());
-        _memberRepository.saveAll(members);
-        room.setMembers(members);
-        return room;
+    public Integer createDirectChat(User u1, User u2) {
+        var id = _roomRepository.createDirectChat(u1.getId(), u2.getId());
+        return id;
     }
 
     public Pair<CreateChatResult, Optional<ChatRoom>> createDirectChatByNickname(User user, String nickname) {
@@ -145,7 +80,7 @@ public class ChatRoomService {
                 throw new Exception("Can't add yourself");
             var existing = _roomRepository.findExistingChatRoomBetween(user.getId(), target.getId());
             var isNew = existing.isEmpty();
-            var room = existing.orElseGet(() -> createDirectChat(user, target));
+            var room = existing.orElseGet(() -> _roomRepository.findById(createDirectChat(user, target)).orElseThrow());
             return Pair.of(new CreateChatResult(room.getPublicId(), isNew), isNew ? Optional.of(room) : Optional.empty());
 
         } catch (Exception e) {
@@ -155,41 +90,33 @@ public class ChatRoomService {
     }
 
     public Pair<CreateChatResult, Optional<ChatRoom>> createGroupChat(User user, String groupName) {
-        var code = RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-        var data = ChatRoomGroupData.builder().joinCode(code).build();
-        var room =
-                ChatRoom.builder()
-                        .customDisplayName(groupName)
-                        .groupData(data)
-                        .type(ChatRoomType.GROUP)
-                        .build();
-        data.setChatRoom(room);
-        _roomRepository.save(room);
-        var member = _memberRepository.save(
-                ChatRoomMember.builder()
-                        .chatRoom(room)
-                        .permissions(MemberPermissions.ADMIN)
-                        .user(user)
-                        .build()
-        );
-        room.setMembers(List.of(member));
+        var id = _roomRepository.createGroupChat(user.getId(), groupName);
+        var room = _roomRepository.findById(id).orElseThrow();
         return Pair.of(new CreateChatResult(room.getPublicId(), true), Optional.of(room));
+    }
+
+    public Integer joinChat(int userId, int roomId) {
+        var ret = _roomRepository.joinChat(userId, roomId, "DEFAULT");
+        return ret;
     }
 
     public CreateChatResult joinChatByCode(User user, String code) {
         var room = _roomRepository.findChatRoomByCode(code);
-        return room.map(chatRoom -> new CreateChatResult(chatRoom.getPublicId(), getRoomMemberCreated(chatRoom.getId(), user).getFirst())).orElseGet(CreateChatResult::new);
+        return room.map(chatRoom ->
+                new CreateChatResult(chatRoom.getPublicId(),
+                        joinChat(user.getId(), chatRoom.getId()) != 0))
+                .orElseGet(CreateChatResult::new);
     }
 
     public String setChatroomCode(UUID roomId, String code) throws MessagingException {
         code = TrimUtils.sanitize(code);
         var room = _roomRepository.findByPublicId(roomId);
-        if(room.isEmpty())
+        if (room.isEmpty())
             throw new MessagingException("Room not found");
-        if(code.length() < 3)
+        if (code.length() < 3)
             throw new MessagingException("Invalid code");
         var group = _groupRepository.findFirstByJoinCode(code);
-        if(group.isPresent() && group.get().getChatRoom().getId() != room.get().getId())
+        if (group.isPresent() && group.get().getChatRoom().getId() != room.get().getId())
             throw new MessagingException("Code in use. Try another one.");
         String finalCode = code;
         room.ifPresent(r -> {
