@@ -20,7 +20,6 @@ public interface ChatMessageRepository
         extends PagingAndSortingRepository<ChatMessage, Integer> {
 
     List<ChatMessage> findByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
-    //List<ChatMessage> findByChatRoomMember_ChatRoom_publicId(UUID chatRoomId, Sort sort);
     @Query("SELECT new com.holytrinity.nerdchat.model.BasicChatMessageDto(msg.id, me.id, u.nickname, u.firstName, u.lastName, msg.content, msg.sentAt) " +
             "FROM ChatRoom room " +
             "INNER JOIN ChatRoomMember me ON (room.id=me.chatRoom.id) " +

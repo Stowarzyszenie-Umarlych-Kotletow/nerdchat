@@ -1,10 +1,7 @@
 package com.holytrinity.nerdchat.entity;
 
 import com.holytrinity.nerdchat.model.UploadedFileType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.apachecommons.CommonsLog;
 import org.hibernate.annotations.CreationTimestamp;
 

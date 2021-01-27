@@ -1,10 +1,7 @@
 package com.holytrinity.nerdchat.entity;
 
 import com.holytrinity.nerdchat.utils.Encryption;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

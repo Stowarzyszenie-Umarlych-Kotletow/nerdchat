@@ -228,6 +228,6 @@ public class DataSeeder implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         //seed();
-        generateConversations();
+        //generateConversations();
     }
 }
