@@ -31,7 +31,9 @@ export class LoginWindow extends Component {
 
   render() {
     return (
-      <form id="loginWindow">
+      <form  
+      id="loginWindow" 
+      onSubmit={this.onLogin}>
         Hello, please sign in!
         <input
           id="loginField"
@@ -54,7 +56,7 @@ export class LoginWindow extends Component {
         </small>
         <div>
           <input
-            type="button"
+            type="submit"
             value="Log in"
             id="loginButton"
             onClick={this.onLogin}

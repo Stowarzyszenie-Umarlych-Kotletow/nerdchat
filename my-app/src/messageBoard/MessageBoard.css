@@ -138,3 +138,70 @@ a {
 #invalidCodeError:after {
   content: attr(datatext);
 }
+
+#showReactions {
+  position: absolute;
+  z-index: 3;
+  width: 200px;
+  display: table;
+  overflow-y: scroll;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #ddd9;
+  border-radius: 7px;
+}
+#showReactionsHeader {
+  height: 40px;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+
+
+#showReactionsContent {
+  padding: 10px;
+}
+
+#showReactionsContent > p {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#addReaction {
+  position: absolute;
+  z-index: 4;
+  width: 200px;
+  display: table;
+  overflow-y: scroll;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #ddd9;
+  border-radius: 7px;
+}
+#addReactionHeader {
+  height: 40px;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+#addReactionContent {
+  padding: 10px;
+}
+
+.addReactionButton {
+  background: transparent;
+  border: 0;
+  font-size: 20px;
+  margin-right: 10px;
+  border-radius: 7px;
+}

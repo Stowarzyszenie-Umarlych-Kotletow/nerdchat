@@ -2,15 +2,20 @@
   position: absolute;
   z-index: 17;
   height: 70%;
-  width: 50%;
-  margin: auto;
-  left: 10px;
+  min-height: 400px;
+  width: 40%;
+  top: 0;
+  bottom: 0;
+  left: 0;
   right: 0;
+  margin: auto;
   bottom: 20px;
   top: 0;
   background-color: #44444c;
 }
 #SettingsBoxHeaderContainer {
+  height: 10%;
+  min-height: 45px;
   padding: 10px;
   z-index: 12;
   background-color: #33333c;
@@ -27,8 +32,8 @@
   color: white;
   padding-left: 15px;
   padding-top: 15px;
-  height: 85%;
-  overflow-y: auto;
+  height: 80%;
+  overflow-y: scroll;
   z-index: 12;
   display: block;
 }
@@ -158,6 +163,10 @@ p {
   color:#a52f2f;
 }
 
+#logoutButton:hover {
+  background-color: #3336;
+}
+
 
 #resetSettingsButton {
   width: 30%;
@@ -167,3 +176,7 @@ p {
   border: 0;
 }
 
+#resetSettingsButton:hover {
+  background-color: #3336;
+  color: white;
+}

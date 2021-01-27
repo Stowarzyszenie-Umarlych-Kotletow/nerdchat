@@ -19,6 +19,8 @@ class Messages extends Component {
                 key={message.messageId}
                 message={message}
                 myNick={creds.nickname}
+                showReactions={this.props.showReactions}
+                addReaction={this.props.addReaction}
               />
             );
           }}

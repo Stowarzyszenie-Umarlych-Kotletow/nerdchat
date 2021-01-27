@@ -8,6 +8,7 @@ import { UserConfig } from "../context";
 import EmojiBox from "./EmojiBox/EmojiBox";
 import CreatePollBox from "./CreatePollBox";
 import FileBox from "./FileBox";
+import { ChatContext } from "../context";
 
 export class MessageBoard extends Component {
   static contextType = UserConfig;
@@ -23,6 +24,9 @@ export class MessageBoard extends Component {
     openFile: false,
     chatCodeValid: true,
     adminPermissions: true,
+    showReactions: false,
+    reactions: {},
+    showAddReaction: false,
   };
 
   handleNewMessage = (msg) => {
@@ -96,6 +100,23 @@ export class MessageBoard extends Component {
 
   switchOpenFile = () => {
     this.setState({ openFile: !this.state.openFile });
+  };
+  showReactions = (reacts) => {
+    this.setState({ showAddReaction: false });
+    this.setState({ showReactions: !this.state.showReactions });
+    this.setState({ reactions: reacts });
+  };
+
+  showAddReaction = () => {
+    //add reaction
+    this.setState({ showReactions: false });
+    this.setState({ showAddReaction: !this.state.showAddReaction });
+  };
+
+  addReaction = (emoji, user_id, message_id) => {};
+
+  isReactionSelected = (r) => {
+    return r === "🐢";
   };
 
   // Add Message to MessageBoard
@@ -213,7 +234,11 @@ export class MessageBoard extends Component {
                   Choose a chat to start talking with your friends!
                 </div>
               ) : (
-                <Messages messages={this.state.messages} />
+                <Messages
+                  messages={this.state.messages}
+                  showReactions={this.showReactions}
+                  addReaction={this.showAddReaction}
+                />
               )}
             </div>
             {this.props.activeChatId === null ? null : (
@@ -225,6 +250,66 @@ export class MessageBoard extends Component {
             )}
           </div>
         </div>
+        {this.state.showAddReaction ? (
+          <div id="addReaction">
+            <div
+              id="addReactionHeader"
+              style={{
+                backgroundColor: this.context.accentsColor,
+                color: this.context.textColorMain,
+              }}
+            >
+              Add Reaction
+              <div
+                className="XButton"
+                onClick={() => this.setState({ showAddReaction: false })}
+                style={{ float: "right" }}
+              />
+            </div>
+            <div id="addReactionContent">
+              {this.props.emojis.map((emoji) => (
+                <input
+                  type="button"
+                  value={emoji.dataText}
+                  className="addReactionButton"
+                  onClick={() => this.addReaction(emoji.datatext, 0, 0)}
+                  style={{
+                    backgroundColor:
+                      this.context.accentsColor +
+                      String(99 * this.isReactionSelected(emoji.dataText)),
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        {this.state.showReactions ? (
+          <div id="showReactions">
+            <div
+              id="showReactionsHeader"
+              style={{
+                backgroundColor: this.context.accentsColor,
+                color: this.context.textColorMain,
+              }}
+            >
+              Reactions
+              <div
+                className="XButton"
+                onClick={() => this.setState({ showReactions: false })}
+                style={{ float: "right" }}
+              />
+            </div>
+            <div id="showReactionsContent">
+              {Object.keys(this.state.reactions).map((key) => (
+                <p style={{ color: this.context.textColorMain }}>
+                  {key + "" + this.state.reactions[key]}
+                </p>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         {this.state.openCreatePoll ? (
           <CreatePollBox switchOpenCreatePoll={this.switchOpenCreatePoll} />
         ) : null}

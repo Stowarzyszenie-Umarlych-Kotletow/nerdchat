@@ -4,34 +4,7 @@ import Emojis from "./Emojis";
 import { ChatContext } from "../../context";
 
 export class EmojiBox extends Component {
-  state = {
-    emojis: [
-      "😀",
-      "😁",
-      "😂",
-      "🤣",
-      "😃",
-      "😄",
-      "😅",
-      "😆",
-      "😉",
-      "😊",
-      "😋",
-      "😎",
-      "😍",
-      "😘",
-      "😗",
-      "😙",
-      "😚",
-      "🙂",
-      "🤗",
-      "🤔",
-      "😐",
-      "😑",
-      "😶",
-      "🙄",
-    ],
-  };
+ 
 
   render() {
     return (
