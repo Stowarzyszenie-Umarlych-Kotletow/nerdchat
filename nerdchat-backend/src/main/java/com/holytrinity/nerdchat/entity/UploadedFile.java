@@ -32,8 +32,7 @@ public class UploadedFile {
     private String checksum;
     private String name;
 
-    //@CreationTimestamp
-    @Column(nullable = false)
+    @CreationTimestamp
     private Date uploadedAt;
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy = "file")

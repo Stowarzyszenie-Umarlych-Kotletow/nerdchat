@@ -4,20 +4,20 @@ import com.holytrinity.nerdchat.entity.UploadedFile;
 import com.holytrinity.nerdchat.entity.User;
 import com.holytrinity.nerdchat.entity.UserChatConfig;
 import com.holytrinity.nerdchat.exception.ApiException;
-import com.holytrinity.nerdchat.model.ChatMessageDto;
-import com.holytrinity.nerdchat.model.EmojiDto;
+import com.holytrinity.nerdchat.model.UploadedFileDto;
 import com.holytrinity.nerdchat.model.UserChatConfigDto;
 import com.holytrinity.nerdchat.model.http.ApiResponse;
-import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
 import com.holytrinity.nerdchat.repository.EmojiRepository;
+import com.holytrinity.nerdchat.repository.UploadedFileRepository;
 import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
 import com.holytrinity.nerdchat.service.FileService;
 import com.holytrinity.nerdchat.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @Transactional
@@ -49,7 +49,7 @@ public class ApiController {
     @Autowired
     private EmojiRepository emojis;
     @Autowired private EntityManager entities;
-    @Autowired private FileService files;
+    @Autowired private FileService fileService;
 
     private User getUser() {
         return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -117,14 +117,34 @@ public class ApiController {
     @PostMapping("/user/files/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
-            var model = files.uploadFile(UploadedFile.builder().author(getUser()), file);
-            return ok(model);
+            var model = fileService.uploadFile(UploadedFile.builder().author(getUser()), file);
+            return ok(UploadedFileDto.from(model));
         }catch(ApiException ex) {
             return error(ex.getMsg());
         }
         catch(Exception ex) {
             return error("Unknown error");
         }
+
+    }
+
+    @GetMapping("/user/files")
+    public ResponseEntity<?> getMyFiles() {
+        return ok(fileService.findMyFiles(getUser(), 0, 5));
+    }
+
+    @GetMapping("/global/file/{id}")
+    public ResponseEntity<?> downloadFileUnsafe(@PathVariable int id) {
+        var file = fileService.getRepo().findById(id);//
+        if(file.isEmpty()) {
+            return notfound("file not found");
+        }
+        var m = file.get();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.parseMediaType(m.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(m.getName(), StandardCharsets.UTF_8))
+                .body(fileService.getUri(m));
 
     }
 
