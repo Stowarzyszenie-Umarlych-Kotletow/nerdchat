@@ -3,35 +3,57 @@ import { UserConfig } from "../context";
 import "./FileBox.css";
 
 class FileBox extends Component {
+  state = {
+    setUploadSectionOpen: false,
+    fileSize: null,
+    file: undefined,
+  }
 
   static contextType = UserConfig;
+  
   onFileButtonClicked = (e) => {
-    var file = e.target.files[0];
+    let file = e.target.files[0];
+    let fileSize = "";
+    let uSectionOpen = false;
     var reader = new FileReader();
     reader.onload = function (w) {
-        console.log(w.target.result);
+        console.log("showing file");
     };
-    if (file) {
-      console.log(file.name);
+    if (file !== undefined) {
+      uSectionOpen = true;
+      fileSize = (file.size/1024).toFixed(2) + "KB";
+      console.log(this.state.setUploadSectionOpen);
       reader.readAsBinaryString(file);
-      document.getElementById("size-label").innerHTML = (file.size/1024).toFixed(2) + "KB";
     }else{
-      document.getElementById("size-label").innerHTML = "";
+      uSectionOpen = false;
+      fileSize = "";
     }
+    this.setState({
+      file: file,
+      fileSize: fileSize,
+      setUploadSectionOpen: uSectionOpen,
+    })
   };
+
+  onUploadButtonClicked = (e) => {
+    
+  }
 
   render() {
     return (
-      <div id="FileBox" style={{
-        // backgroundColor: this.context.backgroundColor
-      }}>
+      <div id="FileBox">
         <input
           type="file"
           accept=".txt"
           id="file-input"
           onChange={this.onFileButtonClicked}
         />
-        <label id="size-label"></label>
+        {this.state.setUploadSectionOpen ? (
+        <div id="upload-section">
+          <button id="upload-button" onClick={this.onUploadButtonClicked}>Upload</button>
+          <label id="size-label">{this.state.fileSize}</label>
+        </div>) : null
+        }
       </div>
     );
   }
