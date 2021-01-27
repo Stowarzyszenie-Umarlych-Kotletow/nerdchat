@@ -5,8 +5,9 @@ import "./FileBox.css";
 class FileBox extends Component {
   state = {
     setUploadSectionOpen: false,
-    fileSize: null,
+    fileSize: 0,
     file: undefined,
+    fileUploadPct: 0,
   };
 
   static contextType = UserContext;
@@ -21,12 +22,11 @@ class FileBox extends Component {
     };
     if (file !== undefined) {
       uSectionOpen = true;
-      fileSize = (file.size / 1024).toFixed(2) + "KB";
-      console.log(this.state.setUploadSectionOpen);
+      fileSize = file.size.toFixed(2);
       reader.readAsBinaryString(file);
     } else {
       uSectionOpen = false;
-      fileSize = "";
+      fileSize = 0;
     }
     this.setState({
       file: file,
@@ -51,6 +51,7 @@ class FileBox extends Component {
   onProgress = (pct) => {
     // p.loaded / p.total
     console.log(pct);
+    this.setState({fileUploadPct : pct});
   };
 
   render() {
@@ -59,17 +60,25 @@ class FileBox extends Component {
         <input
           type="file"
           accept=".txt"
-          id="file-input"
+          id="fileInput"
           onChange={this.onFileButtonClicked}
         />
-        {this.state.setUploadSectionOpen ? (
-          <div id="upload-section">
-            <button id="upload-button" onClick={this.onUploadButtonClicked}>
-              Upload
-            </button>
-            <label id="size-label">{this.state.fileSize}</label>
+        { this.state.setUploadSectionOpen ? 
+        (
+        <div id="uploadSection">
+          <button id="uploadButton" onClick={this.onUploadButtonClicked}>Upload</button>
+          <label id="sizeLabel">{String((this.state.fileSize/1024).toFixed(2)) + "KB"}</label>
+          <div id="uploadProgressBarBox">
+          <div 
+            id="uploadProgressBar" 
+            style={{
+              width: String(this.state.fileUploadPct) + "%",
+              backgroundColor: "green",
+            }}>
           </div>
-        ) : null}
+        </div>
+        </div>) : null
+        }
       </div>
     );
   }
