@@ -2,7 +2,7 @@ import config from "./endpoints.json";
 import axios from "axios";
 
 export function getAttachmentUrl(messageId, attachmentId) {
-  return `${config.apiUrl}/message/${messageId}/attachment/${attachmentId}/download`;
+  return `${config.apiUrl}/global/message/${messageId}/attachment/${attachmentId}/download`;
 }
 
 const request = (options) => {

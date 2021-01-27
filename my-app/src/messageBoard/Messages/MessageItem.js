@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./MessageItem.css";
 import { UserConfig, ChatContext } from "../../context";
 import { formatUrls, getEmojiFromLabels } from "./MessageItemTools";
+import { getAttachmentUrl } from "../../common/Api";
 
 const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
   const cfg = useContext(UserConfig);
@@ -29,25 +30,26 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
   };
 
   let reactions = {
-    "🩸": 1, 
-    "🦙": 1333, 
+    "🩸": 1,
+    "🦙": 1333,
     "🦠": 19,
     "🐢": 213,
-    "❤️": 2
-  }
+    "❤️": 2,
+  };
 
   const getReations = () => {
-
-
-
-    let result = Object.keys(reactions).sort(function (a, b) { return reactions[b] - reactions[a]; }).slice(0, 3);
-    let reactionString = ""
+    let result = Object.keys(reactions)
+      .sort(function (a, b) {
+        return reactions[b] - reactions[a];
+      })
+      .slice(0, 3);
+    let reactionString = "";
     result.forEach((key) => {
-        reactionString += key + " " + String(reactions[key]) + " "
-    })
+      reactionString += key + " " + String(reactions[key]) + " ";
+    });
 
-    return reactionString
-  }
+    return reactionString;
+  };
 
   const hasPoll = false;
   const pollData = {
@@ -66,6 +68,8 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
 
   const { senderName, sentAt, content, id } = message;
   let pollValuesSum = 0;
+  const hasFile = message.attachment !== null;
+  const hasImage = hasFile && message.attachment.type === "IMAGE";
   for (let i = 0; i < pollData.options.length; i++)
     pollValuesSum += pollData.options[i].value;
   return (
@@ -75,7 +79,14 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
           {senderName} - &#9202;{" "}
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
         </div>
-        <h1 style={{marginBottom: "10px"}}>
+        {hasImage ? (
+          <div>
+            <img
+              src={getAttachmentUrl(message.messageId, message.attachment.id)}
+            ></img>
+          </div>
+        ) : null}
+        <h1 style={{ marginBottom: "10px" }}>
           {formatUrls(getEmojiFromLabels(content, chat.emojis)).map((d) => {
             return d;
           })}
@@ -118,13 +129,21 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
             ))}
           </div>
         ) : null}
-        <div className="reactions" datatext={getReations()} style={{fontSize: String(11 * cfg.fontSizeMultiplier) + "px"}} onClick={() => showReactions(reactions)}>
-        <input
-          type="button"
-          value="+"
-          className="newReactionButton"
-          onClick={(e) => {e.stopPropagation(); addReaction();}}
-        />
+        <div
+          className="reactions"
+          datatext={getReations()}
+          style={{ fontSize: String(11 * cfg.fontSizeMultiplier) + "px" }}
+          onClick={() => showReactions(reactions)}
+        >
+          <input
+            type="button"
+            value="+"
+            className="newReactionButton"
+            onClick={(e) => {
+              e.stopPropagation();
+              addReaction();
+            }}
+          />
         </div>
       </div>
     </div>

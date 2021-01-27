@@ -150,8 +150,8 @@ public class ApiController {
         return _downloadFile(file.get());
 
     }
-    @GetMapping("/message/{messageId}/attachment/{attachmentId}/download")
-    public ResponseEntity<?> downloadMessageAttachment(@PathVariable int messageId, int attachmentId) {
+    @GetMapping("/global/message/{messageId}/attachment/{attachmentId}/download")
+    public ResponseEntity<?> downloadMessageAttachment(@PathVariable int messageId, @PathVariable int attachmentId) {
         var atm = attachments.findByIdAndMessageId(attachmentId, messageId);
         if(atm.isEmpty())
             return notfound("");

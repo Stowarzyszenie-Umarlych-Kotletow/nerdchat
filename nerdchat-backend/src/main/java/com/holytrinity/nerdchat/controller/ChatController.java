@@ -6,6 +6,7 @@ import com.holytrinity.nerdchat.model.*;
 import com.holytrinity.nerdchat.model.stomp.EditRoomCodeRequest;
 import com.holytrinity.nerdchat.model.stomp.NotifyChannelJoinCode;
 import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
+import com.holytrinity.nerdchat.repository.UploadedFileRepository;
 import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
 import com.holytrinity.nerdchat.service.UserService;
@@ -37,6 +38,8 @@ public class ChatController {
     private ChatRoomMemberRepository roomMemberRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UploadedFileRepository files;
 
     @MessageMapping("/send-chat")
     public void sendChat(SimpMessageHeaderAccessor h, @Payload SendChatMessage msg) throws Exception {
@@ -47,8 +50,11 @@ public class ChatController {
                      .chatRoomMember(member)
                      .content(msg.getContent())
                      .sentAt(new Date()), msg.getFileId());
-
-             var notification = ChatMessageDto.from(res.getFirst(), res.getSecond().orElse(null));
+             var atm = res.getSecond().orElse(null);
+             if(atm != null) {
+                 atm.setFile(files.findById(msg.getFileId()).orElseThrow());
+             }
+             var notification = ChatMessageDto.from(res.getFirst(), atm);
              _notifyChannel(msg.getChannelId(), "message", notification);
          });
 
