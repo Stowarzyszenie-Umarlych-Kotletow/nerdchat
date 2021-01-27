@@ -1,5 +1,5 @@
 import config from "./endpoints.json";
-import { axios } from "axios";
+import axios from "axios";
 
 const request = (options) => {
   const headers = new Headers();
@@ -16,7 +16,7 @@ const request = (options) => {
 
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
-  console.log(options);
+
   return fetch(options.url, options).then((response) =>
     response.json().then((json) => {
       if (!response.ok) {
@@ -113,21 +113,28 @@ export class HttpApi {
   }
 
   _uploadFile(url, file, progress) {
+    let data = new FormData();
+    data.append("file", file);
     return axios
       .request({
         method: "post",
-        url,
-        data: {
-          file,
-        },
+        url: config.apiUrl + url,
+        data,
         onUploadProgress: progress,
-        headers: this._getHeaders(),
+        headers: Object.assign(
+          { "content-type": "multipart/form-data" },
+          this._getHeaders()
+        ),
       })
       .then((data) => data.data);
   }
 
   uploadFile(file, progress) {
     return this._uploadFile("/user/files/upload", file, progress);
+  }
+
+  getMyFiles() {
+    return this.requestGet("/user/files");
   }
 }
 

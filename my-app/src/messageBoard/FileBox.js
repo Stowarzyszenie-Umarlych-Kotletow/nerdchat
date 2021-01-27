@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { UserConfig } from "../context";
+import { UserContext } from "../context";
 import "./FileBox.css";
 
 class FileBox extends Component {
@@ -7,24 +7,24 @@ class FileBox extends Component {
     setUploadSectionOpen: false,
     fileSize: null,
     file: undefined,
-  }
+  };
 
-  static contextType = UserConfig;
-  
+  static contextType = UserContext;
+
   onFileButtonClicked = (e) => {
     let file = e.target.files[0];
     let fileSize = "";
     let uSectionOpen = false;
     var reader = new FileReader();
     reader.onload = function (w) {
-        console.log("showing file");
+      console.log("showing file");
     };
     if (file !== undefined) {
       uSectionOpen = true;
-      fileSize = (file.size/1024).toFixed(2) + "KB";
+      fileSize = (file.size / 1024).toFixed(2) + "KB";
       console.log(this.state.setUploadSectionOpen);
       reader.readAsBinaryString(file);
-    }else{
+    } else {
       uSectionOpen = false;
       fileSize = "";
     }
@@ -32,12 +32,26 @@ class FileBox extends Component {
       file: file,
       fileSize: fileSize,
       setUploadSectionOpen: uSectionOpen,
-    })
+    });
+    this.context.api.getMyFiles().then(console.log);
   };
 
   onUploadButtonClicked = (e) => {
-    
-  }
+    let api = this.context.api;
+    if (this.state.file === null) return;
+    api
+      .uploadFile(this.state.file, (p) => {
+        this.onProgress(p.loaded / p.total);
+      })
+      .then((res) => {
+        this.onProgress(1);
+      });
+  };
+
+  onProgress = (pct) => {
+    // p.loaded / p.total
+    console.log(pct);
+  };
 
   render() {
     return (
@@ -49,11 +63,13 @@ class FileBox extends Component {
           onChange={this.onFileButtonClicked}
         />
         {this.state.setUploadSectionOpen ? (
-        <div id="upload-section">
-          <button id="upload-button" onClick={this.onUploadButtonClicked}>Upload</button>
-          <label id="size-label">{this.state.fileSize}</label>
-        </div>) : null
-        }
+          <div id="upload-section">
+            <button id="upload-button" onClick={this.onUploadButtonClicked}>
+              Upload
+            </button>
+            <label id="size-label">{this.state.fileSize}</label>
+          </div>
+        ) : null}
       </div>
     );
   }
