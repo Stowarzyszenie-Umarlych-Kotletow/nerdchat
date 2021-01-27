@@ -44,14 +44,13 @@ public class ChatMessageService {
     }
 
     public Pair<ChatMessage, Optional<ChatMessageAttachment>> create(ChatMessage.ChatMessageBuilder b, Integer fileId) {
-        var msg = b.build();
+        var msg = save(b.build());
         ChatMessageAttachment atm = null;
         if (fileId != null) {
-           var attachment = ChatMessageAttachment .builder().message(msg)
+           atm = ChatMessageAttachment .builder().message(msg)
                    .file(UploadedFile.builder().id(fileId).build()).build();
-           entities.persist(attachment);
-           atm = attachment;
+           entities.persist(atm);
         }
-        return Pair.of(save(msg), Optional.ofNullable(atm));
+        return Pair.of(msg, Optional.ofNullable(atm));
     }
 }
