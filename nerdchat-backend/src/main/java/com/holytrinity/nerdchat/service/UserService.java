@@ -5,6 +5,7 @@ import com.holytrinity.nerdchat.entity.UserAccessToken;
 import com.holytrinity.nerdchat.entity.UserChatConfig;
 import com.holytrinity.nerdchat.entity.UserCredentials;
 import com.holytrinity.nerdchat.repository.UserAccessTokenRepository;
+import com.holytrinity.nerdchat.repository.UserChatConfigRepository;
 import com.holytrinity.nerdchat.repository.UserRepository;
 import com.holytrinity.nerdchat.utils.Crypto;
 import com.holytrinity.nerdchat.utils.TrimUtils;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class UserService {
     @Autowired private UserRepository users;
     @Autowired private UserAccessTokenRepository tokens;
+    @Autowired private UserChatConfigRepository configs;
 
     public Optional<UserCredentials> findCredentialsByNickname(String nickname) {
         return users.findCredentials(nickname);
@@ -64,5 +66,6 @@ public class UserService {
     public void save(User user) {
         users.save(user);
     }
+
 
 }

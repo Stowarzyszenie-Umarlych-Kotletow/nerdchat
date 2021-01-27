@@ -43,12 +43,12 @@ public class ChatController {
         if((msg.getContent() == null || msg.getContent().trim().length() == 0) && msg.getFileId() == null) return;
         var usrId = _getUserId(h);
          roomService.findRoomMember(msg.getChannelId(), usrId).ifPresent(member -> {
-             var message = messageService.create(ChatMessage.builder()
+             var res = messageService.create(ChatMessage.builder()
                      .chatRoomMember(member)
                      .content(msg.getContent())
                      .sentAt(new Date()), msg.getFileId());
 
-             var notification = ChatMessageDto.from(message);
+             var notification = ChatMessageDto.from(res.getFirst(), res.getSecond().orElse(null));
              _notifyChannel(msg.getChannelId(), "message", notification);
          });
 

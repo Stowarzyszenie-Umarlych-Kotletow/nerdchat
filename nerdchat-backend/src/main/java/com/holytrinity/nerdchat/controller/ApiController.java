@@ -95,21 +95,16 @@ public class ApiController {
     @GetMapping("/user/chat_config")
     public ResponseEntity<?> getChatConfig() {
         var user = getUser();
-        var cfg = user.getConfig();
-        if(cfg == null)
-            return notfound("no config");
-        return ok(UserChatConfigDto.from(cfg));
+        var cfg = userService.getUserConfig(user.getId());
+        return cfg.map(c -> ok(UserChatConfigDto.from(c))).orElseGet(() -> notfound("no config"));
     }
 
     @PostMapping("/user/chat_config")
     public ResponseEntity<?> postChatConfig(@RequestBody UserChatConfigDto body) {
         var user = getUser();
-        var cfg = user.getConfig();
-        if(cfg == null) {
-            user.setConfig(cfg = UserChatConfig.builder().user(user).build());
-        }
+        var cfg = userService.getUserConfig(user.getId()).orElseGet(() -> UserChatConfig.builder().user(user).build());
         BeanUtils.copyProperties(body, cfg);
-        userService.save(user);
+        entities.persist(cfg);
         return ok(true);
     }
 

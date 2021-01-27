@@ -35,8 +35,8 @@ public class UploadedFileDto {
     }
 
     public static UploadedFileDto from(ChatMessageAttachment file) {
+        if(file == null || file.getFile() == null) return null;
         var obj = from(file.getFile());
-        if(obj == null) return null;
         obj.setId(file.getId());
         return obj;
     }

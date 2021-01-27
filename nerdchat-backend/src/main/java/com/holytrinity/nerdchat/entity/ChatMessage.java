@@ -40,9 +40,6 @@ public class ChatMessage {
     private Poll messagePoll;
 
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "message")
-    private ChatMessageAttachment attachment;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "chatMessage")
     private List<ChatMessageReaction> reactions;
 

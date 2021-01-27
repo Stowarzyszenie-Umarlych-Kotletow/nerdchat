@@ -106,14 +106,15 @@ public class DataSeeder implements ApplicationRunner {
             if(hasToken) {
                 b.setAccessTokens(List.of(UserAccessToken.builder().createdAt(RandomUtils.date()).user(b).build()));
             }
-            var hasConfig = RandomUtils.bool();
-            if(hasConfig){
-                b.setConfig(UserChatConfig.builder().user(b).build());
-            }
-            var creds = new UserCredentials(b, "ziemniak");
-            b.setCredentials(creds);
             userService.save(b);
             users.add(b);
+            var hasConfig = RandomUtils.bool();
+            if(hasConfig){
+                entities.persist(UserChatConfig.builder().user(b).build());
+            }
+            var creds = new UserCredentials(b, "ziemniak");
+            entities.persist(creds);
+
         }
 
         var polls = new ArrayList<Poll>();
@@ -177,6 +178,7 @@ public class DataSeeder implements ApplicationRunner {
                 var members = room.getMembers();
                 var messages = RandomUtils.getRandomNumber(3, 12);
                 var msgs = new ArrayList<ChatMessage>();
+                var atm = new ArrayList<ChatMessageAttachment>();
                 for(int k = 0; k < messages; k++) {
                     var msg = RandomUtils.randomMessage()
                             .chatRoomMember(members.get(RandomUtils.getRandomNumber(0, 2)))
@@ -195,12 +197,14 @@ public class DataSeeder implements ApplicationRunner {
                                 .file(file)
                                 .message(bm)
                                 .build();
-                        bm.setAttachment(attachment);
+                        atm.add(attachment);
+                        //TODO fix
                     }
                     msgs.add(bm);
 
                 }
                 chatMessages.saveAll(msgs);
+                atm.forEach(entities::persist);
             }
 
             try

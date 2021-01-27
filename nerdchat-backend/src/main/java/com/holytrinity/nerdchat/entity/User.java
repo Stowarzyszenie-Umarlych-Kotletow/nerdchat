@@ -22,11 +22,6 @@ public class User {
     private String firstName;
     private String lastName;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    private UserCredentials credentials;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    private UserChatConfig config;
-
     @OneToMany(mappedBy = "user")
     private List<ChatRoomMember> chats;
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)

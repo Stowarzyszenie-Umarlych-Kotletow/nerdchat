@@ -1,6 +1,7 @@
 package com.holytrinity.nerdchat.model;
 
 import com.holytrinity.nerdchat.entity.ChatMessage;
+import com.holytrinity.nerdchat.entity.ChatMessageAttachment;
 import com.holytrinity.nerdchat.entity.UploadedFile;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
@@ -25,10 +26,9 @@ public class ChatMessageDto extends BasicChatMessageDto {
             attachment.setId(attachmentId);
     }
 
-    public static ChatMessageDto from(ChatMessage msg) {
+    public static ChatMessageDto from(ChatMessage msg, ChatMessageAttachment atm) {
         var base = BasicChatMessageDto.from(msg);
-        var file = msg.getAttachment();
-        var obj = new ChatMessageDto(UploadedFileDto.from(file));
+        var obj = new ChatMessageDto(UploadedFileDto.from(atm));
         BeanUtils.copyProperties(base, obj);
         return obj;
     }

@@ -10,8 +10,10 @@ import com.holytrinity.nerdchat.repository.ChatMessageRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +22,7 @@ import java.util.UUID;
 public class ChatMessageService {
     @Autowired private ChatMessageRepository _msgRepository;
     @Autowired private ChatRoomRepository _roomRepository;
+    @Autowired private EntityManager entities;
 
     public ChatMessage save(ChatMessage msg){
         if(msg.getMessageStatus() == null || msg.getMessageStatus() == ChatMessageStatus.SENDING)
@@ -40,13 +43,15 @@ public class ChatMessageService {
         return _msgRepository.findById(id);
     }
 
-    public ChatMessage create(ChatMessage.ChatMessageBuilder b, Integer fileId) {
+    public Pair<ChatMessage, Optional<ChatMessageAttachment>> create(ChatMessage.ChatMessageBuilder b, Integer fileId) {
         var msg = b.build();
+        ChatMessageAttachment atm = null;
         if (fileId != null) {
            var attachment = ChatMessageAttachment .builder().message(msg)
                    .file(UploadedFile.builder().id(fileId).build()).build();
-           msg.setAttachment(attachment);
+           entities.persist(attachment);
+           atm = attachment;
         }
-        return save(msg);
+        return Pair.of(save(msg), Optional.ofNullable(atm));
     }
 }
