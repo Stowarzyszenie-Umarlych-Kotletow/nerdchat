@@ -1,40 +1,30 @@
 package com.holytrinity.nerdchat.model;
 
 import com.holytrinity.nerdchat.entity.ChatMessage;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.holytrinity.nerdchat.entity.UploadedFile;
+import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import javax.swing.*;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatMessageDto {
-    private int messageId;
-    private int senderId;
-    private UUID chatRoomId;
-    private String senderNickname;
-    private String senderName;
-    private String content;
-    private Date sentAt;
-    private ChatMessageStatus messageStatus;
+public class ChatMessageDto extends BasicChatMessageDto {
+    private UploadedFileDto attachment;
 
 
     public static ChatMessageDto from(ChatMessage msg) {
-        var member = msg.getChatRoomMember();
-        return new ChatMessageDto(msg.getId(),
-                msg.getChatRoomMember().getId(),
-                member.getChatRoom().getPublicId(),
-                member.getUser().getNickname(),
-                member.getUser().getFullName(),
-                msg.getContent(),
-                msg.getSentAt(),
-                msg.getMessageStatus());
+        var base = BasicChatMessageDto.from(msg);
+        var file = msg.getAttachment();
+        var obj = new ChatMessageDto(UploadedFileDto.from(file));
+        BeanUtils.copyProperties(base, obj);
+        return obj;
     }
 
 

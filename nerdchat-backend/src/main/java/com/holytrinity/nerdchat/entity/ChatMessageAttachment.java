@@ -24,7 +24,7 @@ public class ChatMessageAttachment {
     @JoinColumn(name = "file_id", nullable = false, foreignKey = @ForeignKey(name = "attachments_files_fk"))
     private UploadedFile file;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "message_id", nullable = false, foreignKey = @ForeignKey(name = "attachments_messages_fk"))
     private ChatMessage message;
 }

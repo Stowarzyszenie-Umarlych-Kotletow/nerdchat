@@ -42,11 +42,10 @@ public class ChatController {
     public void sendChat(SimpMessageHeaderAccessor h, @Payload SendChatMessage msg) throws Exception {
         var usrId = _getUserId(h);
          roomService.findRoomMember(msg.getChannelId(), usrId).ifPresent(member -> {
-             var message = messageService.save(ChatMessage.builder()
+             var message = messageService.create(ChatMessage.builder()
                      .chatRoomMember(member)
                      .content(msg.getContent())
-                     .sentAt(new Date())
-                     .build());
+                     .sentAt(new Date()), msg.getFileId());
 
              var notification = ChatMessageDto.from(message);
              _notifyChannel(msg.getChannelId(), "message", notification);
@@ -93,6 +92,7 @@ public class ChatController {
     private <T> void _notifyChannel(UUID channel, String type, T obj) {
         messaging.convertAndSend("/topic/channel/notify/" + channel.toString().toLowerCase(), obj, new HashMap<>() {{
             put("type", type);
+            put("room", channel.toString().toLowerCase());
         }});
     }
 

@@ -1,5 +1,6 @@
 package com.holytrinity.nerdchat.controller;
 
+import com.holytrinity.nerdchat.entity.ChatMessageAttachment;
 import com.holytrinity.nerdchat.entity.UploadedFile;
 import com.holytrinity.nerdchat.entity.User;
 import com.holytrinity.nerdchat.entity.UserChatConfig;
@@ -7,7 +8,9 @@ import com.holytrinity.nerdchat.exception.ApiException;
 import com.holytrinity.nerdchat.model.UploadedFileDto;
 import com.holytrinity.nerdchat.model.UserChatConfigDto;
 import com.holytrinity.nerdchat.model.http.ApiResponse;
+import com.holytrinity.nerdchat.repository.ChatMessageRepository;
 import com.holytrinity.nerdchat.repository.EmojiRepository;
+import com.holytrinity.nerdchat.repository.MessageAttachmentRepository;
 import com.holytrinity.nerdchat.repository.UploadedFileRepository;
 import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
@@ -50,6 +53,7 @@ public class ApiController {
     private EmojiRepository emojis;
     @Autowired private EntityManager entities;
     @Autowired private FileService fileService;
+    @Autowired private MessageAttachmentRepository attachments;
 
     private User getUser() {
         return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -133,19 +137,31 @@ public class ApiController {
         return ok(fileService.findMyFiles(getUser(), 0, 5));
     }
 
+
+    private ResponseEntity<?> _downloadFile(UploadedFile m) {
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.parseMediaType(m.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(m.getName(), StandardCharsets.UTF_8))
+                .body(fileService.getUri(m));
+    }
+
     @GetMapping("/global/file/{id}")
     public ResponseEntity<?> downloadFileUnsafe(@PathVariable int id) {
         var file = fileService.getRepo().findById(id);//
         if(file.isEmpty()) {
             return notfound("file not found");
         }
-        var m = file.get();
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.parseMediaType(m.getContentType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(m.getName(), StandardCharsets.UTF_8))
-                .body(fileService.getUri(m));
+        return _downloadFile(file.get());
 
     }
+    @GetMapping("/message/{messageId}/attachment/{attachmentId}/download")
+    public ResponseEntity<?> downloadMessageAttachment(@PathVariable int messageId, int attachmentId) {
+        var atm = attachments.findByIdAndMessageId(attachmentId, messageId);
+        if(atm.isEmpty())
+            return notfound("");
+        return _downloadFile(atm.get().getFile());
+    }
+
 
 }

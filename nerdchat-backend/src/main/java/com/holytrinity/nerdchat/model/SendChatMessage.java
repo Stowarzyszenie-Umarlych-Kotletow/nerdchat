@@ -8,4 +8,5 @@ import java.util.UUID;
 public class SendChatMessage {
     private UUID channelId;
     private String content;
+    private Integer fileId;
 }

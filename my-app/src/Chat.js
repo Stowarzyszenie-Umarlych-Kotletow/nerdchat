@@ -113,9 +113,9 @@ export class Chat extends Component {
     this.setChatRoomList(newObj);
   }
 
-  updateRoomListFromMsg = (msg) => {
+  updateRoomListFromMsg = (room, msg) => {
     let activeChatId = this.state.activeChatId;
-    this.updateChatRoom(msg.chatRoomId, (chat) => {
+    this.updateChatRoom(room, (chat) => {
       let count = chat.unreadCount;
       if (activeChatId !== chat.chatRoomId) {
         count++;
@@ -125,12 +125,6 @@ export class Chat extends Component {
   };
 
   sendChat = (message) => {
-    /* sendPromise("/app/create-room/direct", "lepszykowal").then((m) => {
-      console.log(m);
-      if (m.isSuccess) {
-        this.setActiveChatId(m.chatRoomId);
-      }
-    });*/
     this.stomp.sendChat(this.state.activeChatId, message);
   };
 
@@ -177,12 +171,13 @@ export class Chat extends Component {
   onMessageReceived = (msg) => {
     let m = JSON.parse(msg.body);
     let type = msg.headers["type"];
+    let room = msg.headers["room"];
     if (type == "message") {
-      if (this.state.activeChatId === m.chatRoomId) {
+      if (this.state.activeChatId === room) {
         this.board.current.handleNewMessage(m);
         this.setLastRead(this.state.activeChatId);
       }
-      this.updateRoomListFromMsg(m);
+      this.updateRoomListFromMsg(room, m);
       const config = this.context;
       if (config.currentStatus === "online") {
         if (document.visibilityState !== "visible") {
@@ -190,9 +185,8 @@ export class Chat extends Component {
           audio.play();
         }
       }
-      console.log(config);
     } else if (type == "joincode") {
-      this.updateChatRoom(m.chatRoomId, (chat) => {
+      this.updateChatRoom(room, (chat) => {
         return { joinCode: m.code };
       });
     }
@@ -211,8 +205,6 @@ export class Chat extends Component {
           newCfg[v] = cfg[v];
         }
       }, this);
-      console.log("GOT CONFIG");
-      console.log(cfg);
       this.props.setConfig(newCfg);
     });
   };

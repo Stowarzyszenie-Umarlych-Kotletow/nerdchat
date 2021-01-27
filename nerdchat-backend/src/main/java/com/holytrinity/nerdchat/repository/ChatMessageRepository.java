@@ -28,9 +28,5 @@ public interface ChatMessageRepository
             "WHERE room.publicId=?1 ORDER BY msg.sentAt ASC")
     List<BasicChatMessageDto> findMessagesInChatRoom(UUID chatRoomId);
     Optional<ChatMessage> findFirstByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
-    long countByChatRoomMember_ChatRoom_idAndSentAtAfter(int chatRoomId, Date sentAfter);
 
-    default Optional<ChatMessage> findLastInChatRoom(int chatRoomId) {
-        return findFirstByChatRoomMember_ChatRoom_id(chatRoomId, Sort.by("sentAt").descending());
-    }
 }

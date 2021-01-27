@@ -1,6 +1,10 @@
 import config from "./endpoints.json";
 import axios from "axios";
 
+export function getAttachmentUrl(messageId, attachmentId) {
+  return `${config.apiUrl}/message/${messageId}/attachment/${attachmentId}/download`;
+}
+
 const request = (options) => {
   const headers = new Headers();
 
@@ -187,13 +191,14 @@ export class StompApi {
     );
   }
 
-  sendChat(chatId, content) {
+  sendChat(chatId, content, fileId = null) {
     this.api.send(
       "/app/send-chat",
       {},
       JSON.stringify({
         channelId: chatId,
         content: content,
+        fileId,
       })
     );
   }

@@ -7,6 +7,7 @@ import com.holytrinity.nerdchat.model.UploadedFileDto;
 import com.holytrinity.nerdchat.model.UploadedFileType;
 import com.holytrinity.nerdchat.repository.UploadedFileRepository;
 import com.holytrinity.nerdchat.utils.Crypto;
+import org.apache.tomcat.jni.Directory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
@@ -34,6 +35,8 @@ public class FileService {
     @Value("${app.upload.dir}")
     private String uploadDir;
 
+
+
     private String getFileName(UploadedFile file) {
         return file.getChecksum() + "_" + file.getName().substring(Math.max(0, file.getName().length() - 6));
     }
@@ -59,6 +62,9 @@ public class FileService {
     public UploadedFile uploadFile(UploadedFile.UploadedFileBuilder builder, MultipartFile file) {
 
         try {
+            if(!Files.exists(Paths.get(uploadDir))) {
+                Files.createDirectory(Paths.get(uploadDir));
+            }
             var hash = Crypto.calcSHA1(file);
             var model = builder
                     .checksum(hash)

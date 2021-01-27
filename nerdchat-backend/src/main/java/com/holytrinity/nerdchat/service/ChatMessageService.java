@@ -1,6 +1,8 @@
 package com.holytrinity.nerdchat.service;
 
 import com.holytrinity.nerdchat.entity.ChatMessage;
+import com.holytrinity.nerdchat.entity.ChatMessageAttachment;
+import com.holytrinity.nerdchat.entity.UploadedFile;
 import com.holytrinity.nerdchat.model.BasicChatMessageDto;
 import com.holytrinity.nerdchat.model.ChatMessageStatus;
 import com.holytrinity.nerdchat.repository.ChatMessageRepository;
@@ -35,5 +37,15 @@ public class ChatMessageService {
 
     public Optional<ChatMessage> findById(int id) {
         return _msgRepository.findById(id);
+    }
+
+    public ChatMessage create(ChatMessage.ChatMessageBuilder b, Integer fileId) {
+        var msg = b.build();
+        if (fileId != null) {
+           var attachment = ChatMessageAttachment .builder().message(msg)
+                   .file(UploadedFile.builder().id(fileId).build()).build();
+           msg.setAttachments(List.of(attachment));
+        }
+        return save(msg);
     }
 }

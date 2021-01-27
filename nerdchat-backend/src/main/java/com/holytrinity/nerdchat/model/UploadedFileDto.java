@@ -1,5 +1,6 @@
 package com.holytrinity.nerdchat.model;
 
+import com.holytrinity.nerdchat.entity.ChatMessageAttachment;
 import com.holytrinity.nerdchat.entity.UploadedFile;
 import com.holytrinity.nerdchat.entity.User;
 import lombok.AllArgsConstructor;
@@ -27,8 +28,16 @@ public class UploadedFileDto {
     private Date uploadedAt;
 
     public static UploadedFileDto from(UploadedFile file) {
+        if(file == null) return null;
         var obj = new UploadedFileDto();
         BeanUtils.copyProperties(file, obj);
+        return obj;
+    }
+
+    public static UploadedFileDto from(ChatMessageAttachment file) {
+        var obj = from(file.getFile());
+        if(obj == null) return null;
+        obj.setId(file.getId());
         return obj;
     }
 
