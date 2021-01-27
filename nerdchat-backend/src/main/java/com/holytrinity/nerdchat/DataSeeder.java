@@ -195,7 +195,7 @@ public class DataSeeder implements ApplicationRunner {
                                 .file(file)
                                 .message(bm)
                                 .build();
-                        bm.setAttachments(List.of(attachment));
+                        bm.setAttachment(attachment);
                     }
                     msgs.add(bm);
 

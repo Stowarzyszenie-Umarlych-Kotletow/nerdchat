@@ -124,10 +124,6 @@ export class Chat extends Component {
     });
   };
 
-  sendChat = (message) => {
-    this.stomp.sendChat(this.state.activeChatId, message);
-  };
-
   setLastRead = (chatId) => {
     this.stomp.setLastRead(chatId);
   };
@@ -260,7 +256,6 @@ export class Chat extends Component {
               {...{
                 activeChatId: this.state.activeChatId,
                 myNick: this.props.creds.nickname,
-                sendChat: this.sendChat,
                 api: this.http,
                 roomList: this.state.chatRoomList,
                 emojis: this.state.emojis,

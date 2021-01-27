@@ -23,7 +23,7 @@ public class Poll {
     public Date createdAt;
     public Date expiresAt;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "polls_users_fk"))
     private User author;
 

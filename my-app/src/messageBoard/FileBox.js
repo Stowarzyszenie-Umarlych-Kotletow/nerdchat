@@ -34,7 +34,6 @@ class FileBox extends Component {
       fileSize: fileSize,
       setUploadSectionOpen: uSectionOpen,
     });
-    
   };
 
   componentDidMount() {
@@ -44,7 +43,7 @@ class FileBox extends Component {
   componentDidUpdate() {
     this.context.api.getMyFiles().then((res) => {
       //console.log(res);
-      this.setState({lastFiveFiles : res});
+      this.setState({ lastFiveFiles: res });
     });
   }
 
@@ -62,56 +61,56 @@ class FileBox extends Component {
   };
 
   handleSendClick = (id) => {
-    // here insert sendMessage method
-    console.log("Sending file with id: " + id);
-  }
+    this.props.send(id);
+  };
 
   onProgress = (pct) => {
     // console.log(pct);
-    this.setState({fileUploadPct : pct});
+    this.setState({ fileUploadPct: pct });
   };
 
   getFormattedFileSize = () => {
     let size = this.state.fileSize;
     let sufix = "";
-    if(size > 1024*1024) {
-      return ((size/(1024*1024)).toFixed(2) + "MB");
-    }else{
-      return ((size/(1024)).toFixed(2) + "KB");
+    if (size > 1024 * 1024) {
+      return (size / (1024 * 1024)).toFixed(2) + "MB";
+    } else {
+      return (size / 1024).toFixed(2) + "KB";
     }
-    
-  }
+  };
 
   render() {
     return (
       <div id="FileBox">
         {this.state.lastFiveFiles.map((res) => (
-            <div id="fileItem">
-              <div id="fileName">{res.name}</div> 
-              <button id="sendFileButton" onClick={() => this.handleSendClick(res.id)}>Send</button>
-            </div>
-          ))}
-        <input
-          type="file"
-          id="fileInput"
-          onChange={this.onFileButtonClicked}
-        />
-        { this.state.setUploadSectionOpen ? 
-        (
-        <div id="uploadSection">
-          <button id="uploadButton" onClick={this.onUploadButtonClicked}>Upload</button>
-          <label id="sizeLabel">{this.getFormattedFileSize()}</label>
-          <div id="uploadProgressBarBox">
-          <div 
-            id="uploadProgressBar" 
-            style={{
-              width: String(100*this.state.fileUploadPct) + "%",
-              backgroundColor: "green",
-            }}>
+          <div id="fileItem">
+            <div id="fileName">{res.name}</div>
+            <button
+              id="sendFileButton"
+              onClick={() => this.handleSendClick(res.id)}
+            >
+              Send
+            </button>
           </div>
-        </div>
-        </div>) : null
-        }
+        ))}
+        <input type="file" id="fileInput" onChange={this.onFileButtonClicked} />
+        {this.state.setUploadSectionOpen ? (
+          <div id="uploadSection">
+            <button id="uploadButton" onClick={this.onUploadButtonClicked}>
+              Upload
+            </button>
+            <label id="sizeLabel">{this.getFormattedFileSize()}</label>
+            <div id="uploadProgressBarBox">
+              <div
+                id="uploadProgressBar"
+                style={{
+                  width: String(100 * this.state.fileUploadPct) + "%",
+                  backgroundColor: "green",
+                }}
+              ></div>
+            </div>
+          </div>
+        ) : null}
       </div>
     );
   }

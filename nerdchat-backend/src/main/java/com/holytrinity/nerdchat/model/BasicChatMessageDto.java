@@ -14,12 +14,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BasicChatMessageDto {
-    private int messageId;
-    private int senderId;
-    private String senderNickname;
-    private String senderName;
-    private String content;
-    private Date sentAt;
+    protected int messageId;
+    protected int senderId;
+    protected String senderNickname;
+    protected String senderName;
+    protected String content;
+    protected Date sentAt;
 
     public static BasicChatMessageDto from(ChatMessage msg) {
         var member = msg.getChatRoomMember();

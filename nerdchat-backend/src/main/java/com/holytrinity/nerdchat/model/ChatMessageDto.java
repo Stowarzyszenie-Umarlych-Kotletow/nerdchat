@@ -18,6 +18,12 @@ import java.util.UUID;
 public class ChatMessageDto extends BasicChatMessageDto {
     private UploadedFileDto attachment;
 
+    public ChatMessageDto(int messageId, int senderId, String senderNickname, String senderfName, String senderlName, String content, Date sentAt, UploadedFile file, Integer attachmentId) {
+        super(messageId, senderId, senderNickname, senderfName, senderlName, content, sentAt);
+        attachment = UploadedFileDto.from(file);
+        if(attachment != null && attachmentId != null)
+            attachment.setId(attachmentId);
+    }
 
     public static ChatMessageDto from(ChatMessage msg) {
         var base = BasicChatMessageDto.from(msg);

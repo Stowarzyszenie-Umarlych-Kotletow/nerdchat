@@ -20,13 +20,15 @@ public interface ChatMessageRepository
         extends PagingAndSortingRepository<ChatMessage, Integer> {
 
     List<ChatMessage> findByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
-    @Query("SELECT new com.holytrinity.nerdchat.model.BasicChatMessageDto(msg.id, me.id, u.nickname, u.firstName, u.lastName, msg.content, msg.sentAt) " +
+    @Query("SELECT new com.holytrinity.nerdchat.model.ChatMessageDto(msg.id, me.id, u.nickname, u.firstName, u.lastName, msg.content, msg.sentAt, file, atm.id) " +
             "FROM ChatRoom room " +
             "INNER JOIN ChatRoomMember me ON (room.id=me.chatRoom.id) " +
             "INNER JOIN User u ON (u.id=me.user.id) " +
             "INNER JOIN ChatMessage msg ON (me.id=msg.chatRoomMember.id)" +
+            "LEFT JOIN ChatMessageAttachment atm ON (atm.message.id=msg.id)" +
+            "LEFT JOIN UploadedFile file ON (file.id=atm.file.id) " +
             "WHERE room.publicId=?1 ORDER BY msg.sentAt ASC")
-    List<BasicChatMessageDto> findMessagesInChatRoom(UUID chatRoomId);
+    List<ChatMessageDto> findMessagesInChatRoom(UUID chatRoomId);
     Optional<ChatMessage> findFirstByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
 
 }

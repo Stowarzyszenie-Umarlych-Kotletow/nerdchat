@@ -119,15 +119,26 @@ export class MessageBoard extends Component {
     return r === "🐢";
   };
 
+  get stomp() {
+    return this.props.api.stomp;
+  }
+
+  send(msg, file = null) {
+    this.stomp.sendChat(this.props.activeChatId, msg, file);
+  }
+
   // Add Message to MessageBoard
   addMessage = (content) => {
-    // create a new message object
-
     if (content.trim() !== "") {
-      this.props.sendChat(content.trim());
-      //sendMessage(this.props.myUserId, this.props.activeChatId, content);
+      this.send(content.trim());
     }
   };
+
+  sendAttachment = (fileId) => {
+    if (fileId != null)
+      this.send(document.getElementById("textField").value, fileId);
+  };
+
   // rendering a message box and components within like object Messages that takes care of rendering array of messages in chat
   render() {
     return (
@@ -227,7 +238,10 @@ export class MessageBoard extends Component {
                 />
               ) : null}
               {this.state.openFile ? (
-                <FileBox switchOpenEmoji={this.switchOpenFile} />
+                <FileBox
+                  switchOpenEmoji={this.switchOpenFile}
+                  send={this.sendAttachment}
+                />
               ) : null}
               {this.props.activeChatId === null ? (
                 <div style={{ fontSize: "40px", textAlign: "center" }}>
@@ -245,7 +259,7 @@ export class MessageBoard extends Component {
               <AddMessage
                 addMessage={this.addMessage}
                 switchOpenEmoji={this.switchOpenEmoji}
-                switchOpenFile={(this, this.switchOpenFile)}
+                switchOpenFile={this.switchOpenFile}
               />
             )}
           </div>

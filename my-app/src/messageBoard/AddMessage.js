@@ -9,17 +9,8 @@ export class AddMessage extends Component {
   onSubmit = (e) => {
     // overwriting onSubmit fuction
     e.preventDefault();
-    // time of sending
-    const date = new Date();
-    const minutes =
-      date.getMinutes() < 10 ? ":0" + date.getMinutes() : date.getMinutes();
-    const time = String() + date.getHours() + ":" + minutes;
     // calling function that adds a message
-    this.props.addMessage(
-      document.getElementById("textField").value,
-      "Me",
-      time
-    );
+    this.props.addMessage(document.getElementById("textField").value);
     // reseting input field
     this.setState({ content: "" });
     // keeping a focus on input field to allow continious writing
@@ -34,7 +25,7 @@ export class AddMessage extends Component {
     return (
       <form
         onSubmit={this.onSubmit}
-        style={{ display: "flex"}}
+        style={{ display: "flex" }}
         autoComplete="off"
       >
         <input

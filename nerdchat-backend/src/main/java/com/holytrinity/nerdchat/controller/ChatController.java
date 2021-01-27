@@ -40,6 +40,7 @@ public class ChatController {
 
     @MessageMapping("/send-chat")
     public void sendChat(SimpMessageHeaderAccessor h, @Payload SendChatMessage msg) throws Exception {
+        if((msg.getContent() == null || msg.getContent().trim().length() == 0) && msg.getFileId() == null) return;
         var usrId = _getUserId(h);
          roomService.findRoomMember(msg.getChannelId(), usrId).ifPresent(member -> {
              var message = messageService.create(ChatMessage.builder()

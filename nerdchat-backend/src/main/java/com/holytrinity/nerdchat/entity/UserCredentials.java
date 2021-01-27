@@ -17,8 +17,8 @@ public class UserCredentials {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(cascade=CascadeType.PERSIST, optional = false)
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "creds_users_fk"))
+    @OneToOne(cascade=CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "creds_users_fk"))
     private User user;
 
     //@UpdateTimestamp

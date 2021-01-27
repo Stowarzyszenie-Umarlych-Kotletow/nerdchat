@@ -1,6 +1,8 @@
 import "./MessageItemTools.css";
 
 function formatUrls(data) {
+  if(data == null)
+    return [];
   let slices = data.split(" ");
   let urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
   let regex = new RegExp(urlRegex);
@@ -27,6 +29,8 @@ function formatUrls(data) {
 }
 
 function getEmojiFromLabels(data, emojis) {
+  if(data === null)
+    return;
   let slices = data.split(" ");
   let newData = [];
   let r = /:([a-z_\.]+):/gi;

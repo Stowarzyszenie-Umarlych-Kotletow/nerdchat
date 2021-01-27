@@ -4,6 +4,7 @@ import com.holytrinity.nerdchat.entity.ChatMessage;
 import com.holytrinity.nerdchat.entity.ChatMessageAttachment;
 import com.holytrinity.nerdchat.entity.UploadedFile;
 import com.holytrinity.nerdchat.model.BasicChatMessageDto;
+import com.holytrinity.nerdchat.model.ChatMessageDto;
 import com.holytrinity.nerdchat.model.ChatMessageStatus;
 import com.holytrinity.nerdchat.repository.ChatMessageRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomRepository;
@@ -31,7 +32,7 @@ public class ChatMessageService {
         return _msgRepository.findByChatRoomMember_ChatRoom_id(chatRoomId, sort);
     }
 
-    public List<BasicChatMessageDto> findByChatRoomId(UUID chatRoomId) {
+    public List<ChatMessageDto> findByChatRoomId(UUID chatRoomId) {
         return _msgRepository.findMessagesInChatRoom(chatRoomId);
     }
 
@@ -44,7 +45,7 @@ public class ChatMessageService {
         if (fileId != null) {
            var attachment = ChatMessageAttachment .builder().message(msg)
                    .file(UploadedFile.builder().id(fileId).build()).build();
-           msg.setAttachments(List.of(attachment));
+           msg.setAttachment(attachment);
         }
         return save(msg);
     }
