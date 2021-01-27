@@ -8,7 +8,8 @@ export class LoginWindow extends Component {
     login: "",
     password: "",
   };
-  onLogin = () => {
+  onLogin = (e) => {
+    e.preventDefault();
     this.context.api.createToken(this.state.login, this.state.password).then(
       (id) => {
         this.props.setOpenWindow(windowType.chat);
@@ -33,7 +34,7 @@ export class LoginWindow extends Component {
     return (
       <form  
       id="loginWindow" 
-      onSubmit={this.onLogin}>
+      onSubmit={(e) => this.onLogin(e)}>
         Hello, please sign in!
         <input
           id="loginField"
