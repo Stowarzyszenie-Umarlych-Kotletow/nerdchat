@@ -7,6 +7,7 @@ import React from "react";
 import { UserConfig } from "../context";
 import EmojiBox from "./EmojiBox/EmojiBox";
 import CreatePollBox from "./CreatePollBox";
+import FileBox from "./FileBox";
 
 export class MessageBoard extends Component {
   static contextType = UserConfig;
@@ -19,6 +20,7 @@ export class MessageBoard extends Component {
     openOptions: false,
     openEmoji: false,
     openCreatePoll: false,
+    openFile: false,
     chatCodeValid: true,
     adminPermissions: true,
   };
@@ -90,6 +92,10 @@ export class MessageBoard extends Component {
 
   switchOpenCreatePoll = () => {
     this.setState({ openCreatePoll: !this.state.openCreatePoll });
+  };
+
+  switchOpenFile = () => {
+    this.setState({ openFile: !this.state.openFile });
   };
 
   // Add Message to MessageBoard
@@ -199,6 +205,9 @@ export class MessageBoard extends Component {
                   }}
                 />
               ) : null}
+              {this.state.openFile ? (
+                <FileBox switchOpenEmoji={this.switchOpenFile} />
+              ) : null}
               {this.props.activeChatId === null ? (
                 <div style={{ fontSize: "40px", textAlign: "center" }}>
                   Choose a chat to start talking with your friends!
@@ -211,6 +220,7 @@ export class MessageBoard extends Component {
               <AddMessage
                 addMessage={this.addMessage}
                 switchOpenEmoji={this.switchOpenEmoji}
+                switchOpenFile={(this, this.switchOpenFile)}
               />
             )}
           </div>

@@ -24,7 +24,9 @@ const ConversationBox = ({ updateConfig, setLastRead }) => {
               fontSize: "30px",
             }}
           >
-            Nerdchat
+            <div id="appTitleBoxText">
+              Nerdchat
+            </div>
           </div>
           <div id="textLatestMessages" style={{ color: cfg.textColorUser }}>
             Latest Messages{" "}

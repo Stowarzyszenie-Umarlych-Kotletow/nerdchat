@@ -1,0 +1,25 @@
+#FileBox {
+    position: absolute;
+    z-index: 16;
+    /* height: 5%; */
+    width: 30%;
+    min-width: 350px;
+    left: 27%;
+    bottom: 50px;
+    background-color: #444c;
+}
+
+#file-input {
+    height: 95%;
+    width: 100%;
+    flex: 1;
+    font-size: 24px;
+    border: none;
+    padding: 5px;
+}
+
+#size-label {
+    width: 100%;
+    font-size: 24px;
+}
+

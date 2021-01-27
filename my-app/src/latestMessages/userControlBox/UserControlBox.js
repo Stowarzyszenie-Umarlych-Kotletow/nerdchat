@@ -76,8 +76,8 @@ export class UserControlBox extends Component {
             }}
           />
         </div>
-        <div id="settingsIcon" onClick={this.onSettingsButtonClick}>
-          ⚙️
+        <div id="settingsIconBlock" onClick={this.onSettingsButtonClick}>
+          <div id="settingsIcon">⚙️</div>
         </div>
       </div>
     );
