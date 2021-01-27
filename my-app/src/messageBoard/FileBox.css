@@ -1,16 +1,16 @@
 #FileBox {
     position: absolute;
     z-index: 16;
-    /* height: 5%; */
     width: 30%;
     min-width: 350px;
     left: 27%;
     bottom: 50px;
     background-color: #444c;
+    /* padding: 5px; */
 }
 
 #file-input {
-    height: 95%;
+    height: 50%;
     width: 100%;
     flex: 1;
     font-size: 24px;
@@ -19,7 +19,16 @@
 }
 
 #size-label {
-    width: 100%;
     font-size: 24px;
+    float: right;
 }
 
+#upload-section {
+    padding: 5px;
+    width: 100%;
+}
+
+#upload-button {
+    height: 100%;
+    font-size: 24px;
+}
