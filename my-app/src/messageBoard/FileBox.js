@@ -5,8 +5,9 @@ import "./FileBox.css";
 class FileBox extends Component {
   state = {
     setUploadSectionOpen: false,
-    fileSize: null,
+    fileSize: 0,
     file: undefined,
+    currentUploadedBytes: 21,
   }
 
   static contextType = UserConfig;
@@ -21,12 +22,11 @@ class FileBox extends Component {
     };
     if (file !== undefined) {
       uSectionOpen = true;
-      fileSize = (file.size/1024).toFixed(2) + "KB";
-      console.log(this.state.setUploadSectionOpen);
+      fileSize = file.size.toFixed(2);
       reader.readAsBinaryString(file);
     }else{
       uSectionOpen = false;
-      fileSize = "";
+      fileSize = 0;
     }
     this.setState({
       file: file,
@@ -36,7 +36,8 @@ class FileBox extends Component {
   };
 
   onUploadButtonClicked = (e) => {
-    
+    // console.log((100 * this.state.currentUploadedBytes) / this.state.fileSize);
+    this.setState({currentUploadedBytes: Math.min(this.state.currentUploadedBytes + 100, this.state.fileSize)});
   }
 
   render() {
@@ -45,13 +46,23 @@ class FileBox extends Component {
         <input
           type="file"
           accept=".txt"
-          id="file-input"
+          id="fileInput"
           onChange={this.onFileButtonClicked}
         />
-        {this.state.setUploadSectionOpen ? (
-        <div id="upload-section">
-          <button id="upload-button" onClick={this.onUploadButtonClicked}>Upload</button>
-          <label id="size-label">{this.state.fileSize}</label>
+        { this.state.setUploadSectionOpen ? 
+        (
+        <div id="uploadSection">
+          <button id="uploadButton" onClick={this.onUploadButtonClicked}>Upload</button>
+          <label id="sizeLabel">{String((this.state.fileSize/1024).toFixed(2)) + "KB"}</label>
+          <div id="uploadProgressBarBox">
+          <div 
+            id="uploadProgressBar" 
+            style={{
+              width: String((100 * this.state.currentUploadedBytes) / this.state.fileSize) + "%",
+              backgroundColor: "green",
+            }}>
+          </div>
+        </div>
         </div>) : null
         }
       </div>
