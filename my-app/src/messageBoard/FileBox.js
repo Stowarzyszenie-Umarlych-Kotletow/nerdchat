@@ -36,16 +36,18 @@ class FileBox extends Component {
     });
   };
 
-  componentDidMount() {
-    this.componentDidUpdate();
-  }
-
-  componentDidUpdate() {
+  getFiles() {
     this.context.api.getMyFiles().then((res) => {
       //console.log(res);
       this.setState({ lastFiveFiles: res });
     });
   }
+
+  componentDidMount() {
+    this.getFiles();
+  }
+
+  componentDidUpdate() {}
 
   onUploadButtonClicked = (e) => {
     let api = this.context.api;
@@ -56,8 +58,8 @@ class FileBox extends Component {
       })
       .then((res) => {
         this.onProgress(1);
+        this.getFiles();
       });
-    this.componentDidUpdate();
   };
 
   handleSendClick = (id) => {
