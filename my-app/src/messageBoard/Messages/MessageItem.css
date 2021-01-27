@@ -1,59 +1,59 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 .textbox {
-    position: relative;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    display:inline-block;
-    padding: 15px;
-    text-decoration: none;
-    max-width: 40%;
-    word-wrap: break-word;
-    padding-bottom: 20px;
-    margin-bottom: 10px;
+  position: relative;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 15px;
+  text-decoration: none;
+  max-width: 40%;
+  word-wrap: break-word;
+  padding-bottom: 20px;
+  margin-bottom: 10px;
 }
 .textHeader {
-    padding-left: 1px;
+  padding-left: 1px;
 }
 
 .pollBox {
-    max-width: 100%;
-    background: transparent;
-    border: 0;
-    border: 1px solid #eee;
-    border-radius: 7px ;
-    margin-bottom: 10px;
-    word-wrap: break-word;
-    padding: 3%;
-    -webkit-tap-highlight-color: transparent;
+  max-width: 100%;
+  background: transparent;
+  border: 0;
+  border: 1px solid #eee;
+  border-radius: 7px;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+  padding: 3%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .pollOption {
-    margin-top: 5px;
-    
+  margin-top: 5px;
 }
 
 .pollBarTrack {
-    height: 10px;
-    width: 90%;
-    margin-bottom: 10px;
+  height: 10px;
+  width: 90%;
+  margin-bottom: 10px;
 }
 
 .pollBar {
-    height: 10px;
+  height: 10px;
 }
 
-
 /*Checkboxes styles*/
-input[type="checkbox"] { display: none; }
+input[type="checkbox"] {
+  display: none;
+}
 
 input[type="checkbox"] + label {
   display: block;
   position: relative;
   padding-left: 35px;
   margin-bottom: 20px;
-  font: 14px/20px 'Open Sans', Arial, sans-serif;
+  font: 14px/20px "Open Sans", Arial, sans-serif;
   color: #ddd;
   cursor: pointer;
   -webkit-user-select: none;
@@ -61,10 +61,12 @@ input[type="checkbox"] + label {
   -ms-user-select: none;
 }
 
-input[type="checkbox"] + label:last-child { margin-bottom: 0; }
+input[type="checkbox"] + label:last-child {
+  margin-bottom: 0;
+}
 
 input[type="checkbox"] + label:before {
-  content: '';
+  content: "";
   display: block;
   width: 20px;
   height: 20px;
@@ -72,9 +74,9 @@ input[type="checkbox"] + label:before {
   position: absolute;
   left: 0;
   top: 0;
-  opacity: .6;
-  -webkit-transition: all .12s, border-color .08s;
-  transition: all .12s, border-color .08s;
+  opacity: 0.6;
+  -webkit-transition: all 0.12s, border-color 0.08s;
+  transition: all 0.12s, border-color 0.08s;
 }
 
 input[type="checkbox"]:checked + label:before {
@@ -94,8 +96,9 @@ input[type="checkbox"]:checked + label:before {
   bottom: 2px;
   display: table;
   background-color: #ccc3;
-  border-radius: 7px ;
+  border-radius: 7px;
   font-size: 11px;
+  padding-right: 5px;
   word-wrap: break-word;
 }
 
@@ -106,6 +109,6 @@ input[type="checkbox"]:checked + label:before {
 .newReactionButton {
   width: 20px;
   background-color: #ccc3;
-  border-radius: 7px ;
+  border-radius: 7px;
   font-size: 12px;
 }

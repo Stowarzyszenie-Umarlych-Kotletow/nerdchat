@@ -1,4 +1,5 @@
 import config from "./endpoints.json";
+import { axios } from "axios";
 
 const request = (options) => {
   const headers = new Headers();
@@ -41,10 +42,15 @@ export class HttpApi {
     return this.credentials.token;
   }
 
-  request(options) {
+  _getHeaders() {
     if (this.token !== null) {
-      options.headers = { "X-Token": this.token };
+      return { "X-Token": this.token };
     }
+    return {};
+  }
+
+  request(options) {
+    options.headers = this._getHeaders();
     return request(options);
   }
   updateCredentials(creds) {
@@ -104,6 +110,24 @@ export class HttpApi {
   }
   getEmojiTable() {
     return this.requestGet("/global/emojis");
+  }
+
+  _uploadFile(url, file, progress) {
+    return axios
+      .request({
+        method: "post",
+        url,
+        data: {
+          file,
+        },
+        onUploadProgress: progress,
+        headers: this._getHeaders(),
+      })
+      .then((data) => data.data);
+  }
+
+  uploadFile(file, progress) {
+    return this._uploadFile("/user/files/upload", file, progress);
   }
 }
 

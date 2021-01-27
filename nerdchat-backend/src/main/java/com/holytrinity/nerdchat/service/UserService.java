@@ -6,14 +6,13 @@ import com.holytrinity.nerdchat.entity.UserChatConfig;
 import com.holytrinity.nerdchat.entity.UserCredentials;
 import com.holytrinity.nerdchat.repository.UserAccessTokenRepository;
 import com.holytrinity.nerdchat.repository.UserRepository;
-import com.holytrinity.nerdchat.utils.Encryption;
+import com.holytrinity.nerdchat.utils.Crypto;
 import com.holytrinity.nerdchat.utils.TrimUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +35,7 @@ public class UserService {
     }
     public Optional<User> findById(int id) { return users.findById(id); }
     public boolean verifyPassword(UserCredentials creds, String password) {
-        return Encryption.verifyPassphrase(password, creds.getPasswordHash());
+        return Crypto.verifyPassphrase(password, creds.getPasswordHash());
     }
     public String createToken(User user) {
         var token = UserAccessToken.builder().user(user).build();

@@ -26,6 +26,7 @@ public class UploadedFile {
 
     @Enumerated(EnumType.STRING)
     private UploadedFileType type;
+    public String contentType;
 
     private long size_bytes;
     private String checksum;

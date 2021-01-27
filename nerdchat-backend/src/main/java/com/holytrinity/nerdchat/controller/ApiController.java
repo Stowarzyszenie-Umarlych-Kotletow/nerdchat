@@ -1,7 +1,9 @@
 package com.holytrinity.nerdchat.controller;
 
+import com.holytrinity.nerdchat.entity.UploadedFile;
 import com.holytrinity.nerdchat.entity.User;
 import com.holytrinity.nerdchat.entity.UserChatConfig;
+import com.holytrinity.nerdchat.exception.ApiException;
 import com.holytrinity.nerdchat.model.ChatMessageDto;
 import com.holytrinity.nerdchat.model.EmojiDto;
 import com.holytrinity.nerdchat.model.UserChatConfigDto;
@@ -10,6 +12,7 @@ import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
 import com.holytrinity.nerdchat.repository.EmojiRepository;
 import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
+import com.holytrinity.nerdchat.service.FileService;
 import com.holytrinity.nerdchat.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -41,11 +45,11 @@ public class ApiController {
     @Autowired
     private ChatRoomService roomService;
     @Autowired
-    private ChatRoomMemberRepository roomMemberRepository;
-    @Autowired
     private UserService userService;
     @Autowired
     private EmojiRepository emojis;
+    @Autowired private EntityManager entities;
+    @Autowired private FileService files;
 
     private User getUser() {
         return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -108,6 +112,20 @@ public class ApiController {
     @GetMapping("/global/emojis")
     public ResponseEntity<?> getEmojiTable() {
         return ok(emojis.findAllDto());
+    }
+
+    @PostMapping("/user/files/upload")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
+        try {
+            var model = files.uploadFile(UploadedFile.builder().author(getUser()), file);
+            return ok(model);
+        }catch(ApiException ex) {
+            return error(ex.getMsg());
+        }
+        catch(Exception ex) {
+            return error("Unknown error");
+        }
+
     }
 
 }

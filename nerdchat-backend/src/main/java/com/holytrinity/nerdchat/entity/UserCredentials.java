@@ -1,13 +1,10 @@
 package com.holytrinity.nerdchat.entity;
 
-import com.holytrinity.nerdchat.utils.Encryption;
+import com.holytrinity.nerdchat.utils.Crypto;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -30,7 +27,7 @@ public class UserCredentials {
 
     public UserCredentials(User user, String password) {
         this.user = user;
-        passwordHash = Encryption.encryptPassphrase(password);
+        passwordHash = Crypto.encryptPassphrase(password);
     }
 
     @Override
