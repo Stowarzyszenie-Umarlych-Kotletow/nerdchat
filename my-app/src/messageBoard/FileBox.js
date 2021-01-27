@@ -8,6 +8,7 @@ class FileBox extends Component {
     fileSize: 0,
     file: undefined,
     fileUploadPct: 0,
+    lastFiveFiles: [],
   };
 
   static contextType = UserContext;
@@ -33,8 +34,19 @@ class FileBox extends Component {
       fileSize: fileSize,
       setUploadSectionOpen: uSectionOpen,
     });
-    this.context.api.getMyFiles().then(console.log);
+    
   };
+
+  componentDidMount() {
+    this.componentDidUpdate();
+  }
+
+  componentDidUpdate() {
+    this.context.api.getMyFiles().then((res) => {
+      //console.log(res);
+      this.setState({lastFiveFiles : res});
+    });
+  }
 
   onUploadButtonClicked = (e) => {
     let api = this.context.api;
@@ -46,20 +58,41 @@ class FileBox extends Component {
       .then((res) => {
         this.onProgress(1);
       });
+    this.componentDidUpdate();
   };
 
+  handleSendClick = (id) => {
+    // here insert sendMessage method
+    console.log("Sending file with id: " + id);
+  }
+
   onProgress = (pct) => {
-    // p.loaded / p.total
-    console.log(pct);
+    // console.log(pct);
     this.setState({fileUploadPct : pct});
   };
+
+  getFormattedFileSize = () => {
+    let size = this.state.fileSize;
+    let sufix = "";
+    if(size > 1024*1024) {
+      return ((size/(1024*1024)).toFixed(2) + "MB");
+    }else{
+      return ((size/(1024)).toFixed(2) + "KB");
+    }
+    
+  }
 
   render() {
     return (
       <div id="FileBox">
+        {this.state.lastFiveFiles.map((res) => (
+            <div id="fileItem">
+              <div id="fileName">{res.name}</div> 
+              <button id="sendFileButton" onClick={() => this.handleSendClick(res.id)}>Send</button>
+            </div>
+          ))}
         <input
           type="file"
-          accept=".txt"
           id="fileInput"
           onChange={this.onFileButtonClicked}
         />
@@ -67,12 +100,12 @@ class FileBox extends Component {
         (
         <div id="uploadSection">
           <button id="uploadButton" onClick={this.onUploadButtonClicked}>Upload</button>
-          <label id="sizeLabel">{String((this.state.fileSize/1024).toFixed(2)) + "KB"}</label>
+          <label id="sizeLabel">{this.getFormattedFileSize()}</label>
           <div id="uploadProgressBarBox">
           <div 
             id="uploadProgressBar" 
             style={{
-              width: String(this.state.fileUploadPct) + "%",
+              width: String(100*this.state.fileUploadPct) + "%",
               backgroundColor: "green",
             }}>
           </div>

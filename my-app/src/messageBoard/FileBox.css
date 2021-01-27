@@ -43,3 +43,28 @@
 #uploadProgressBar {
     height: 5px;
 }
+
+#fileItem {
+    display: flex;
+    font-size: 20px;
+    padding: 5px;
+    
+}
+
+#fileName {
+    flex: 4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#sendFileButton {
+    flex: 1;
+    float: right;
+    font-size: 20px;
+    width: 100%;
+}
+
+#sendFileButton :hover {
+    background-color: #444c;
+}
