@@ -44,27 +44,27 @@
     height: 5px;
 }
 
-#fileItem {
+.fileItem {
     display: flex;
     font-size: 20px;
     padding: 5px;
     
 }
 
-#fileName {
+.fileName {
     flex: 4;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-#sendFileButton {
+.sendFileButton {
     flex: 1;
     float: right;
     font-size: 20px;
     width: 100%;
 }
 
-#sendFileButton :hover {
+.sendFileButton:hover {
     background-color: #444c;
 }

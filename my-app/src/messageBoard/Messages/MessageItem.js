@@ -67,6 +67,8 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
 
   const { senderName, sentAt, content, id } = message;
   let pollValuesSum = 0;
+  const hasFile = message.attachment !== null;
+  const hasImage = hasFile && message.attachment.type === "IMAGE";
   for (let i = 0; i < pollData.options.length; i++)
     pollValuesSum += pollData.options[i].value;
   return (
@@ -76,11 +78,19 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
           {senderName} - &#9202;{" "}
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
         </div>
+        {hasImage ? (
+          <div>
+            <img
+              src={getAttachmentUrl(message.messageId, message.attachment.id)}
+            ></img>
+          </div>
+        ) : null}
         <h1 style={{marginBottom: "10px"}}>
           {
-            message.attachment !== null ? (
+            (hasFile && !hasImage) ? (
             <a style={{
-              color: cfg.textColorUser
+              color: cfg.textColorUser,
+              fontSize: "16px",
             }} href={getAttachmentUrl(message.messageId, message.attachment.id)}>📥{message.attachment.name}<br/></a>
             ): null
             }
