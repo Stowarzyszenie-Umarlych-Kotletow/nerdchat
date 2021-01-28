@@ -15,9 +15,12 @@ function wrapText(text) {
 const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
   const cfg = useContext(UserConfig);
   const chatContext = useContext(ChatContext);
+  
   return chatRoomList === undefined
     ? null
     : chatRoomList.map((m) => {
+        let content = m.lastMessage.content === null ? "File" : m.lastMessage.content;
+        console.log(m.lastMessage.content);
         let date = new Date(Date.parse(m.lastMessage.sentAt));
         let today = new Date();
         let isToday =
@@ -97,7 +100,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
                   : m.lastMessage.senderName +
                       ": " +
                       getEmojiFromLabels(
-                        m.lastMessage.content,
+                        content,
                         chatContext.emojis
                       )
               )}

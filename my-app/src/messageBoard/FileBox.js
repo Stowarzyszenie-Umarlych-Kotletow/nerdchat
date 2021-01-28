@@ -85,10 +85,10 @@ class FileBox extends Component {
     return (
       <div id="FileBox">
         {this.state.lastFiveFiles.map((res) => (
-          <div id="fileItem">
-            <div id="fileName">{res.name}</div>
+          <div class="fileItem">
+            <div class="fileName">{res.name}</div>
             <button
-              id="sendFileButton"
+              class="sendFileButton"
               onClick={() => this.handleSendClick(res.id)}
             >
               Send

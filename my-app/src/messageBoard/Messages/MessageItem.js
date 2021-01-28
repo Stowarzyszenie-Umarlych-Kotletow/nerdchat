@@ -70,6 +70,7 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
   let pollValuesSum = 0;
   const hasFile = message.attachment !== null;
   const hasImage = hasFile && message.attachment.type === "IMAGE";
+  const hasVideo = hasFile && message.attachment.type === "VIDEO";
   for (let i = 0; i < pollData.options.length; i++)
     pollValuesSum += pollData.options[i].value;
   return (
@@ -86,7 +87,22 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
             ></img>
           </div>
         ) : null}
-        <h1 style={{ marginBottom: "10px" }}>
+        {hasVideo ? (
+          <div>
+            <video width="320" height="240" controls>
+              <source src={getAttachmentUrl(message.messageId, message.attachment.id)} type="video/mp4"></source>
+            </video>
+          </div>
+        ) : null}
+        <h1 style={{marginBottom: "10px"}}>
+          {
+            (hasFile && !hasImage) ? (
+            <a style={{
+              color: cfg.textColorUser,
+              fontSize: "16px",
+            }} href={getAttachmentUrl(message.messageId, message.attachment.id)}>📥{message.attachment.name}<br/></a>
+            ): null
+            }
           {formatUrls(getEmojiFromLabels(content, chat.emojis)).map((d) => {
             return d;
           })}
