@@ -31,6 +31,20 @@ export class MessageBoard extends Component {
     showAddReaction: false,
   };
 
+  container = React.createRef();
+
+  scrollDown(force = false) {
+    let obj = document.getElementById("MessageContainer");
+    let offset = obj.scrollTop;
+    let scrollHeight = obj.scrollHeight;
+    let clientHeight = obj.clientHeight;
+    let height = scrollHeight - clientHeight;
+    console.log(`o ${offset} h ${scrollHeight - clientHeight}`);
+    if (scrollHeight - offset <= 10 || force) {
+      document.getElementById("MessageContainer").scrollTop = height;
+    }
+  }
+
   handleNewMessage = (msg) => {
     for (let m of this.state.messages) {
       if (m.messageId === msg.messageId) return;
@@ -48,7 +62,14 @@ export class MessageBoard extends Component {
       .then((r) => this.setState({ reactions: r.data }));
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    if (this.container) {
+      this.container.current.addEventListener("DOMNodeInserted", (event) => {
+        const { currentTarget: target } = event;
+        target.scroll({ top: target.scrollHeight });
+      });
+    }
+  };
 
   componentDidUpdate = (prevProps, ps) => {
     console.log("Active chat ID: " + this.props.activeChatId);
@@ -83,9 +104,7 @@ export class MessageBoard extends Component {
     if (this.props.activeChatId !== prevProps.activeChatId) {
       this.setState({ openOptions: false });
     }
-    document.getElementById(
-      "MessageContainer"
-    ).scrollTop = document.getElementById("MessageContainer").scrollHeight;
+    this.scrollDown();
   };
 
   submitNewChatCode = () => {
@@ -279,6 +298,7 @@ export class MessageBoard extends Component {
               </div>
             </div>
             <div
+              ref={this.container}
               id="MessageContainer"
               style={{ color: this.context.textColorUser }}
             >
@@ -336,6 +356,7 @@ export class MessageBoard extends Component {
             <div id="addReactionContent">
               {this.props.emojis.map((emoji) => (
                 <input
+                  key={`${emoji.id}`}
                   type="button"
                   value={emoji.dataText}
                   className="addReactionButton"
@@ -369,7 +390,10 @@ export class MessageBoard extends Component {
             </div>
             <div id="showReactionsContent">
               {Object.values(currentReactions).map((r) => (
-                <p style={{ color: this.context.textColorMain }}>
+                <p
+                  key={`${r.emojiId}`}
+                  style={{ color: this.context.textColorMain }}
+                >
                   {findEmoji(this.props.emojis, r.emojiId).dataText +
                     "" +
                     r.count}

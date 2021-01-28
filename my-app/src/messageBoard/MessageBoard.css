@@ -75,11 +75,11 @@ a {
 
 #chatOptionsButton:after {
   font-size: 30px;
-  content: '\2807';
+  content: "\2807";
 }
 
 #chatOptions {
-  position:absolute;
+  position: absolute;
   top: 44px;
   right: 0px;
   width: 300px;
@@ -96,11 +96,11 @@ a {
 }
 
 #chatCodeField {
-  padding: 5px; 
+  padding: 5px;
   height: 40px;
   width: 72%;
-  margin-right: 5%; 
-  padding-right: 5px; 
+  margin-right: 5%;
+  padding-right: 5px;
   background-color: transparent;
   border: 0;
   border-bottom: 2px solid gray;
@@ -114,7 +114,7 @@ a {
   background: transparent;
   border: 0;
   border: 1px solid #000;
-  border-radius: 7px ;
+  border-radius: 7px;
   height: 40px;
 }
 
@@ -127,7 +127,6 @@ a {
 #chatCodeFieldLabel:after {
   content: attr(datatext);
 }
-
 
 #invalidCodeError {
   margin-bottom: 5px;
@@ -160,8 +159,6 @@ a {
   padding-left: 10px;
   padding-right: 5px;
 }
-
-
 
 #showReactionsContent {
   padding: 10px;
