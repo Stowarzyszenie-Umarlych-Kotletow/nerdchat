@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./MessageItem.css";
 import { UserConfig, ChatContext } from "../../context";
 import { formatUrls, getEmojiFromLabels } from "./MessageItemTools";
+import {getAttachmentUrl} from "../../common/Api";
 
 const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
   const cfg = useContext(UserConfig);
@@ -76,6 +77,13 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
           {new Date(Date.parse(sentAt)).toLocaleTimeString()}
         </div>
         <h1 style={{marginBottom: "10px"}}>
+          {
+            message.attachment !== null ? (
+            <a style={{
+              color: cfg.textColorUser
+            }} href={getAttachmentUrl(message.messageId, message.attachment.id)}>📥{message.attachment.name}<br/></a>
+            ): null
+            }
           {formatUrls(getEmojiFromLabels(content, chat.emojis)).map((d) => {
             return d;
           })}
