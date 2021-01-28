@@ -3,9 +3,15 @@ import PropTypes from "prop-types";
 import "./MessageItem.css";
 import { UserConfig, ChatContext } from "../../context";
 import { formatUrls, getEmojiFromLabels } from "./MessageItemTools";
-import { getAttachmentUrl } from "../../common/Api";
+import { getAttachmentUrl, findEmoji } from "../../common/Api";
 
-const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
+const MessageItem = ({
+  message,
+  myNick,
+  showReactions,
+  addReaction,
+  reactions,
+}) => {
   const cfg = useContext(UserConfig);
   const chat = useContext(ChatContext);
   // get style of message box depending on whose information is it
@@ -29,23 +35,19 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
     }
   };
 
-  let reactions = {
-    "🩸": 1,
-    "🦙": 1333,
-    "🦠": 19,
-    "🐢": 213,
-    "❤️": 2,
-  };
-
   const getReations = () => {
-    let result = Object.keys(reactions)
+    let result = Object.values(reactions)
       .sort(function (a, b) {
-        return reactions[b] - reactions[a];
+        return b.count - a.count;
       })
       .slice(0, 3);
     let reactionString = "";
-    result.forEach((key) => {
-      reactionString += key + " " + String(reactions[key]) + " ";
+    result.forEach((r) => {
+      reactionString +=
+        findEmoji(chat.emojis, r.emojiId).dataText +
+        " " +
+        String(r.count) +
+        " ";
     });
 
     return reactionString;
@@ -90,19 +92,26 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
         {hasVideo ? (
           <div>
             <video width="320" height="240" controls>
-              <source src={getAttachmentUrl(message.messageId, message.attachment.id)} type="video/mp4"></source>
+              <source
+                src={getAttachmentUrl(message.messageId, message.attachment.id)}
+                type="video/mp4"
+              ></source>
             </video>
           </div>
         ) : null}
-        <h1 style={{marginBottom: "10px"}}>
-          {
-            (hasFile && !hasImage) ? (
-            <a style={{
-              color: cfg.textColorUser,
-              fontSize: "16px",
-            }} href={getAttachmentUrl(message.messageId, message.attachment.id)}>📥{message.attachment.name}<br/></a>
-            ): null
-            }
+        <h1 style={{ marginBottom: "10px" }}>
+          {hasFile && !hasImage ? (
+            <a
+              style={{
+                color: cfg.textColorUser,
+                fontSize: "16px",
+              }}
+              href={getAttachmentUrl(message.messageId, message.attachment.id)}
+            >
+              📥{message.attachment.name}
+              <br />
+            </a>
+          ) : null}
           {formatUrls(getEmojiFromLabels(content, chat.emojis)).map((d) => {
             return d;
           })}
@@ -149,7 +158,7 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
           className="reactions"
           datatext={getReations()}
           style={{ fontSize: String(11 * cfg.fontSizeMultiplier) + "px" }}
-          onClick={() => showReactions(reactions)}
+          onClick={() => showReactions(message.messageId)}
         >
           <input
             type="button"
@@ -157,7 +166,7 @@ const MessageItem = ({ message, myNick, showReactions, addReaction }) => {
             className="newReactionButton"
             onClick={(e) => {
               e.stopPropagation();
-              addReaction();
+              addReaction(message.messageId);
             }}
           />
         </div>

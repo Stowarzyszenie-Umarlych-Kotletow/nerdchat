@@ -40,8 +40,6 @@ import java.util.UUID;
 @Transactional
 public class ApiController {
     @Autowired
-    private SimpUserRegistry users;
-    @Autowired
     private SimpMessagingTemplate messaging;
     @Autowired
     private ChatMessageService messageService;
@@ -73,8 +71,12 @@ public class ApiController {
 
     @GetMapping("/chatroom/{roomId}/messages")
     public ResponseEntity<?> getChatMessages(@PathVariable UUID roomId) {
-
         return ok(messageService.findByChatRoomId(roomId));
+    }
+
+    @GetMapping("/chatroom/{roomId}/reactions")
+    public ResponseEntity<?> getChatReactions(@PathVariable UUID roomId) {
+        return ok(messageService.getChatReactions(roomId, getUser().getId(),null, null));
     }
 
 

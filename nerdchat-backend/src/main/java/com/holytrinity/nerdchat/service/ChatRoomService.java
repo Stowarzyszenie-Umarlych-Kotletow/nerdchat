@@ -138,4 +138,5 @@ public class ChatRoomService {
         var list = query.getResultList();
         return list;
     }
+
 }

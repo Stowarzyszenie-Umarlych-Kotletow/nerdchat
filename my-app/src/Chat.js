@@ -185,6 +185,8 @@ export class Chat extends Component {
       this.updateChatRoom(room, (chat) => {
         return { joinCode: m.code };
       });
+    } else if (type == "message-reactions") {
+      this.board.current.mergeReactions(m);
     }
   };
 

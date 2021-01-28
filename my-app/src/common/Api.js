@@ -5,6 +5,17 @@ export function getAttachmentUrl(messageId, attachmentId) {
   return `${config.apiUrl}/global/message/${messageId}/attachment/${attachmentId}/download`;
 }
 
+export function findEmoji(emojis, emojiId) {
+  if (emojis != null) {
+    for (let e of emojis) {
+      if (e.id == emojiId) {
+        return e;
+      }
+    }
+  }
+  return null;
+}
+
 const request = (options) => {
   const headers = new Headers();
 
@@ -140,6 +151,9 @@ export class HttpApi {
   getMyFiles() {
     return this.requestGet("/user/files");
   }
+  getReactions(chatId) {
+    return this.requestGet(`/chatroom/${encodeURI(chatId)}/reactions`);
+  }
 }
 
 export class StompApi {
@@ -201,6 +215,15 @@ export class StompApi {
         fileId,
       })
     );
+  }
+
+  reactToMessage(roomId, messageId, emojiId, state) {
+    return this.sendPromise("/app/react-message", {
+      roomId,
+      messageId,
+      emojiId,
+      state,
+    });
   }
 
   setChatroomCode(chatRoomId, joinCode) {

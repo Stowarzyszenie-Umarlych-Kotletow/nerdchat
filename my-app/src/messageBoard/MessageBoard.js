@@ -9,6 +9,7 @@ import EmojiBox from "./EmojiBox/EmojiBox";
 import CreatePollBox from "./CreatePollBox";
 import FileBox from "./FileBox";
 import { ChatContext } from "../context";
+import { findEmoji } from "../common/Api";
 
 export class MessageBoard extends Component {
   static contextType = UserConfig;
@@ -17,6 +18,7 @@ export class MessageBoard extends Component {
     chatCode: "",
     chatCodeInput: "",
     messages: [],
+    reactions: {},
     showOptions: false,
     openOptions: false,
     openEmoji: false,
@@ -25,7 +27,7 @@ export class MessageBoard extends Component {
     chatCodeValid: true,
     adminPermissions: true,
     showReactions: false,
-    reactions: {},
+    reactMessageId: -2077,
     showAddReaction: false,
   };
 
@@ -36,6 +38,16 @@ export class MessageBoard extends Component {
     this.setState({ messages: [...this.state.messages, msg] });
   };
 
+  handleChatChanged() {
+    this.setState({ messages: [], reactions: {} });
+    this.props.api
+      .getChatRoomMessages(this.props.activeChatId)
+      .then((m) => this.setState({ messages: m }));
+    this.props.api
+      .getReactions(this.props.activeChatId)
+      .then((r) => this.setState({ reactions: r.data }));
+  }
+
   componentDidMount = () => {};
 
   componentDidUpdate = (prevProps, ps) => {
@@ -44,9 +56,7 @@ export class MessageBoard extends Component {
       prevProps.activeChatId !== this.props.activeChatId &&
       this.props.activeChatId !== undefined
     ) {
-      this.props.api
-        .getChatRoomMessages(this.props.activeChatId)
-        .then((m) => this.setState({ messages: m }));
+      this.handleChatChanged();
     }
 
     if (this.props.activeChatId != null && this.props.roomList != null) {
@@ -101,22 +111,61 @@ export class MessageBoard extends Component {
   switchOpenFile = () => {
     this.setState({ openFile: !this.state.openFile });
   };
-  showReactions = (reacts) => {
-    this.setState({ showAddReaction: false });
-    this.setState({ showReactions: !this.state.showReactions });
-    this.setState({ reactions: reacts });
+
+  showReactions = (messageId) => {
+    this.setState({
+      reactMessageId: messageId,
+      showReactions: !this.state.showReactions,
+      showAddReaction: false,
+    });
   };
 
-  showAddReaction = () => {
-    //add reaction
-    this.setState({ showReactions: false });
-    this.setState({ showAddReaction: !this.state.showAddReaction });
+  showAddReaction = (messageId) => {
+    this.setState({
+      reactMessageId: messageId,
+      showReactions: false,
+      showAddReaction: !this.state.showAddReaction,
+    });
   };
 
-  addReaction = (emoji, user_id, message_id) => {};
+  addReaction = (emojiId) => {
+    let isSelected = this.isReactionSelected(emojiId);
+    this.stomp
+      .reactToMessage(
+        this.props.activeChatId,
+        this.state.reactMessageId,
+        emojiId,
+        !isSelected
+      )
+      .then((data) => {
+        this.mergeReactions(data);
+      });
+  };
 
-  isReactionSelected = (r) => {
-    return r === "🐢";
+  mergeReactions(data) {
+    console.log("merging");
+    let reactions = this.state.reactions;
+    for (const [messageId, emoDict] of Object.entries(data)) {
+      let r = reactions[messageId];
+      for (const [emoId, reaction] of Object.entries(emoDict)) {
+        let lastState =
+          r !== undefined &&
+          r[emoId] !== undefined &&
+          r[emoId].selected === true;
+        if (reaction.selected === null) reaction.selected = lastState;
+      }
+      reactions[messageId] = emoDict;
+    }
+    this.setState({ reactions });
+  }
+
+  isReactionSelected = (emojiId) => {
+    let reacts = this.state.reactions[this.state.reactMessageId];
+    return (
+      reacts !== undefined &&
+      reacts[emojiId] !== undefined &&
+      reacts[emojiId].selected === true
+    );
   };
 
   get stomp() {
@@ -141,6 +190,9 @@ export class MessageBoard extends Component {
 
   // rendering a message box and components within like object Messages that takes care of rendering array of messages in chat
   render() {
+    let currentReactions =
+      this.state.reactions[this.state.reactMessageId] || {};
+
     return (
       <div
         style={{
@@ -250,6 +302,7 @@ export class MessageBoard extends Component {
               ) : (
                 <Messages
                   messages={this.state.messages}
+                  reactions={this.state.reactions}
                   showReactions={this.showReactions}
                   addReaction={this.showAddReaction}
                 />
@@ -286,11 +339,11 @@ export class MessageBoard extends Component {
                   type="button"
                   value={emoji.dataText}
                   className="addReactionButton"
-                  onClick={() => this.addReaction(emoji.datatext, 0, 0)}
+                  onClick={() => this.addReaction(emoji.id)}
                   style={{
                     backgroundColor:
                       this.context.accentsColor +
-                      String(99 * this.isReactionSelected(emoji.dataText)),
+                      (this.isReactionSelected(emoji.id) ? "99" : "00"),
                   }}
                 />
               ))}
@@ -315,9 +368,11 @@ export class MessageBoard extends Component {
               />
             </div>
             <div id="showReactionsContent">
-              {Object.keys(this.state.reactions).map((key) => (
+              {Object.values(currentReactions).map((r) => (
                 <p style={{ color: this.context.textColorMain }}>
-                  {key + "" + this.state.reactions[key]}
+                  {findEmoji(this.props.emojis, r.emojiId).dataText +
+                    "" +
+                    r.count}
                 </p>
               ))}
             </div>

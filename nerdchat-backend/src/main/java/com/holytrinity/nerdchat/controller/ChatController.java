@@ -3,8 +3,10 @@ package com.holytrinity.nerdchat.controller;
 import com.holytrinity.nerdchat.entity.ChatMessage;
 import com.holytrinity.nerdchat.entity.User;
 import com.holytrinity.nerdchat.model.*;
+import com.holytrinity.nerdchat.model.http.ReactionCountSummary;
 import com.holytrinity.nerdchat.model.stomp.EditRoomCodeRequest;
 import com.holytrinity.nerdchat.model.stomp.NotifyChannelJoinCode;
+import com.holytrinity.nerdchat.model.stomp.ReactToMessageRequest;
 import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
 import com.holytrinity.nerdchat.repository.UploadedFileRepository;
 import com.holytrinity.nerdchat.service.ChatMessageService;
@@ -19,7 +21,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
@@ -59,6 +60,32 @@ public class ChatController {
          });
 
     }
+
+    @MessageMapping("/react-message")
+    public void reactMessage(SimpMessageHeaderAccessor h, @Payload ReactToMessageRequest req) {
+        var usrId = _getUserId(h);
+        var usrName = _getUserName(h);
+            roomService.findRoomMember(req.getRoomId(), usrId)
+                    .ifPresent(m -> {
+                        if(req.isState()) {
+                            messageService.getRepo().reactToMessage(m.getId(), req.getMessageId(), req.getEmojiId());
+                        } else {
+                            var ret = messageService.getReactionsRepo().unreact(m.getId(), req.getMessageId());
+                            if (ret <= 0) return;
+                        }
+                        var data = messageService.getRepo().findMessageReactions(req.getMessageId(), usrId);
+                        var obj = ReactionCountSummary.construct(req.getMessageId(), data);
+                        _reply(h, obj);
+                        for(var mkv : obj.entrySet()) {
+                            for(var kv : mkv.getValue().entrySet()) {
+                                kv.getValue().setSelected(null);
+                            }
+                        }
+                        _notifyChannel(req.getRoomId(), "message-reactions", obj);
+                    });
+
+    }
+
 
     @MessageMapping("/last-read")
     public void setLastRead(SimpMessageHeaderAccessor h, @Payload SetLastRead msg) throws Exception {

@@ -16,11 +16,12 @@ class Messages extends Component {
           {({ creds }) => {
             return (
               <MessageItem
-                key={message.messageId}
+                key={message.messageId + ""}
                 message={message}
                 myNick={creds.nickname}
                 showReactions={this.props.showReactions}
                 addReaction={this.props.addReaction}
+                reactions={this.props.reactions[message.messageId] || {}}
               />
             );
           }}

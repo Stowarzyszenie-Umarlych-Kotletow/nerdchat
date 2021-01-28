@@ -49,7 +49,7 @@ public class AppWebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 
                     List<String> authorization = accessor.getNativeHeader("X-token");
-
+                    if(authorization == null || authorization.size() == 0) return null;
                     String accessToken = authorization.get(0);
                     var user = users.findByToken(accessToken);
                     if(user.isEmpty()) {
