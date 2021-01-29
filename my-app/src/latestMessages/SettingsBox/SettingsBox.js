@@ -18,7 +18,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
   };
 
   const resetSettings = () => {
-    updateConfig(getDefaultConfig());
+    updateConfig(Object.assign({}, localCfg, getDefaultConfig()));
   };
 
   const logoutUser = () => {
