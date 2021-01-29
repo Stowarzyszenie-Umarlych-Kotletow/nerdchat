@@ -30,22 +30,22 @@ public interface ChatMessageRepository
             "WHERE room.publicId=?1 ORDER BY msg.sentAt ASC")
     List<ChatMessageDto> findMessagesInChatRoom(UUID chatRoomId);
     Optional<ChatMessage> findFirstByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
-    @Query("SELECT new com.holytrinity.nerdchat.model.ReactionCountDto(msg.id, r.emoji.id, COUNT(r.id), MAX(CASE WHEN me.user.id=?2 THEN 1 ELSE 0 END))" +
+    @Query("SELECT new com.holytrinity.nerdchat.model.ReactionCountDto(msg.id, r.emoji.id, COUNT(r.id), MAX(CASE WHEN me2.user.id=?2 THEN 1 ELSE 0 END))" +
             "FROM ChatRoom room " +
             "INNER JOIN ChatRoomMember me ON(room.id=me.chatRoom.id) " +
             "INNER JOIN ChatMessage msg ON (me.id=msg.chatRoomMember.id) " +
             "INNER JOIN ChatMessageReaction r ON(msg.id=r.chatMessage.id) " +
+            "INNER JOIN ChatRoomMember me2 ON(me2.id=r.chatRoomMember.id) " +
             "WHERE room.publicId=?1 AND msg.sentAt BETWEEN ?3 AND ?4 " +
             "GROUP BY msg.id, r.emoji.id")
     List<ReactionCountDto> findReactionsInChatRoom(UUID chatRoomId, int userId, Date from, Date until);
 
-    @Query("SELECT new com.holytrinity.nerdchat.model.ReactionCountDto(msg.id, r.emoji.id, COUNT(r.id), MAX(CASE WHEN me.user.id=?2 THEN 1 ELSE 0 END)) " +
+    @Query("SELECT new com.holytrinity.nerdchat.model.ReactionCountDto(msg.id, r.emoji.id, COUNT(r.id), MAX(CASE WHEN r.chatRoomMember.id=?2 THEN 1 ELSE 0 END)) " +
             "FROM ChatMessage msg " +
-            "INNER JOIN ChatRoomMember me ON(me.id=msg.chatRoomMember.id) " +
             "INNER JOIN ChatMessageReaction r ON(msg.id=r.chatMessage.id) " +
             "WHERE msg.id=?1 " +
             "GROUP BY msg.id, r.emoji.id")
-    List<ReactionCountDto> findMessageReactions(int messageId, int userId);
+    List<ReactionCountDto> findMessageReactions(int messageId, int memberId);
 
     @Modifying(flushAutomatically = true)
     @Procedure("REACT_TO_MESSAGE")

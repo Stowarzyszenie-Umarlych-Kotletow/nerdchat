@@ -73,7 +73,7 @@ public class ChatController {
                             var ret = messageService.getReactionsRepo().unreact(m.getId(), req.getMessageId());
                             if (ret <= 0) return;
                         }
-                        var data = messageService.getRepo().findMessageReactions(req.getMessageId(), usrId);
+                        var data = messageService.getRepo().findMessageReactions(req.getMessageId(), m.getId());
                         var obj = ReactionCountSummary.construct(req.getMessageId(), data);
                         _reply(h, obj);
                         for(var mkv : obj.entrySet()) {
