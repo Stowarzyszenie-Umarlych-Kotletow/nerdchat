@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "message_reactions")
-public class ChatMessageReaction implements Serializable {
+public class ChatMessageReaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

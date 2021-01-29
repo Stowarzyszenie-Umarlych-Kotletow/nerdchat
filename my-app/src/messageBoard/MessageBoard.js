@@ -85,7 +85,7 @@ export class MessageBoard extends Component {
         if (chat.chatRoomId === this.props.activeChatId) {
           let chatCode = chat.joinCode;
           let chatName = chat.chatName;
-          let showOptions = chat.joinCode !== "";
+          let showOptions = chat.joinCode !== null && chat.joinCode !== "";
           if (
             chatCode !== this.state.chatCode ||
             chatName !== this.state.chatName ||
@@ -166,17 +166,21 @@ export class MessageBoard extends Component {
   };
 
   mergeReactions(data) {
-    console.log("merging");
     let reactions = this.state.reactions;
     for (const [messageId, emoDict] of Object.entries(data)) {
-      let r = reactions[messageId];
-      for (const [emoId, reaction] of Object.entries(emoDict)) {
-        let lastState =
-          r !== undefined &&
-          r[emoId] !== undefined &&
-          r[emoId].selected === true;
-        if (reaction.selected === null) reaction.selected = lastState;
+      let currentReactions = reactions[messageId];
+      for (const [emoId, reactionData] of Object.entries(emoDict)) {
+        if (reactionData.selected === null) {
+          // if the new reaction data doesn't have data about current selection,
+          // reuse the old state
+          let lastState =
+            currentReactions !== undefined &&
+            currentReactions[emoId] !== undefined &&
+            currentReactions[emoId].selected === true;
+          reactionData.selected = lastState;
+        }
       }
+      // override message reactions with new data
       reactions[messageId] = emoDict;
     }
     this.setState({ reactions });

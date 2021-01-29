@@ -2,6 +2,7 @@ package com.holytrinity.nerdchat.controller;
 
 import com.holytrinity.nerdchat.entity.ChatMessage;
 import com.holytrinity.nerdchat.entity.User;
+import com.holytrinity.nerdchat.exception.ApiException;
 import com.holytrinity.nerdchat.model.*;
 import com.holytrinity.nerdchat.model.http.ReactionCountSummary;
 import com.holytrinity.nerdchat.model.stomp.EditRoomCodeRequest;
@@ -62,27 +63,26 @@ public class ChatController {
     }
 
     @MessageMapping("/react-message")
-    public void reactMessage(SimpMessageHeaderAccessor h, @Payload ReactToMessageRequest req) {
+    public void reactToMessage(SimpMessageHeaderAccessor h, @Payload ReactToMessageRequest req) {
         var usrId = _getUserId(h);
-        var usrName = _getUserName(h);
-        roomService.findRoomMember(req.getRoomId(), usrId)
-                .ifPresent(m -> {
-                    if (req.isState()) {
-                        messageService.getRepo().reactToMessage(m.getId(), req.getMessageId(), req.getEmojiId());
-                    } else {
-                        var ret = messageService.getReactionsRepo().unreact(m.getId(), req.getMessageId());
-                        if (ret <= 0) return;
-                    }
-                    var data = messageService.getRepo().findMessageReactions(req.getMessageId(), m.getId());
-                    var obj = ReactionCountSummary.construct(req.getMessageId(), data);
-                    _reply(h, obj);
-                    for (var mkv : obj.entrySet()) {
-                        for (var kv : mkv.getValue().entrySet()) {
-                            kv.getValue().setSelected(null);
-                        }
-                    }
-                    _notifyChannel(req.getRoomId(), "message-reactions", obj);
-                });
+        var member = roomService.findRoomMember(req.getRoomId(), usrId)
+                .orElseThrow(() -> new ApiException("user not found"));
+
+        if (req.isState()) {
+            // add reaction
+            messageService.getRepo().reactToMessage(member.getId(), req.getMessageId(), req.getEmojiId());
+        } else {
+            // remove reaction
+            var ret = messageService.getReactionsRepo().unreact(member.getId(), req.getMessageId());
+            if (ret <= 0)
+                return; // nothing changed
+        }
+        var data = messageService.getRepo().findMessageReactions(req.getMessageId(), member.getId());
+        var obj = ReactionCountSummary.construct(req.getMessageId(), data);
+        _reply(h, obj); // reply to the reacting user with updated reaction data for the message
+        ReactionCountSummary.clearSelections(obj); // prepare data for other users (without selections)
+        // send an event to all connected users in the channel
+        _notifyChannel(req.getRoomId(), "message-reactions", obj);
 
     }
 

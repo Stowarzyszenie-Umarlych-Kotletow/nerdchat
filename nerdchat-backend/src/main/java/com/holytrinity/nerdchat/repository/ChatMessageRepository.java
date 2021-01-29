@@ -33,12 +33,13 @@ public interface ChatMessageRepository
 
     Optional<ChatMessage> findFirstByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
 
-    @Query("SELECT new com.holytrinity.nerdchat.model.ReactionCountDto(msg.id, r.emoji.id, COUNT(r.id), MAX(CASE WHEN me2.user.id=?2 THEN 1 ELSE 0 END))" +
+    @Query("SELECT new com.holytrinity.nerdchat.model.ReactionCountDto(" +
+            "msg.id, r.emoji.id, COUNT(r.id), MAX(CASE WHEN rMe.user.id=?2 THEN 1 ELSE 0 END)) " +
             "FROM ChatRoom room " +
             "INNER JOIN ChatRoomMember me ON(room.id=me.chatRoom.id) " +
             "INNER JOIN ChatMessage msg ON (me.id=msg.chatRoomMember.id) " +
             "INNER JOIN ChatMessageReaction r ON(msg.id=r.chatMessage.id) " +
-            "INNER JOIN ChatRoomMember me2 ON(me2.id=r.chatRoomMember.id) " +
+            "INNER JOIN ChatRoomMember rMe ON(rMe.id=r.chatRoomMember.id) " +
             "WHERE room.publicId=?1 AND msg.sentAt BETWEEN ?3 AND ?4 " +
             "GROUP BY msg.id, r.emoji.id")
     List<ReactionCountDto> findReactionsInChatRoom(UUID chatRoomId, int userId, Date from, Date until);

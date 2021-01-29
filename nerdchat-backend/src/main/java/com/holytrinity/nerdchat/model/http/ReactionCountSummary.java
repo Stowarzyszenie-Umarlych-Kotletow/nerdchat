@@ -19,16 +19,18 @@ public class ReactionCountSummary {
 
     public static Map<Integer, Map<Integer, ReactionSummaryItem>> construct(List<ReactionCountDto> data) {
         var dict = new HashMap<Integer, Map<Integer, ReactionSummaryItem>>();
-        if (data != null) {
-            for (var d : data) {
-                var m = d.getMessageId();
-                var msgContainer = dict.getOrDefault(m, null);
-                if (msgContainer == null) {
-                    dict.put(m, msgContainer = new HashMap<>());
-                }
-                msgContainer.put(d.getEmojiId(), new ReactionSummaryItem(d.getEmojiId(), d.getCount(), d.isUserReacted()));
+        if (data == null) return dict; // it's empty anyway
+
+        for (var row : data) {
+            var msgId = row.getMessageId();
+            var msgContainer = dict.getOrDefault(msgId, null);
+            if (msgContainer == null) {
+                dict.put(msgId, msgContainer = new HashMap<>());
             }
+            msgContainer.put(row.getEmojiId(),
+                    new ReactionSummaryItem(row.getEmojiId(), row.getCount(), row.isSelected()));
         }
+
         return dict;
     }
 
@@ -42,5 +44,13 @@ public class ReactionCountSummary {
 
     public static ReactionCountSummary from(Date from, Date until, List<ReactionCountDto> data) {
         return new ReactionCountSummary(from, until, construct(data));
+    }
+
+    public static void clearSelections(Map<Integer, Map<Integer, ReactionSummaryItem>> dict) {
+        for (var mkv : dict.entrySet()) {
+            for (var kv : mkv.getValue().entrySet()) {
+                kv.getValue().setSelected(null);
+            }
+        }
     }
 }

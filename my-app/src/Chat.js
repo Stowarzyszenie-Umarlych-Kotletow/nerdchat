@@ -209,8 +209,8 @@ export class Chat extends Component {
 
   updateEmojis = () => {
     this.http.getEmojiTable().then(
-      (m) => {
-        this.setState({ emojis: m });
+      (data) => {
+        this.setState({ emojis: data });
       },
       (err) => {
         setTimeout(this.updateEmojis, 5000);

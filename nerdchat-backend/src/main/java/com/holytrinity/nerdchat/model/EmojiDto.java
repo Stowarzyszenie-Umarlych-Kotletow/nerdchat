@@ -8,10 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class EmojiDto {
     private int id;
     private String label;

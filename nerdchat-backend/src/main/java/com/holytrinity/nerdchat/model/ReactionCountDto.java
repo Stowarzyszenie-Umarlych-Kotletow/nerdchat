@@ -9,13 +9,13 @@ public class ReactionCountDto {
     private int messageId;
     private int emojiId;
     private long count;
-    private boolean userReacted;
+    private boolean selected;
 
     public ReactionCountDto(int messageId, int emojiId, long count, int reacted) {
         this.messageId = messageId;
         this.emojiId = emojiId;
         this.count = count;
-        this.userReacted = reacted > 0;
+        this.selected = reacted > 0;
     }
 
 }
