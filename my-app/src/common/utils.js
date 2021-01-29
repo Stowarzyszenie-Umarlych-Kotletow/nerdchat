@@ -65,3 +65,34 @@ export function wrapText(text) {
   }
   return text;
 }
+
+export const mergeReactionDicts = (reactions, data) => {
+  for (const [messageId, emoDict] of Object.entries(data)) {
+    // current reaction data for the given message
+    let currentReactions = reactions[messageId];
+    for (const [emoId, reactionData] of Object.entries(emoDict)) {
+      if (reactionData.selected === null) {
+        // if the new reaction data doesn't have data
+        // about current selection, reuse the old state
+        let lastState =
+          currentReactions !== undefined &&
+          currentReactions[emoId] !== undefined &&
+          currentReactions[emoId].selected === true;
+        reactionData.selected = lastState;
+      }
+    }
+    // override reactions to the given message with new data
+    reactions[messageId] = emoDict;
+  }
+  return reactions;
+};
+
+export const scrollToBottom = (obj, force = false) => {
+  let offset = obj.scrollTop;
+  let scrollHeight = obj.scrollHeight;
+  let clientHeight = obj.clientHeight;
+  let height = scrollHeight - clientHeight;
+  if (scrollHeight - offset <= 10 || force) {
+    obj.scrollTop = height;
+  }
+};

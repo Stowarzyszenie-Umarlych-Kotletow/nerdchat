@@ -8,7 +8,7 @@ import { UserConfig } from "../context";
 import EmojiBox from "./EmojiBox/EmojiBox";
 import CreatePollBox from "./CreatePollBox";
 import FileBox from "./FileBox";
-import { dragElement } from "../common/utils";
+import { dragElement, mergeReactionDicts } from "../common/utils";
 import { findEmoji } from "../common/Api";
 
 export class MessageBoard extends Component {
@@ -166,25 +166,9 @@ export class MessageBoard extends Component {
   };
 
   mergeReactions = (data) => {
-    let reactions = this.state.reactions;
-    for (const [messageId, emoDict] of Object.entries(data)) {
-      // current reaction data for the given message
-      let currentReactions = reactions[messageId];
-      for (const [emoId, reactionData] of Object.entries(emoDict)) {
-        if (reactionData.selected === null) {
-          // if the new reaction data doesn't have data about current selection,
-          // reuse the old state
-          let lastState =
-            currentReactions !== undefined &&
-            currentReactions[emoId] !== undefined &&
-            currentReactions[emoId].selected === true;
-          reactionData.selected = lastState;
-        }
-      }
-      // override reactions to the given message with new data
-      reactions[messageId] = emoDict;
-    }
-    this.setState({ reactions });
+    this.setState({
+      reactions: mergeReactionDicts(this.state.reactions, data),
+    });
   };
 
   isReactionSelected = (emojiId) => {
@@ -360,7 +344,6 @@ export class MessageBoard extends Component {
                     style={{
                       backgroundColor: this.context.accentsColor,
                       color: this.context.textColorMain,
-                      
                     }}
                   >
                     Reactions
@@ -374,12 +357,13 @@ export class MessageBoard extends Component {
                     {Object.values(currentReactions).map((r) => (
                       <p
                         key={`${r.emojiId}`}
-                        style={{ 
+                        style={{
                           color: this.context.textColorMain,
                           backgroundColor:
-                          this.context.accentsColor +
-                          (r.selected ? "99" : "00"), borderRadius: "7px"}}
-                        
+                            this.context.accentsColor +
+                            (r.selected ? "99" : "00"),
+                          borderRadius: "7px",
+                        }}
                       >
                         {findEmoji(this.props.emojis, r.emojiId).dataText +
                           "" +
