@@ -11,6 +11,7 @@ const MessageItem = ({
   showReactions,
   addReaction,
   reactions,
+  fullscreen
 }) => {
   const cfg = useContext(UserConfig);
   const chat = useContext(ChatContext);
@@ -49,7 +50,7 @@ const MessageItem = ({
         String(r.count) +
         " ";
     });
-
+    if (reactionString !== "") reactionString += "     ";
     return reactionString;
   };
 
@@ -89,6 +90,7 @@ const MessageItem = ({
               src={getAttachmentUrl(message.messageId, message.attachment.id)}
               height="100%"
               width="100%"
+              onClick={()=> {fullscreen(getAttachmentUrl(message.messageId, message.attachment.id))}}
             ></img>
           </div>
         ) : null}

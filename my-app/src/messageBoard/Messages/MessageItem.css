@@ -98,7 +98,6 @@ input[type="checkbox"]:checked + label:before {
   background-color: #ccc3;
   border-radius: 7px;
   font-size: 11px;
-  padding-right: 5px;
   word-wrap: break-word;
 }
 

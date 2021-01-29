@@ -22,6 +22,7 @@ class Messages extends Component {
               showReactions={this.props.showReactions}
               addReaction={this.props.addReaction}
               reactions={this.props.reactions[message.messageId] || {}}
+              fullscreen={this.props.fullscreen}
             />
           );
         })}
