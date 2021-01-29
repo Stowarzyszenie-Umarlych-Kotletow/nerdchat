@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ChatContext, UserContext } from "../context";
+import { UserContext } from "../context";
 import "./JoinChat.css";
 
 class JoinChat extends Component {
