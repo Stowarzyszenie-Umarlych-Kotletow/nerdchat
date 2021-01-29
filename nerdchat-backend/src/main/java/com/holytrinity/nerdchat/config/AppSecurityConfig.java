@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.savedrequest.NullRequestCache;
-import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
@@ -22,7 +21,8 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 @EnableWebSecurity
 
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired private MyAuthenticationProvider provider;
+    @Autowired
+    private MyAuthenticationProvider provider;
 
     @Bean
     AnyCorsFilter anycorsFilter() {

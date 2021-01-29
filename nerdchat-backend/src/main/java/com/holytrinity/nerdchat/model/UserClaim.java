@@ -1,7 +1,6 @@
 package com.holytrinity.nerdchat.model;
 
 import java.security.Principal;
-import java.util.UUID;
 
 public final class UserClaim implements Principal {
 
@@ -17,6 +16,7 @@ public final class UserClaim implements Principal {
     public String getName() {
         return name;
     }
+
     public int getId() {
         return id;
     }

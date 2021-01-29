@@ -1,12 +1,11 @@
 package com.holytrinity.nerdchat.entity;
 
-import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Optional;
-import java.util.UUID;
 
 @Data
 @Builder

@@ -1,9 +1,7 @@
 package com.holytrinity.nerdchat.repository;
 
 import com.holytrinity.nerdchat.entity.ChatMessage;
-import com.holytrinity.nerdchat.model.BasicChatMessageDto;
 import com.holytrinity.nerdchat.model.ChatMessageDto;
-import com.holytrinity.nerdchat.model.ChatMessageStatus;
 import com.holytrinity.nerdchat.model.ReactionCountDto;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,14 +10,17 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Pageable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface ChatMessageRepository
         extends PagingAndSortingRepository<ChatMessage, Integer> {
 
     List<ChatMessage> findByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
+
     @Query("SELECT new com.holytrinity.nerdchat.model.ChatMessageDto(msg.id, me.id, u.nickname, u.firstName, u.lastName, msg.content, msg.sentAt, file, atm.id) " +
             "FROM ChatRoom room " +
             "INNER JOIN ChatRoomMember me ON (room.id=me.chatRoom.id) " +
@@ -29,7 +30,9 @@ public interface ChatMessageRepository
             "LEFT JOIN UploadedFile file ON (file.id=atm.file.id) " +
             "WHERE room.publicId=?1 ORDER BY msg.sentAt ASC")
     List<ChatMessageDto> findMessagesInChatRoom(UUID chatRoomId);
+
     Optional<ChatMessage> findFirstByChatRoomMember_ChatRoom_id(int chatRoomId, Sort sort);
+
     @Query("SELECT new com.holytrinity.nerdchat.model.ReactionCountDto(msg.id, r.emoji.id, COUNT(r.id), MAX(CASE WHEN me2.user.id=?2 THEN 1 ELSE 0 END))" +
             "FROM ChatRoom room " +
             "INNER JOIN ChatRoomMember me ON(room.id=me.chatRoom.id) " +

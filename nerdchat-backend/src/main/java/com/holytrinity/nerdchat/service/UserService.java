@@ -20,25 +20,35 @@ import java.util.UUID;
 
 @Service
 public class UserService {
-    @Autowired private UserRepository users;
-    @Autowired private UserAccessTokenRepository tokens;
-    @Autowired private UserChatConfigRepository configs;
+    @Autowired
+    private UserRepository users;
+    @Autowired
+    private UserAccessTokenRepository tokens;
+    @Autowired
+    private UserChatConfigRepository configs;
 
     public Optional<UserCredentials> findCredentialsByNickname(String nickname) {
         return users.findCredentials(nickname);
     }
+
     public Optional<User> findByNickname(String nickname) {
         return users.findByNickname(nickname.toLowerCase());
     }
+
     public Optional<User> findByToken(String token) {
         var tid = UUID.fromString(token);
         var created = Instant.now().minus(24, ChronoUnit.HOURS);
         return users.findByToken(tid, Date.from(created));
     }
-    public Optional<User> findById(int id) { return users.findById(id); }
+
+    public Optional<User> findById(int id) {
+        return users.findById(id);
+    }
+
     public boolean verifyPassword(UserCredentials creds, String password) {
         return Crypto.verifyPassphrase(password, creds.getPasswordHash());
     }
+
     public String createToken(User user) {
         var token = UserAccessToken.builder().user(user).build();
         tokens.save(token);
@@ -62,7 +72,10 @@ public class UserService {
         return !users.existsByNickname(sanitizeNickname(nickname));
     }
 
-    public Optional<UserChatConfig> getUserConfig(int userId){return users.findConfig(userId);}
+    public Optional<UserChatConfig> getUserConfig(int userId) {
+        return users.findConfig(userId);
+    }
+
     public void save(User user) {
         users.save(user);
     }

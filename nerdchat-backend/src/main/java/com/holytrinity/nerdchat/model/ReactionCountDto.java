@@ -1,6 +1,5 @@
 package com.holytrinity.nerdchat.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,7 @@ public class ReactionCountDto {
     private boolean userReacted;
 
     public ReactionCountDto(int messageId, int emojiId, long count, int reacted) {
-        this.messageId=messageId;
+        this.messageId = messageId;
         this.emojiId = emojiId;
         this.count = count;
         this.userReacted = reacted > 0;

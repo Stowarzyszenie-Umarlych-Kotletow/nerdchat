@@ -4,9 +4,11 @@ import com.holytrinity.nerdchat.model.ReactionCountDto;
 import com.holytrinity.nerdchat.model.ReactionSummaryItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.exception.DataException;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class ReactionCountSummary {
                 var m = d.getMessageId();
                 var msgContainer = dict.getOrDefault(m, null);
                 if (msgContainer == null) {
-                     dict.put(m, msgContainer = new HashMap<>());
+                    dict.put(m, msgContainer = new HashMap<>());
                 }
                 msgContainer.put(d.getEmojiId(), new ReactionSummaryItem(d.getEmojiId(), d.getCount(), d.isUserReacted()));
             }
@@ -32,7 +34,7 @@ public class ReactionCountSummary {
 
     public static Map<Integer, Map<Integer, ReactionSummaryItem>> construct(int messageId, List<ReactionCountDto> data) {
         var res = construct(data);
-        if(res.size() == 0) {
+        if (res.size() == 0) {
             res.put(messageId, new HashMap<>());
         }
         return res;

@@ -12,6 +12,7 @@ public class ApiResponse<T> {
         setData(data);
         setSuccess(true);
     }
+
     public ApiResponse(T data, String error) {
         setData(data);
         setMessage(error);

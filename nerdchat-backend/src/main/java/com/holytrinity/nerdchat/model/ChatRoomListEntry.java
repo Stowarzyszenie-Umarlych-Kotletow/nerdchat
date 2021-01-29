@@ -1,19 +1,11 @@
 package com.holytrinity.nerdchat.model;
 
-import com.holytrinity.nerdchat.entity.ChatMessage;
-import com.holytrinity.nerdchat.entity.ChatRoom;
-import com.holytrinity.nerdchat.entity.ChatRoomMember;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
-import javax.persistence.SqlResultSetMapping;
 import javax.xml.bind.DatatypeConverter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,7 +23,8 @@ public class ChatRoomListEntry implements Serializable {
     private int avatarId;
 
 
-    public ChatRoomListEntry(){}
+    public ChatRoomListEntry() {
+    }
 
 
     public ChatRoomListEntry(String public_id, String chat_name, String type, String permissions, BigDecimal unread, String join_code,
@@ -44,7 +37,7 @@ public class ChatRoomListEntry implements Serializable {
         unreadCount = unread.longValue();
         joinCode = join_code;
         lastMessage = new BasicChatMessageDto(
-          msg_id.intValue(), 0, msg_nickname, msg_name, msg_content, msg_sent_at
+                msg_id.intValue(), 0, msg_nickname, msg_name, msg_content, msg_sent_at
         );
         avatarId = msg_avatar_id.intValue();
     }

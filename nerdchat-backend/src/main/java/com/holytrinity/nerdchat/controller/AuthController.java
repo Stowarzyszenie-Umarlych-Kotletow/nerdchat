@@ -1,7 +1,6 @@
 package com.holytrinity.nerdchat.controller;
 
 import com.holytrinity.nerdchat.entity.UserCredentials;
-import com.holytrinity.nerdchat.model.ChatMessageDto;
 import com.holytrinity.nerdchat.model.http.ApiResponse;
 import com.holytrinity.nerdchat.model.http.CreateAccountRequest;
 import com.holytrinity.nerdchat.model.http.CreateTokenRequest;
@@ -12,18 +11,13 @@ import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
 import com.holytrinity.nerdchat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @Transactional
@@ -57,10 +51,10 @@ public class AuthController {
     @PostMapping("/auth/create_token")
     public ResponseEntity<?> authCreateToken(@RequestBody CreateTokenRequest model) {
         var creds = userService.findCredentialsByNickname(model.getNickname());
-        if(creds.isEmpty())
+        if (creds.isEmpty())
             return notfound("User does not exist");
         var isOk = userService.verifyPassword(creds.get(), model.getPassword());
-        if(!isOk)
+        if (!isOk)
             return error("Invalid password");
         var user = creds.get().getUser();
         var token = userService.createToken(user);
@@ -77,17 +71,17 @@ public class AuthController {
     @PostMapping("/auth/register_account")
     public ResponseEntity<?> registerAccount(@RequestBody CreateAccountRequest model) {
         var user = userService.newModel(model.getNickname(), model.getFirstName(), model.getLastName());
-        if(model.getFirstName().length() < 2 || model.getLastName().length() < 2) {
+        if (model.getFirstName().length() < 2 || model.getLastName().length() < 2) {
             return error("Please fill out all the fields.");
         }
-        if(!userService.checkNickname(user.getNickname())) {
+        if (!userService.checkNickname(user.getNickname())) {
             return error("Invalid nickname - it must contain only 3-16 latin letters, numbers and underscores");
         }
-        if(!userService.checkNicknameFree(user.getNickname())) {
+        if (!userService.checkNicknameFree(user.getNickname())) {
             return error("The specified nickname is already in use.");
         }
 
-        if(model.getPassword().length() < 6) {
+        if (model.getPassword().length() < 6) {
             return error("The password must contain at least 6 characters.");
         }
 

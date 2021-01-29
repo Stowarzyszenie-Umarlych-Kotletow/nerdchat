@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -21,6 +20,15 @@ public class BasicChatMessageDto {
     protected String content;
     protected Date sentAt;
 
+    public BasicChatMessageDto(int messageId, int senderId, String senderNickname, String senderfName, String senderlName, String content, Date sentAt) {
+        this.messageId = messageId;
+        this.senderId = senderId;
+        this.senderNickname = senderNickname;
+        this.senderName = senderfName + " " + senderlName;
+        this.content = content;
+        this.sentAt = sentAt;
+    }
+
     public static BasicChatMessageDto from(ChatMessage msg) {
         var member = msg.getChatRoomMember();
         return new BasicChatMessageDto(msg.getId(),
@@ -29,14 +37,5 @@ public class BasicChatMessageDto {
                 member.getUser().getFullName(),
                 msg.getContent(),
                 msg.getSentAt());
-    }
-
-    public BasicChatMessageDto(int messageId, int senderId, String senderNickname, String senderfName, String senderlName, String content, Date sentAt) {
-        this.messageId = messageId;
-        this.senderId = senderId;
-        this.senderNickname = senderNickname;
-        this.senderName = senderfName + " " + senderlName;
-        this.content = content;
-        this.sentAt = sentAt;
     }
 }

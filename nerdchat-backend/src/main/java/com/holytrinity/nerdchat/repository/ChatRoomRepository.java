@@ -1,21 +1,13 @@
 package com.holytrinity.nerdchat.repository;
 
 import com.holytrinity.nerdchat.entity.ChatRoom;
-import com.holytrinity.nerdchat.model.ChatRoomListEntry;
-import com.holytrinity.nerdchat.model.MemberPermissions;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.annotation.Commit;
 
-import javax.persistence.StoredProcedureParameter;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public interface ChatRoomRepository extends CrudRepository<ChatRoom, Integer> {

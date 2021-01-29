@@ -1,6 +1,5 @@
 package com.holytrinity.nerdchat.controller;
 
-import com.holytrinity.nerdchat.entity.ChatMessageAttachment;
 import com.holytrinity.nerdchat.entity.UploadedFile;
 import com.holytrinity.nerdchat.entity.User;
 import com.holytrinity.nerdchat.entity.UserChatConfig;
@@ -8,10 +7,8 @@ import com.holytrinity.nerdchat.exception.ApiException;
 import com.holytrinity.nerdchat.model.UploadedFileDto;
 import com.holytrinity.nerdchat.model.UserChatConfigDto;
 import com.holytrinity.nerdchat.model.http.ApiResponse;
-import com.holytrinity.nerdchat.repository.ChatMessageRepository;
 import com.holytrinity.nerdchat.repository.EmojiRepository;
 import com.holytrinity.nerdchat.repository.MessageAttachmentRepository;
-import com.holytrinity.nerdchat.repository.UploadedFileRepository;
 import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
 import com.holytrinity.nerdchat.service.FileService;
@@ -23,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -49,12 +44,15 @@ public class ApiController {
     private UserService userService;
     @Autowired
     private EmojiRepository emojis;
-    @Autowired private EntityManager entities;
-    @Autowired private FileService fileService;
-    @Autowired private MessageAttachmentRepository attachments;
+    @Autowired
+    private EntityManager entities;
+    @Autowired
+    private FileService fileService;
+    @Autowired
+    private MessageAttachmentRepository attachments;
 
     private User getUser() {
-        return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     private <T> ResponseEntity<ApiResponse<T>> ok(T data) {
@@ -76,7 +74,7 @@ public class ApiController {
 
     @GetMapping("/chatroom/{roomId}/reactions")
     public ResponseEntity<?> getChatReactions(@PathVariable UUID roomId) {
-        return ok(messageService.getChatReactions(roomId, getUser().getId(),null, null));
+        return ok(messageService.getChatReactions(roomId, getUser().getId(), null, null));
     }
 
 
@@ -105,9 +103,9 @@ public class ApiController {
     public ResponseEntity<?> postChatConfig(@RequestBody UserChatConfigDto body) {
         var user = getUser();
         var cfg = userService.getUserConfig(user.getId()).orElseGet(() -> UserChatConfig.builder().user(user).build());
-        
+
         BeanUtils.copyProperties(body, cfg);
-        if(body.getAvatarId() != null) {
+        if (body.getAvatarId() != null) {
             user.setAvatarId(body.getAvatarId());
             userService.save(user);
         }
@@ -125,10 +123,9 @@ public class ApiController {
         try {
             var model = fileService.uploadFile(UploadedFile.builder().author(getUser()), file);
             return ok(UploadedFileDto.from(model));
-        }catch(ApiException ex) {
+        } catch (ApiException ex) {
             return error(ex.getMsg());
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             return error("Unknown error");
         }
 
@@ -151,16 +148,17 @@ public class ApiController {
     @GetMapping("/global/file/{id}")
     public ResponseEntity<?> downloadFileUnsafe(@PathVariable int id) {
         var file = fileService.getRepo().findById(id);//
-        if(file.isEmpty()) {
+        if (file.isEmpty()) {
             return notfound("file not found");
         }
         return _downloadFile(file.get());
 
     }
+
     @GetMapping("/global/message/{messageId}/attachment/{attachmentId}/download")
     public ResponseEntity<?> downloadMessageAttachment(@PathVariable int messageId, @PathVariable int attachmentId) {
         var atm = attachments.findByIdAndMessageId(attachmentId, messageId);
-        if(atm.isEmpty())
+        if (atm.isEmpty())
             return notfound("");
         return _downloadFile(atm.get().getFile());
     }

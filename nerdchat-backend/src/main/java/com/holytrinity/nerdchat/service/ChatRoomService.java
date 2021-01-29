@@ -1,23 +1,15 @@
 package com.holytrinity.nerdchat.service;
 
 import com.holytrinity.nerdchat.entity.ChatRoom;
-import com.holytrinity.nerdchat.entity.ChatRoomGroupData;
 import com.holytrinity.nerdchat.entity.ChatRoomMember;
 import com.holytrinity.nerdchat.entity.User;
-import com.holytrinity.nerdchat.model.BasicChatMessageDto;
 import com.holytrinity.nerdchat.model.ChatRoomListEntry;
-import com.holytrinity.nerdchat.model.ChatRoomType;
-import com.holytrinity.nerdchat.model.MemberPermissions;
 import com.holytrinity.nerdchat.model.rooms.CreateChatResult;
 import com.holytrinity.nerdchat.repository.ChatMessageRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomGroupDataRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomMemberRepository;
 import com.holytrinity.nerdchat.repository.ChatRoomRepository;
 import com.holytrinity.nerdchat.utils.TrimUtils;
-import javassist.NotFoundException;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.text.RandomStringGenerator;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.messaging.MessagingException;
@@ -25,10 +17,10 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureQuery;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ChatRoomService {

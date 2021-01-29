@@ -7,23 +7,18 @@ import com.holytrinity.nerdchat.model.UploadedFileDto;
 import com.holytrinity.nerdchat.model.UploadedFileType;
 import com.holytrinity.nerdchat.repository.UploadedFileRepository;
 import com.holytrinity.nerdchat.utils.Crypto;
-import org.apache.tomcat.jni.Directory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.spi.FileTypeDetector;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +30,19 @@ public class FileService {
     @Value("${app.upload.dir}")
     private String uploadDir;
 
-
+    public static UploadedFileType getFileType(String contentType) {
+        if (contentType != null) {
+            var lower = contentType.toLowerCase();
+            if (lower.startsWith("audio"))
+                return UploadedFileType.AUDIO;
+            else if (lower.startsWith("video")) {
+                return UploadedFileType.VIDEO;
+            } else if (lower.startsWith("image")) {
+                return UploadedFileType.IMAGE;
+            }
+        }
+        return UploadedFileType.OTHER;
+    }
 
     private String getFileName(UploadedFile file) {
         return file.getChecksum() + "_" + file.getName().substring(Math.max(0, file.getName().length() - 6));
@@ -45,24 +52,10 @@ public class FileService {
         return Paths.get(uploadDir, getFileName(file));
     }
 
-    public static UploadedFileType getFileType(String contentType) {
-        if(contentType != null) {
-            var lower = contentType.toLowerCase();
-            if(lower.startsWith("audio"))
-                return UploadedFileType.AUDIO;
-            else if (lower.startsWith("video")) {
-                return UploadedFileType.VIDEO;
-            } else if(lower.startsWith("image")) {
-                return UploadedFileType.IMAGE;
-            }
-        }
-        return UploadedFileType.OTHER;
-    }
-
     public UploadedFile uploadFile(UploadedFile.UploadedFileBuilder builder, MultipartFile file) {
 
         try {
-            if(!Files.exists(Paths.get(uploadDir))) {
+            if (!Files.exists(Paths.get(uploadDir))) {
                 Files.createDirectory(Paths.get(uploadDir));
             }
             var hash = Crypto.calcSHA1(file);
@@ -90,7 +83,7 @@ public class FileService {
     public UrlResource getUri(UploadedFile file) {
         try {
             return new UrlResource(getFilePath(file).toUri());
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             throw new ApiException("Invalid path");
         }
     }

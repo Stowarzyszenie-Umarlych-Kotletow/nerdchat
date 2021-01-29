@@ -2,14 +2,12 @@ package com.holytrinity.nerdchat.model;
 
 import com.holytrinity.nerdchat.entity.ChatMessageAttachment;
 import com.holytrinity.nerdchat.entity.UploadedFile;
-import com.holytrinity.nerdchat.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -28,14 +26,14 @@ public class UploadedFileDto {
     private Date uploadedAt;
 
     public static UploadedFileDto from(UploadedFile file) {
-        if(file == null) return null;
+        if (file == null) return null;
         var obj = new UploadedFileDto();
         BeanUtils.copyProperties(file, obj);
         return obj;
     }
 
     public static UploadedFileDto from(ChatMessageAttachment file) {
-        if(file == null || file.getFile() == null) return null;
+        if (file == null || file.getFile() == null) return null;
         var obj = from(file.getFile());
         obj.setId(file.getId());
         return obj;

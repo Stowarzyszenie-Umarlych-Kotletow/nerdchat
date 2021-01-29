@@ -1,6 +1,5 @@
 package com.holytrinity.nerdchat.repository;
 
-import com.holytrinity.nerdchat.entity.ChatMessage;
 import com.holytrinity.nerdchat.entity.ChatMessageAttachment;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

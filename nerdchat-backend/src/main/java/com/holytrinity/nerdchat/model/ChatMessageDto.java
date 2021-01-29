@@ -3,13 +3,13 @@ package com.holytrinity.nerdchat.model;
 import com.holytrinity.nerdchat.entity.ChatMessage;
 import com.holytrinity.nerdchat.entity.ChatMessageAttachment;
 import com.holytrinity.nerdchat.entity.UploadedFile;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
-import javax.swing.*;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -22,7 +22,7 @@ public class ChatMessageDto extends BasicChatMessageDto {
     public ChatMessageDto(int messageId, int senderId, String senderNickname, String senderfName, String senderlName, String content, Date sentAt, UploadedFile file, Integer attachmentId) {
         super(messageId, senderId, senderNickname, senderfName, senderlName, content, sentAt);
         attachment = UploadedFileDto.from(file);
-        if(attachment != null && attachmentId != null)
+        if (attachment != null && attachmentId != null)
             attachment.setId(attachmentId);
     }
 
