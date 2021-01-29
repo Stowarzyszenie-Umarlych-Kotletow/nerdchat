@@ -47,3 +47,21 @@ export const dragElement = (element) => {
     document.onmousemove = null;
   }
 };
+
+export const getFormattedFileSize = (size) => {
+  let sufix = "";
+  if (size > 1024 * 1024) {
+    return (size / (1024 * 1024)).toFixed(2) + "MB";
+  } else {
+    return (size / 1024).toFixed(2) + "KB";
+  }
+};
+
+export function wrapText(text) {
+  let len = 36;
+  if (text != null && text.length > len) {
+    let temp = text.substring(0, len);
+    return temp + "...";
+  }
+  return text;
+}

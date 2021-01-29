@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { UserContext } from "../context";
 import "./FileBox.css";
+import { getFormattedFileSize } from "../common/utils";
 
 class FileBox extends Component {
   state = {
@@ -69,16 +70,6 @@ class FileBox extends Component {
     this.setState({ fileUploadPct: pct });
   };
 
-  getFormattedFileSize = () => {
-    let size = this.state.fileSize;
-    let sufix = "";
-    if (size > 1024 * 1024) {
-      return (size / (1024 * 1024)).toFixed(2) + "MB";
-    } else {
-      return (size / 1024).toFixed(2) + "KB";
-    }
-  };
-
   render() {
     return (
       <div id="FileBox">
@@ -99,7 +90,9 @@ class FileBox extends Component {
             <button id="uploadButton" onClick={this.onUploadButtonClicked}>
               Upload
             </button>
-            <label id="sizeLabel">{this.getFormattedFileSize()}</label>
+            <label id="sizeLabel">
+              {getFormattedFileSize(this.state.fileSize)}
+            </label>
             <div id="uploadProgressBarBox">
               <div
                 id="uploadProgressBar"

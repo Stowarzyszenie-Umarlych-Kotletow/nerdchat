@@ -2,15 +2,7 @@ import "./ConversationItem.css";
 import { useContext } from "react";
 import { ChatContext, UserConfig } from "../context";
 import { getEmojiFromLabels } from "../messageBoard/Messages/MessageItemTools";
-
-function wrapText(text) {
-  let len = 36;
-  if (text != null && text.length > len) {
-    let temp = text.substring(0, len);
-    return temp + "...";
-  }
-  return text;
-}
+import { wrapText } from "../common/utils";
 
 const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
   const cfg = useContext(UserConfig);
