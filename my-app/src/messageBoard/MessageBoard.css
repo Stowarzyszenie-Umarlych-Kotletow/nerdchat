@@ -139,16 +139,13 @@ a {
 }
 
 #showReactions {
+  left: 45%;
+  top: 35%;
   position: absolute;
-  z-index: 3;
+  z-index: 13;
   width: 200px;
   display: table;
   overflow-y: scroll;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
   background-color: #ddd9;
   border-radius: 7px;
 }
@@ -170,16 +167,13 @@ a {
 }
 
 #addReaction {
+  left: 45%;
+  top: 35%;
   position: absolute;
-  z-index: 4;
+  z-index: 14;
   width: 200px;
   display: table;
   overflow-y: scroll;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
   background-color: #ddd9;
   border-radius: 7px;
 }
