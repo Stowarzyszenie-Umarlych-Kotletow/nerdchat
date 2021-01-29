@@ -1,6 +1,6 @@
 import "./MessageItemTools.css";
 
-function formatUrls(data) {
+export function formatUrls(data) {
   if (data == null) return [];
   let slices = data.split(" ");
   let urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi;
@@ -27,7 +27,7 @@ function formatUrls(data) {
   return results;
 }
 
-function getEmojiFromLabels(data, emojis) {
+export function getEmojiFromLabels(data, emojis) {
   if (data === null) return;
   let slices = data.split(" ");
   let newData = [];
@@ -54,4 +54,3 @@ function getEmojiFromLabels(data, emojis) {
   return newData.join(" ");
 }
 
-export { formatUrls, getEmojiFromLabels };
