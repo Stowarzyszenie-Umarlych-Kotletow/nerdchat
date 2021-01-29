@@ -359,6 +359,7 @@ export class MessageBoard extends Component {
                     style={{
                       backgroundColor: this.context.accentsColor,
                       color: this.context.textColorMain,
+                      
                     }}
                   >
                     Reactions
@@ -372,7 +373,12 @@ export class MessageBoard extends Component {
                     {Object.values(currentReactions).map((r) => (
                       <p
                         key={`${r.emojiId}`}
-                        style={{ color: this.context.textColorMain }}
+                        style={{ 
+                          color: this.context.textColorMain,
+                          backgroundColor:
+                          this.context.accentsColor +
+                          (r.selected ? "99" : "00"), borderRadius: "7px"}}
+                        
                       >
                         {findEmoji(this.props.emojis, r.emojiId).dataText +
                           "" +
