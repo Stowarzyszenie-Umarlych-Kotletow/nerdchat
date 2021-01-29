@@ -22,6 +22,8 @@ public class User {
     private String firstName;
     private String lastName;
 
+    private int avatarId;
+
     @OneToMany(mappedBy = "user")
     private List<ChatRoomMember> chats;
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)

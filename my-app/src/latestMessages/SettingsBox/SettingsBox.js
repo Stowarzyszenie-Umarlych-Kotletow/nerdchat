@@ -44,9 +44,7 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
 
   // change profile pic
   const changeProfilePic = (pic_id) => {
-    document
-      .getElementById("userProfilePic")
-      .setAttribute("src", `/assets/NerdchatDefPic${pic_id}.png`);
+    setLocalCfg(Object.assign({}, localCfg, { avatarId: pic_id }));
   };
 
   let marks = {

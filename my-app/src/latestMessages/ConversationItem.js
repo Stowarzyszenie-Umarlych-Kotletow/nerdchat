@@ -15,11 +15,12 @@ function wrapText(text) {
 const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
   const cfg = useContext(UserConfig);
   const chatContext = useContext(ChatContext);
-  
+
   return chatRoomList === undefined
     ? null
     : chatRoomList.map((m) => {
-        let content = m.lastMessage.content === null ? "File" : m.lastMessage.content;
+        let content =
+          m.lastMessage.content === null ? "File" : m.lastMessage.content;
         console.log(m.lastMessage.content);
         let date = new Date(Date.parse(m.lastMessage.sentAt));
         let today = new Date();
@@ -67,7 +68,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
                   src={
                     m.chatRoomType === "GROUP"
                       ? "/assets/NerdchatDefgGroupPic.png"
-                      : `/assets/NerdchatDefPic${m.chatName.length % 9}.png`
+                      : `/assets/NerdchatDefPic${m.avatarId || 1}.png`
                   }
                   alt={""}
                   style={{
@@ -99,10 +100,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
                   ? null
                   : m.lastMessage.senderName +
                       ": " +
-                      getEmojiFromLabels(
-                        content,
-                        chatContext.emojis
-                      )
+                      getEmojiFromLabels(content, chatContext.emojis)
               )}
             </div>
           </div>

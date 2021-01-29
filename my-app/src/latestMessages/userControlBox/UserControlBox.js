@@ -57,7 +57,7 @@ export class UserControlBox extends Component {
       >
         <img
           id="userProfilePic"
-          src={`/assets/NerdchatDefPic${this.state.profilePicIndex}.png`}
+          src={`/assets/NerdchatDefPic${this.context.avatarId || 1}.png`}
           alt={""}
         />
         <div id="userInfo">
