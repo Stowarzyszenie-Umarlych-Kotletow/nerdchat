@@ -37,8 +37,6 @@ public class ChatController {
     @Autowired
     private ChatRoomService roomService;
     @Autowired
-    private ChatRoomMemberRepository roomMemberRepository;
-    @Autowired
     private UserService userService;
     @Autowired
     private UploadedFileRepository files;
@@ -70,10 +68,10 @@ public class ChatController {
 
         if (req.isState()) {
             // add reaction
-            messageService.getReactionsRepo().reactToMessage(member.getId(), req.getMessageId(), req.getEmojiId());
+            messageService.reactToMessage(member.getId(), req.getMessageId(), req.getEmojiId());
         } else {
             // remove reaction
-            var ret = messageService.getReactionsRepo().unreact(member.getId(), req.getMessageId());
+            var ret = messageService.unReactToMessage(member.getId(), req.getMessageId());
             if (ret <= 0)
                 return; // nothing changed
         }

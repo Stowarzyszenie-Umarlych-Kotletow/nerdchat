@@ -11,6 +11,8 @@ import com.holytrinity.nerdchat.repository.ChatRoomRepository;
 import com.holytrinity.nerdchat.repository.MessageReactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -74,5 +76,13 @@ public class ChatMessageService {
 
     public MessageReactionRepository getReactionsRepo() {
         return reactions;
+    }
+
+    public int unReactToMessage(int memberId, int messageId) {
+        return reactions.unreact(memberId, messageId);
+    }
+
+    public void reactToMessage(int memberId, int messageId, int emojiId) {
+        reactions.reactToMessage(memberId, messageId, emojiId);
     }
 }
