@@ -33,7 +33,8 @@ import java.util.UUID;
                 @ColumnResult(name = "msg_content", type=String.class),
                 @ColumnResult(name = "msg_sent_at", type=Date.class),
                 @ColumnResult(name = "msg_nickname", type=String.class),
-                @ColumnResult(name = "msg_name", type=String.class)
+                @ColumnResult(name = "msg_name", type=String.class),
+                @ColumnResult(name = "msg_avatar_id", type=BigDecimal.class)
         })
 })
 public class ChatRoom {

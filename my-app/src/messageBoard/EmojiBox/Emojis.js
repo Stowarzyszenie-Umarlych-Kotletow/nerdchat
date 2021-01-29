@@ -9,10 +9,9 @@ class Emojis extends Component {
   render() {
     // creating emoji button for every emoji
     return this.props.emojis.map((emoji) => (
-      <input
-        type="button"
-        value={emoji.dataText}
-        id="EmojiButton"
+      <button
+        key={emoji.emojiId}
+        title={`:${emoji.label}:`}
         style={{
           flex: "1",
           fontSize: "30px",
@@ -20,7 +19,9 @@ class Emojis extends Component {
           border: "none",
         }}
         onClick={() => this.onClickEmoji(emoji.dataText)}
-      />
+      >
+        {emoji.dataText}
+      </button>
     ));
   }
 }

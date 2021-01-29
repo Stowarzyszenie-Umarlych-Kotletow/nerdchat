@@ -18,16 +18,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserChatConfigDto {
+    private Integer avatarId;
     private String textColorMain;
     private String textColorUser;
     private String accentsColor;
     private String backgroundColor;
-    private float fontSizeMultiplier;
-    private boolean showNotifications;
+    private Float fontSizeMultiplier;
+    private Boolean showNotifications;
 
-    public static UserChatConfigDto from(UserChatConfig cfg) {
+    public static UserChatConfigDto from(int avatarId, UserChatConfig cfg) {
         var dto = new UserChatConfigDto();
-        BeanUtils.copyProperties(cfg, dto, "id");
+        if(cfg != null)
+            BeanUtils.copyProperties(cfg, dto, "id");
+        dto.setAvatarId(avatarId);
         return dto;
     }
 }

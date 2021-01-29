@@ -15,8 +15,7 @@ export const getDefaultConfig = () => {
     accentsColor: "#c9b065", // 66ff99 - ffc933  - ff99cc
     backgroundColor: "#333", // 333333
     // time
-    twelweHourFormating: false,
-    currentStatus: "online",
+    showNotifications: true,
   };
 };
 
