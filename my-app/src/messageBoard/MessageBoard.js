@@ -41,7 +41,7 @@ export class MessageBoard extends Component {
     let scrollHeight = obj.scrollHeight;
     let clientHeight = obj.clientHeight;
     let height = scrollHeight - clientHeight;
-    console.log(`o ${offset} h ${scrollHeight - clientHeight}`);
+    // console.log(`o ${offset} h ${scrollHeight - clientHeight}`);
     if (scrollHeight - offset <= 10 || force) {
       document.getElementById("MessageContainer").scrollTop = height;
     }

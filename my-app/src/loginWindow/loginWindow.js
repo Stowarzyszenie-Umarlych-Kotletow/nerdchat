@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./loginWindow.css";
-import { ChatContext, UserContext } from "../context";
+import { UserContext } from "../context";
 import { windowType } from "../App";
 
 export class LoginWindow extends Component {

@@ -8,7 +8,7 @@ export function getAttachmentUrl(messageId, attachmentId) {
 export function findEmoji(emojis, emojiId) {
   if (emojis != null) {
     for (let e of emojis) {
-      if (e.id == emojiId) {
+      if (e.id === emojiId) {
         return e;
       }
     }

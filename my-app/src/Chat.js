@@ -2,7 +2,6 @@ import "./Chat.css";
 import React, { Component } from "react";
 import ConversationBox from "./latestMessages/ConversationBox";
 import { MessageBoard } from "./messageBoard/MessageBoard";
-import { HttpApi, StompApi } from "./common/Api";
 import config from "./common/endpoints.json";
 import { Stomp } from "@stomp/stompjs";
 import soundFile from "./common/notif_2.wav";
@@ -137,7 +136,7 @@ export class Chat extends Component {
 
   onNotifyUpdated = (msg) => {
     let type = msg.headers["type"];
-    if (type == "new-room") {
+    if (type === "new-room") {
       this.http.getChatRoomList().then((rooms) => this.setChatRoomList(rooms));
     }
   };
@@ -168,7 +167,7 @@ export class Chat extends Component {
     let m = JSON.parse(msg.body);
     let type = msg.headers["type"];
     let room = msg.headers["room"];
-    if (type == "message") {
+    if (type === "message") {
       if (this.state.activeChatId === room) {
         this.board.current.handleNewMessage(m);
         this.setLastRead(this.state.activeChatId);
@@ -181,11 +180,11 @@ export class Chat extends Component {
           audio.play();
         }
       }
-    } else if (type == "joincode") {
+    } else if (type === "joincode") {
       this.updateChatRoom(room, (chat) => {
         return { joinCode: m.code };
       });
-    } else if (type == "message-reactions") {
+    } else if (type === "message-reactions") {
       this.board.current.mergeReactions(m);
     }
   };
