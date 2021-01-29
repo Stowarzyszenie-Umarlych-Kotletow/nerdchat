@@ -49,7 +49,9 @@ export const dragElement = (element) => {
 };
 
 export const getFormattedFileSize = (size) => {
-  let sufix = "";
+  if(size < 0 ){
+    return null;
+  }
   if (size > 1024 * 1024) {
     return (size / (1024 * 1024)).toFixed(2) + "MB";
   } else {
@@ -59,6 +61,9 @@ export const getFormattedFileSize = (size) => {
 
 export function wrapText(text) {
   let len = 36;
+  if(text === null){
+    return null;
+  }
   if (text != null && text.length > len) {
     let temp = text.substring(0, len);
     return temp + "...";
