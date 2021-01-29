@@ -38,7 +38,7 @@ const ConversationBox = ({ updateConfig, setLastRead }) => {
         <div id="conversationsContainer">
           <ChatContext.Consumer>
             {({ chatRoomList, setActiveChatId }) => {
-              console.log(chatRoomList);
+              // console.log(chatRoomList);
               return (
                 <ConversationItem
                   {...{ chatRoomList, setActiveChatId, setLastRead }}
