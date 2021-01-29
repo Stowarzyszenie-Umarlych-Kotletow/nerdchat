@@ -13,10 +13,12 @@ public class NerdchatApplication {
     public static void main(String[] args) {
         SpringApplication.run(NerdchatApplication.class, args);
     }
+
     @Bean
     public AuthenticationProvider createCustomAuthenticationProvider() {
         return new MyAuthenticationProvider();
     }
+
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();

@@ -4,16 +4,16 @@ import org.springframework.core.io.InputStreamSource;
 import org.springframework.security.crypto.codec.Base64;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
-import java.io.*;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Random;
 
 public class Crypto {
     public static final SecureRandom random = new SecureRandom();
+
     public static String encryptPassphrase(String passphrase) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

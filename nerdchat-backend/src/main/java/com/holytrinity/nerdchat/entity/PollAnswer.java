@@ -1,6 +1,9 @@
 package com.holytrinity.nerdchat.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,7 +23,7 @@ public class PollAnswer {
     @JoinColumn(name = "poll_id", nullable = false, foreignKey = @ForeignKey(name = "answers_polls_fk"))
     private Poll poll;
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy = "answer", cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "answer", cascade = CascadeType.PERSIST)
     private List<PollVote> votes;
 
 }

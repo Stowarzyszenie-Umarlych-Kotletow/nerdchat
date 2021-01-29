@@ -13,6 +13,7 @@ public class CreateChatResult {
     public CreateChatResult() {
         isSuccess = false;
     }
+
     public CreateChatResult(UUID chatRoomId, boolean isNew) {
         this.chatRoomPublicId = chatRoomId;
         isSuccess = true;

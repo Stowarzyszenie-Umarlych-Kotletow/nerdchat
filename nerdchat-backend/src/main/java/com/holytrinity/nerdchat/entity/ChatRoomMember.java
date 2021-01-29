@@ -1,14 +1,14 @@
 package com.holytrinity.nerdchat.entity;
 
 import com.holytrinity.nerdchat.model.MemberPermissions;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder

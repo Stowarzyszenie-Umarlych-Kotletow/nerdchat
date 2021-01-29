@@ -20,7 +20,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         final String token = tokenContainer.getToken();
 
         var user = users.findByToken(token);
-        if(user.isEmpty())
+        if (user.isEmpty())
             throw new BadCredentialsException("Invalid token");
 
         return new AuthenticationToken(token, user.get());

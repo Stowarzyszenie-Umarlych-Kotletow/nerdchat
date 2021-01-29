@@ -5,7 +5,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 
-import javax.naming.AuthenticationException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -43,15 +42,11 @@ public class AuthFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 
         final String tokenValue = getTokenValue(request);
 
         if (StringUtils.isEmpty(tokenValue)) {
-            //Doing this check is kinda dumb because we check for it up above in doFilter
-            //..but this is a public method and we can't do much if we don't have the header
-            //also we can't do the check only here because we don't have the chain available
             return null;
         }
 
@@ -62,7 +57,6 @@ public class AuthFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     private String getTokenValue(HttpServletRequest req) {
-        //find the header which contains our token (ignore the header-name case)
         return Collections.list(req.getHeaderNames()).stream()
                 .filter(header -> header.equalsIgnoreCase(TOKEN_HEADER))
                 .map(req::getHeader)

@@ -2,17 +2,12 @@ package com.holytrinity.nerdchat;
 
 import com.holytrinity.nerdchat.entity.*;
 import com.holytrinity.nerdchat.model.ChatMessageStatus;
-import com.holytrinity.nerdchat.model.ChatRoomType;
 import com.holytrinity.nerdchat.model.UploadedFileType;
 import com.holytrinity.nerdchat.repository.*;
 import com.holytrinity.nerdchat.service.ChatMessageService;
 import com.holytrinity.nerdchat.service.ChatRoomService;
 import com.holytrinity.nerdchat.service.UserService;
 import com.holytrinity.nerdchat.utils.RandomUtils;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.schema.TargetType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -21,25 +16,36 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.xml.bind.attachment.AttachmentMarshaller;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
 @Transactional
 public class DataSeeder implements ApplicationRunner {
-    @Autowired private UserRepository users;
-    @Autowired private ChatRoomRepository chatRooms;
-    @Autowired private ChatRoomMemberRepository chatMembers;
-    @Autowired private UserCredentialsRepository credentials;
-    @Autowired private ChatRoomService chatRoomService;
-    @Autowired private ChatMessageService chatMessageService;
-    @Autowired private UserService userService;
-    @Autowired private UserChatConfigRepository configs;
-    @Autowired private ChatMessageRepository chatMessages;
-    @Autowired private EmojiRepository emojis;
-    @Autowired private EntityManager entities;
+    @Autowired
+    private UserRepository users;
+    @Autowired
+    private ChatRoomRepository chatRooms;
+    @Autowired
+    private ChatRoomMemberRepository chatMembers;
+    @Autowired
+    private UserCredentialsRepository credentials;
+    @Autowired
+    private ChatRoomService chatRoomService;
+    @Autowired
+    private ChatMessageService chatMessageService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserChatConfigRepository configs;
+    @Autowired
+    private ChatMessageRepository chatMessages;
+    @Autowired
+    private EmojiRepository emojis;
+    @Autowired
+    private EntityManager entities;
 
     ChatRoom direct(User u1, User u2) {
         return chatRooms.findById(chatRoomService.createDirectChat(u1, u2)).orElseThrow();
@@ -89,27 +95,27 @@ public class DataSeeder implements ApplicationRunner {
         var groups = new ArrayList<ChatRoom>();
         var groupMsgs = new ArrayList<ChatMessage>();
         int userCount = 50;
-        for(int i = 0; i < userCount; i++) {
+        for (int i = 0; i < userCount; i++) {
             var b = RandomUtils.randomUser()
                     .build();
-            for(var u : users) {
-                if(b.getNickname().equals(u.getNickname())) {
-                   b = null;
-                   break;
+            for (var u : users) {
+                if (b.getNickname().equals(u.getNickname())) {
+                    b = null;
+                    break;
                 }
             }
-            if(b == null)
+            if (b == null)
                 continue;
 
 
             var hasToken = RandomUtils.bool();
-            if(hasToken) {
+            if (hasToken) {
                 b.setAccessTokens(List.of(UserAccessToken.builder().createdAt(RandomUtils.date()).user(b).build()));
             }
             userService.save(b);
             users.add(b);
             var hasConfig = RandomUtils.bool();
-            if(hasConfig){
+            if (hasConfig) {
                 entities.persist(UserChatConfig.builder().user(b).build());
             }
             var creds = new UserCredentials(b, "ziemniak");
@@ -120,7 +126,7 @@ public class DataSeeder implements ApplicationRunner {
         var polls = new ArrayList<Poll>();
 
         var groupCount = 8;
-        for(int i = 0; i < groupCount; i++) {
+        for (int i = 0; i < groupCount; i++) {
             var user = RandomUtils.item(users);
             var res = chatRoomService.createGroupChat(user, RandomUtils.word());
             var chat = res.getSecond().orElseThrow();
@@ -128,7 +134,7 @@ public class DataSeeder implements ApplicationRunner {
             groups.add(chat);
 
             var poll = RandomUtils.getPoll().author(user).build();
-            for(var ans : poll.getAnswers()) {
+            for (var ans : poll.getAnswers()) {
                 ans.setPoll(poll);
             }
             entities.persist(poll);
@@ -143,7 +149,7 @@ public class DataSeeder implements ApplicationRunner {
         var filesCount = 20;
         var files = new ArrayList<UploadedFile>();
 
-        for(int i = 0; i < filesCount; i++) {
+        for (int i = 0; i < filesCount; i++) {
             var user = RandomUtils.item(users);
             var types = List.of(
                     Pair.of(UploadedFileType.AUDIO, "mp3"),
@@ -167,31 +173,29 @@ public class DataSeeder implements ApplicationRunner {
         }
 
 
-
-
-        for(int i = 0; i < users.size(); i++){
+        for (int i = 0; i < users.size(); i++) {
             int directs = RandomUtils.getRandomNumber(0, 5);
             var user = users.get(i);
-            for(int j = i + 1; j < Math.min(users.size(), i + 1 + directs); j++) {
+            for (int j = i + 1; j < Math.min(users.size(), i + 1 + directs); j++) {
                 var otherUser = users.get(j);
                 var room = direct(user, otherUser);
                 var members = room.getMembers();
                 var messages = RandomUtils.getRandomNumber(3, 12);
                 var msgs = new ArrayList<ChatMessage>();
                 var atm = new ArrayList<ChatMessageAttachment>();
-                for(int k = 0; k < messages; k++) {
+                for (int k = 0; k < messages; k++) {
                     var msg = RandomUtils.randomMessage()
                             .chatRoomMember(members.get(RandomUtils.getRandomNumber(0, 2)))
                             .messageStatus(k == 0 ? ChatMessageStatus.SENDING : ChatMessageStatus.SENT);
                     var bm = msg.build();
-                    if(RandomUtils.bool()) {
+                    if (RandomUtils.bool()) {
                         bm.setReactions(List.of(ChatMessageReaction.builder()
                                 .emoji(RandomUtils.item(emos))
                                 .chatMessage(bm)
                                 .chatRoomMember(RandomUtils.item(members)).build()));
                     }
 
-                    if(RandomUtils.getRandomNumber(0, 10) == 0) {
+                    if (RandomUtils.getRandomNumber(0, 10) == 0) {
                         var file = RandomUtils.item(files);
                         var attachment = ChatMessageAttachment.builder()
                                 .file(file)
@@ -207,9 +211,8 @@ public class DataSeeder implements ApplicationRunner {
                 atm.forEach(entities::persist);
             }
 
-            try
-            {
-                if(RandomUtils.bool()) {
+            try {
+                if (RandomUtils.bool()) {
                     var g = RandomUtils.getRandomNumber(0, groups.size());
                     var group = groups.get(g);
                     var msg = groupMsgs.get(g);
@@ -219,12 +222,10 @@ public class DataSeeder implements ApplicationRunner {
                     chatMessages.save(RandomUtils.randomMessage().chatRoomMember(member).build());
                 }
 
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-
-
 
 
     }

@@ -18,8 +18,6 @@ public class AuthenticationToken extends AbstractAuthenticationToken {
     }
 
     public AuthenticationToken(String token, User user) {
-        //note that the constructor needs a collection of GrantedAuthority
-        //but our User have a collection of our UserRole's
         super(List.of());
 
         this.token = token;

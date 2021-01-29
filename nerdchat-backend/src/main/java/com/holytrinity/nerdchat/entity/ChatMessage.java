@@ -1,10 +1,11 @@
 package com.holytrinity.nerdchat.entity;
 
-import antlr.CommonAST;
 import com.holytrinity.nerdchat.model.ChatMessageStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
 import java.util.Date;

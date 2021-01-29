@@ -1,12 +1,11 @@
 package com.holytrinity.nerdchat.entity;
 
-import com.holytrinity.nerdchat.model.UploadedFileType;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.FetchProfile;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 
 @Data

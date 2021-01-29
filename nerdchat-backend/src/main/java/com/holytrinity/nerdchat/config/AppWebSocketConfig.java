@@ -27,7 +27,6 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 import java.util.List;
-import java.util.UUID;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -49,10 +48,10 @@ public class AppWebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 
                     List<String> authorization = accessor.getNativeHeader("X-token");
-                    if(authorization == null || authorization.size() == 0) return null;
+                    if (authorization == null || authorization.size() == 0) return null;
                     String accessToken = authorization.get(0);
                     var user = users.findByToken(accessToken);
-                    if(user.isEmpty()) {
+                    if (user.isEmpty()) {
                         return null;
                     }
                     accessor.setUser(new UserClaim(user.get().getId(), user.get().getNickname()));
@@ -64,7 +63,7 @@ public class AppWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker( "/topic", "/user");
+        config.enableSimpleBroker("/topic", "/user");
         config.setApplicationDestinationPrefixes("/app");
         config.setUserDestinationPrefix("/user");
     }

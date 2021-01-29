@@ -44,20 +44,20 @@ public class ChatController {
 
     @MessageMapping("/send-chat")
     public void sendChat(SimpMessageHeaderAccessor h, @Payload SendChatMessage msg) throws Exception {
-        if((msg.getContent() == null || msg.getContent().trim().length() == 0) && msg.getFileId() == null) return;
+        if ((msg.getContent() == null || msg.getContent().trim().length() == 0) && msg.getFileId() == null) return;
         var usrId = _getUserId(h);
-         roomService.findRoomMember(msg.getChannelId(), usrId).ifPresent(member -> {
-             var res = messageService.create(ChatMessage.builder()
-                     .chatRoomMember(member)
-                     .content(msg.getContent())
-                     .sentAt(new Date()), msg.getFileId());
-             var atm = res.getSecond().orElse(null);
-             if(atm != null) {
-                 atm.setFile(files.findById(msg.getFileId()).orElseThrow());
-             }
-             var notification = ChatMessageDto.from(res.getFirst(), atm);
-             _notifyChannel(msg.getChannelId(), "message", notification);
-         });
+        roomService.findRoomMember(msg.getChannelId(), usrId).ifPresent(member -> {
+            var res = messageService.create(ChatMessage.builder()
+                    .chatRoomMember(member)
+                    .content(msg.getContent())
+                    .sentAt(new Date()), msg.getFileId());
+            var atm = res.getSecond().orElse(null);
+            if (atm != null) {
+                atm.setFile(files.findById(msg.getFileId()).orElseThrow());
+            }
+            var notification = ChatMessageDto.from(res.getFirst(), atm);
+            _notifyChannel(msg.getChannelId(), "message", notification);
+        });
 
     }
 
@@ -65,24 +65,24 @@ public class ChatController {
     public void reactMessage(SimpMessageHeaderAccessor h, @Payload ReactToMessageRequest req) {
         var usrId = _getUserId(h);
         var usrName = _getUserName(h);
-            roomService.findRoomMember(req.getRoomId(), usrId)
-                    .ifPresent(m -> {
-                        if(req.isState()) {
-                            messageService.getRepo().reactToMessage(m.getId(), req.getMessageId(), req.getEmojiId());
-                        } else {
-                            var ret = messageService.getReactionsRepo().unreact(m.getId(), req.getMessageId());
-                            if (ret <= 0) return;
+        roomService.findRoomMember(req.getRoomId(), usrId)
+                .ifPresent(m -> {
+                    if (req.isState()) {
+                        messageService.getRepo().reactToMessage(m.getId(), req.getMessageId(), req.getEmojiId());
+                    } else {
+                        var ret = messageService.getReactionsRepo().unreact(m.getId(), req.getMessageId());
+                        if (ret <= 0) return;
+                    }
+                    var data = messageService.getRepo().findMessageReactions(req.getMessageId(), m.getId());
+                    var obj = ReactionCountSummary.construct(req.getMessageId(), data);
+                    _reply(h, obj);
+                    for (var mkv : obj.entrySet()) {
+                        for (var kv : mkv.getValue().entrySet()) {
+                            kv.getValue().setSelected(null);
                         }
-                        var data = messageService.getRepo().findMessageReactions(req.getMessageId(), m.getId());
-                        var obj = ReactionCountSummary.construct(req.getMessageId(), data);
-                        _reply(h, obj);
-                        for(var mkv : obj.entrySet()) {
-                            for(var kv : mkv.getValue().entrySet()) {
-                                kv.getValue().setSelected(null);
-                            }
-                        }
-                        _notifyChannel(req.getRoomId(), "message-reactions", obj);
-                    });
+                    }
+                    _notifyChannel(req.getRoomId(), "message-reactions", obj);
+                });
 
     }
 
