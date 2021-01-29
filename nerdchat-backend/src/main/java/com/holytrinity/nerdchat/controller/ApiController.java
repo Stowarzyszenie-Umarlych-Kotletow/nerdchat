@@ -35,8 +35,6 @@ import java.util.UUID;
 @Transactional
 public class ApiController {
     @Autowired
-    private SimpMessagingTemplate messaging;
-    @Autowired
     private ChatMessageService messageService;
     @Autowired
     private ChatRoomService roomService;
