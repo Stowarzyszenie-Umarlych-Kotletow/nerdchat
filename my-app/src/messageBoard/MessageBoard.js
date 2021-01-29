@@ -29,6 +29,8 @@ export class MessageBoard extends Component {
     showReactions: false,
     reactMessageId: -2077,
     showAddReaction: false,
+    showFullScreen: false,
+    fullScreenImgSrc: ""
   };
 
   container = React.createRef();
@@ -325,6 +327,8 @@ export class MessageBoard extends Component {
                   reactions={this.state.reactions}
                   showReactions={this.showReactions}
                   addReaction={this.showAddReaction}
+                  fullscreen={(imgsrc) => {
+                    this.setState({showFullScreen: true, fullScreenImgSrc: imgsrc})}}
                 />
               )}
             </div>
@@ -337,6 +341,12 @@ export class MessageBoard extends Component {
             )}
           </div>
         </div>
+        {this.state.showFullScreen ? 
+          <div className="fullscreen" onClick={()=>{this.setState({showFullScreen: false})}}>
+            <img className="fullscreenImage" src={this.state.fullScreenImgSrc}/>
+          </div>: 
+          null
+        }
         {this.state.showAddReaction ? (
           <div id="addReaction">
             <div
