@@ -42,16 +42,7 @@ const MessageItem = ({
         return b.count - a.count;
       })
       .slice(0, 3);
-    let reactionString = "";
-    result.forEach((r) => {
-      reactionString +=
-        findEmoji(chat.emojis, r.emojiId).dataText +
-        " " +
-        String(r.count) +
-        " ";
-    });
-    if (reactionString !== "") reactionString += "     ";
-    return reactionString;
+    return Object.values(result);
   };
 
   const hasPoll = false;
@@ -165,22 +156,39 @@ const MessageItem = ({
             ))}
           </div>
         ) : null}
-        <div
-          className="reactions"
-          datatext={getReations()}
-          style={{ fontSize: String(11 * cfg.fontSizeMultiplier) + "px" }}
-          onClick={() => showReactions(message.messageId)}
-        >
+        <div style={{display: "flex", flexDirection: "row", position: "absolute"}}>
           <input
-            type="button"
-            value="+"
-            className="newReactionButton"
-            onClick={(e) => {
-              e.stopPropagation();
-              addReaction(message.messageId);
-            }}
-          />
-        </div>
+              type="button"
+              value="+"
+              className="newReactionButton"
+              onClick={(e) => {
+                e.stopPropagation();
+                addReaction(message.messageId);
+              }}
+            />
+          <div
+            className="reactions"
+            style={{ fontSize: String(11 * cfg.fontSizeMultiplier) + "px" }}
+            onClick={() => showReactions(message.messageId)}
+          >
+            {
+              getReations().map((r) => {
+                return <div style={{
+                    display: "table",  
+                    backgroundColor: cfg.accentsColor + (r.selected ? "99" : "00"),
+                    borderRadius: "7px"
+                    }}> 
+                {findEmoji(chat.emojis, r.emojiId).dataText +
+                  " " +
+                  String(r.count) +
+                  " "}
+                  </div>
+              })
+
+            }
+
+          </div>
+        </div>  
       </div>
     </div>
   );

@@ -92,18 +92,19 @@ input[type="checkbox"]:checked + label:before {
 }
 
 .reactions {
-  position: absolute;
-  bottom: 2px;
-  display: table;
+  display: flex;
+  flex-direction: row;
   background-color: #ccc3;
   border-radius: 7px;
   font-size: 11px;
   word-wrap: break-word;
+  padding: 2px;
+  padding-bottom: 1px;
+}
+.reactions:empty {
+  background: transparent;
 }
 
-.reactions::after {
-  content: attr(datatext);
-}
 
 .newReactionButton {
   width: 20px;
