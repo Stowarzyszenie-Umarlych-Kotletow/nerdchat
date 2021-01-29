@@ -3,8 +3,8 @@ package com.holytrinity.nerdchat.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
+@Data
 public class ReactionCountDto {
     private int messageId;
     private int emojiId;
@@ -17,5 +17,4 @@ public class ReactionCountDto {
         this.count = count;
         this.selected = reacted > 0;
     }
-
 }

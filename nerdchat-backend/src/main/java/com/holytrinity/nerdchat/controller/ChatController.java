@@ -64,13 +64,13 @@ public class ChatController {
 
     @MessageMapping("/react-message")
     public void reactToMessage(SimpMessageHeaderAccessor h, @Payload ReactToMessageRequest req) {
-        var usrId = _getUserId(h);
+        var usrId = _getUserId(h); // get authorized user ID
         var member = roomService.findRoomMember(req.getRoomId(), usrId)
                 .orElseThrow(() -> new ApiException("user not found"));
 
         if (req.isState()) {
             // add reaction
-            messageService.getRepo().reactToMessage(member.getId(), req.getMessageId(), req.getEmojiId());
+            messageService.getReactionsRepo().reactToMessage(member.getId(), req.getMessageId(), req.getEmojiId());
         } else {
             // remove reaction
             var ret = messageService.getReactionsRepo().unreact(member.getId(), req.getMessageId());
@@ -83,7 +83,6 @@ public class ChatController {
         ReactionCountSummary.clearSelections(obj); // prepare data for other users (without selections)
         // send an event to all connected users in the channel
         _notifyChannel(req.getRoomId(), "message-reactions", obj);
-
     }
 
 

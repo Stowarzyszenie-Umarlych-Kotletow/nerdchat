@@ -165,9 +165,10 @@ export class MessageBoard extends Component {
       });
   };
 
-  mergeReactions(data) {
+  mergeReactions = (data) => {
     let reactions = this.state.reactions;
     for (const [messageId, emoDict] of Object.entries(data)) {
+      // current reaction data for the given message
       let currentReactions = reactions[messageId];
       for (const [emoId, reactionData] of Object.entries(emoDict)) {
         if (reactionData.selected === null) {
@@ -180,11 +181,11 @@ export class MessageBoard extends Component {
           reactionData.selected = lastState;
         }
       }
-      // override message reactions with new data
+      // override reactions to the given message with new data
       reactions[messageId] = emoDict;
     }
     this.setState({ reactions });
-  }
+  };
 
   isReactionSelected = (emojiId) => {
     let reacts = this.state.reactions[this.state.reactMessageId];

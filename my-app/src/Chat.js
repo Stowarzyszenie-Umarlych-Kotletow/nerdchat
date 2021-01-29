@@ -163,17 +163,17 @@ export class Chat extends Component {
     console.log(err);
   };
 
-  onMessageReceived = (msg) => {
-    let m = JSON.parse(msg.body);
-    let type = msg.headers["type"];
-    let room = msg.headers["room"];
+  onMessageReceived = (payload) => {
+    let msg = JSON.parse(payload.body);
+    let type = payload.headers["type"];
+    let roomId = payload.headers["room"];
 
     if (type === "message") {
-      if (this.state.activeChatId === room) {
-        this.board.current.handleNewMessage(m);
+      if (this.state.activeChatId === roomId) {
+        this.board.current.handleNewMessage(msg);
         this.setLastRead(this.state.activeChatId);
       }
-      this.updateRoomListFromMsg(room, m);
+      this.updateRoomListFromMsg(roomId, msg);
       const config = this.context;
       if (config.currentStatus === "online") {
         if (document.visibilityState !== "visible") {
@@ -182,11 +182,11 @@ export class Chat extends Component {
         }
       }
     } else if (type === "joincode") {
-      this.updateChatRoom(room, (chat) => {
-        return { joinCode: m.code };
+      this.updateChatRoom(roomId, (chat) => {
+        return { joinCode: msg.code };
       });
     } else if (type === "message-reactions") {
-      this.board.current.mergeReactions(m);
+      this.board.current.mergeReactions(msg);
     }
   };
 
