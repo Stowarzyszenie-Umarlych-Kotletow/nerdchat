@@ -1,5 +1,4 @@
-import React, { useContext, useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 import "./MessageItem.css";
 import { UserConfig, ChatContext } from "../../context";
 import { formatUrls, getEmojiFromLabels } from "./MessageItemTools";
@@ -63,6 +62,7 @@ const MessageItem = ({
               src={getAttachmentUrl(message.messageId, message.attachment.id)}
               height="100%"
               width="100%"
+              alt=""
               onClick={() => {
                 fullscreen(
                   getAttachmentUrl(message.messageId, message.attachment.id)
@@ -138,9 +138,5 @@ const MessageItem = ({
   );
 };
 
-// PropTypes
-MessageItem.propTypes = {
-  message: PropTypes.object.isRequired,
-};
 
 export default MessageItem;

@@ -402,6 +402,7 @@ export class MessageBoard extends Component {
             <img
               className="fullscreenImage"
               src={this.state.fullScreenImgSrc}
+              alt=""
             />
           </div>
         ) : null}
