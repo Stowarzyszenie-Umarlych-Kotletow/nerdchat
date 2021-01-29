@@ -44,15 +44,12 @@ public interface ChatMessageRepository
             "GROUP BY msg.id, r.emoji.id")
     List<ReactionCountDto> findReactionsInChatRoom(UUID chatRoomId, int userId, Date from, Date until);
 
-    @Query("SELECT new com.holytrinity.nerdchat.model.ReactionCountDto(msg.id, r.emoji.id, COUNT(r.id), MAX(CASE WHEN r.chatRoomMember.id=?2 THEN 1 ELSE 0 END)) " +
+    @Query("SELECT new com.holytrinity.nerdchat.model.ReactionCountDto(" +
+            "msg.id, r.emoji.id, COUNT(r.id), MAX(CASE WHEN r.chatRoomMember.id=?2 THEN 1 ELSE 0 END)) " +
             "FROM ChatMessage msg " +
             "INNER JOIN ChatMessageReaction r ON(msg.id=r.chatMessage.id) " +
             "WHERE msg.id=?1 " +
             "GROUP BY msg.id, r.emoji.id")
     List<ReactionCountDto> findMessageReactions(int messageId, int memberId);
-
-    @Modifying(flushAutomatically = true)
-    @Procedure("REACT_TO_MESSAGE")
-    void reactToMessage(int p_member_id, int p_msg_id, int p_em_id);
 
 }

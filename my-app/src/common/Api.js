@@ -121,7 +121,7 @@ export class HttpApi {
   }
 
   logout() {
-    this.setCredentials({ nickname: null, token: null });
+    this.updateCredentials({ nickname: null, token: null });
   }
   getEmojiTable() {
     return this.requestGet("/global/emojis");
