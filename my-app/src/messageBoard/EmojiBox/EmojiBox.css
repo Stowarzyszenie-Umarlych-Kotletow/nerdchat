@@ -22,6 +22,18 @@
   cursor: move;
   padding-left: 20px;
   font-size: 25px;
+  overflow: hidden;
+}
+
+#EmojiContainer {
+  height: 80%;
+  padding: 15px;
+  overflow-y: scroll;
+}
+
+#EmojiContainer::-webkit-scrollbar-thumb {
+  background: #888;
+
 }
 
 .XButton {
