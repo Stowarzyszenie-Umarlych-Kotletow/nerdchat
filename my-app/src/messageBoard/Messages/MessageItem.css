@@ -17,79 +17,6 @@
   padding-left: 1px;
 }
 
-.pollBox {
-  max-width: 100%;
-  background: transparent;
-  border: 0;
-  border: 1px solid #eee;
-  border-radius: 7px;
-  margin-bottom: 10px;
-  word-wrap: break-word;
-  padding: 3%;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.pollOption {
-  margin-top: 5px;
-}
-
-.pollBarTrack {
-  height: 10px;
-  width: 90%;
-  margin-bottom: 10px;
-}
-
-.pollBar {
-  height: 10px;
-}
-
-/*Checkboxes styles*/
-input[type="checkbox"] {
-  display: none;
-}
-
-input[type="checkbox"] + label {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 20px;
-  font: 14px/20px "Open Sans", Arial, sans-serif;
-  color: #ddd;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-input[type="checkbox"] + label:last-child {
-  margin-bottom: 0;
-}
-
-input[type="checkbox"] + label:before {
-  content: "";
-  display: block;
-  width: 20px;
-  height: 20px;
-  border: 1px solid #eee;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0.6;
-  -webkit-transition: all 0.12s, border-color 0.08s;
-  transition: all 0.12s, border-color 0.08s;
-}
-
-input[type="checkbox"]:checked + label:before {
-  width: 10px;
-  top: -5px;
-  left: 5px;
-  border-radius: 0;
-  opacity: 1;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
 
 .reactions {
   display: flex;
@@ -102,7 +29,7 @@ input[type="checkbox"]:checked + label:before {
   padding-bottom: 1px;
 }
 .reactions:empty {
-  background: transparent;
+  display: none;
 }
 
 
