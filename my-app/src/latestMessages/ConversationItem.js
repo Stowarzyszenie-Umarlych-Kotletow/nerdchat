@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { ChatContext, UserConfig } from "../context";
 import { getEmojiFromLabels } from "../messageBoard/Messages/MessageItemTools";
 
-function wrapText(text) {
+export function wrapText(text) {
   let len = 36;
   if (text != null && text.length > len) {
     let temp = text.substring(0, len);
