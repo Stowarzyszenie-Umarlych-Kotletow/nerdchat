@@ -6,7 +6,6 @@ import AddMessage from "./AddMessage";
 import React from "react";
 import { UserConfig } from "../context";
 import EmojiBox from "./EmojiBox/EmojiBox";
-import CreatePollBox from "./CreatePollBox";
 import FileBox from "./FileBox";
 import { dragElement, mergeReactionDicts } from "../common/utils";
 import { findEmoji } from "../common/Api";
@@ -22,7 +21,6 @@ export class MessageBoard extends Component {
     showOptions: false,
     openOptions: false,
     openEmoji: false,
-    openCreatePoll: false,
     openFile: false,
     chatCodeValid: true,
     adminPermissions: false,
@@ -125,10 +123,6 @@ export class MessageBoard extends Component {
 
   switchOpenEmoji = () => {
     this.setState({ openEmoji: !this.state.openEmoji });
-  };
-
-  switchOpenCreatePoll = () => {
-    this.setState({ openCreatePoll: !this.state.openCreatePoll });
   };
 
   switchOpenFile = () => {
@@ -276,16 +270,6 @@ export class MessageBoard extends Component {
                         datatext="Invalid or taken Code"
                       />
                     )}
-                    <input
-                      type="button"
-                      value="Create a poll"
-                      className="optionButton"
-                      onClick={this.switchOpenCreatePoll}
-                      style={{
-                        color: this.context.textColorUser,
-                        marginTop: "10px",
-                      }}
-                    />
                   </div>
                 ) : null}
               </div>
@@ -374,11 +358,6 @@ export class MessageBoard extends Component {
                 </div>
               ) : null}
 
-              {this.state.openCreatePoll ? (
-                <CreatePollBox
-                  switchOpenCreatePoll={this.switchOpenCreatePoll}
-                />
-              ) : null}
               {this.state.openFile ? (
                 <FileBox
                   switchOpenEmoji={this.switchOpenFile}
@@ -423,6 +402,7 @@ export class MessageBoard extends Component {
             <img
               className="fullscreenImage"
               src={this.state.fullScreenImgSrc}
+              alt=""
             />
           </div>
         ) : null}

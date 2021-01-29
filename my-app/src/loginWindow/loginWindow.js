@@ -25,7 +25,6 @@ export class LoginWindow extends Component {
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   onForgotPassword = () => {
-    // TODO: 'forgotten password handling'
     window.alert("Please contact the administrator");
   };
 

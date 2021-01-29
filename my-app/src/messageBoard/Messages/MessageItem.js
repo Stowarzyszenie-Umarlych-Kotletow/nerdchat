@@ -1,5 +1,4 @@
-import React, { useContext, useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 import "./MessageItem.css";
 import { UserConfig, ChatContext } from "../../context";
 import { formatUrls, getEmojiFromLabels } from "./MessageItemTools";
@@ -45,29 +44,11 @@ const MessageItem = ({
     return Object.values(result);
   };
 
-  const hasPoll = false;
-  const pollData = {
-    pollName: "Poll name",
-    options: [
-      {
-        name: "Option 1",
-        value: 5,
-      },
-      {
-        name: "Option 2",
-        value: 2,
-      },
-    ],
-  };
-
   const { senderName, sentAt, content, id } = message;
-  let pollValuesSum = 0;
   const hasFile = message.attachment !== null;
   const hasImage = hasFile && message.attachment.type === "IMAGE";
   const hasVideo = hasFile && message.attachment.type === "VIDEO";
 
-  for (let i = 0; i < pollData.options.length; i++)
-    pollValuesSum += pollData.options[i].value;
   return (
     <div>
       <div className="textbox" style={getStyle(id)}>
@@ -81,6 +62,7 @@ const MessageItem = ({
               src={getAttachmentUrl(message.messageId, message.attachment.id)}
               height="100%"
               width="100%"
+              alt=""
               onClick={() => {
                 fullscreen(
                   getAttachmentUrl(message.messageId, message.attachment.id)
@@ -118,44 +100,6 @@ const MessageItem = ({
             return d;
           })}
         </h1>
-        {hasPoll ? (
-          <div className="pollBox">
-            <label
-              style={{
-                fontSize: String(16 * cfg.fontSizeMultiplier) + "px",
-                fontWeight: "bold",
-              }}
-            >
-              {" "}
-              Ankieta - {pollData.pollName}{" "}
-            </label>
-            {pollData.options.map((option, id) => (
-              <div
-                className="pollOption"
-                style={{
-                  fontSize: String(14 * cfg.fontSizeMultiplier) + "px",
-                  fontWeight: "bold",
-                }}
-              >
-                <input type="checkbox" id={"box-" + id} />
-                <label for={"box-" + id}>{option.name}</label>
-
-                <div
-                  className="pollBarTrack"
-                  style={{ backgroundColor: cfg.backgroundColor }}
-                >
-                  <div
-                    className="pollBar"
-                    style={{
-                      width: String((100 * option.value) / pollValuesSum) + "%",
-                      backgroundColor: cfg.accentsColor,
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : null}
         <div style={{display: "flex", flexDirection: "row", position: "absolute"}}>
           <input
               type="button"
@@ -194,9 +138,5 @@ const MessageItem = ({
   );
 };
 
-// PropTypes
-MessageItem.propTypes = {
-  message: PropTypes.object.isRequired,
-};
 
 export default MessageItem;
