@@ -16,7 +16,7 @@ class Emojis extends Component {
           flex: "1",
           fontSize: "30px",
           backgroundColor: "#4440",
-          border: "none",
+          border: "none"
         }}
         onClick={() => this.onClickEmoji(emoji.dataText)}
       >

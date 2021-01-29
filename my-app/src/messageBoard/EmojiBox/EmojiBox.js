@@ -13,7 +13,7 @@ export class EmojiBox extends Component {
           <div id="EmojiBoxHeader"> Emoji Box</div>
           <div className="XButton" onClick={this.props.switchOpenEmoji} />
         </div>
-        <div style={{ padding: "15px" }}>
+        <div style={{ padding: "15px", height: "80%", overflowY: "scroll" }}>
           <Emojis emojis={this.context.emojis} />
         </div>
       </div>

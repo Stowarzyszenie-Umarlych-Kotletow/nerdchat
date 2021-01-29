@@ -9,6 +9,7 @@
 }
 
 #EmojiBoxHeaderContainer {
+  height: 20%;
   padding: 10px;
   background-color: #333c;
   color: #fff;
