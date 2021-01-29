@@ -134,16 +134,21 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
             let arr = [];
             for (let i = 1; i <= 9; i++) {
               arr.push(
-                <img
+                <div style={{
+                  display: "inline-block",
+                  height: "100px",
+                  width: "100px",
+                  backgroundColor: i == localCfg.avatarId ? localCfg.accentsColor : null,
+                }}><img
                   src={`/assets/NerdchatDefPic${i}.png`}
                   alt=""
                   style={{
-                    height: "100px",
-                    width: "100px",
-                    marginRight: "10px",
+                    height: "90%",
+                    width: "90%",
+                    margin: "5px",
                   }}
                   onClick={() => changeProfilePic(i)}
-                />
+                /></div>
               );
             }
             return arr;
