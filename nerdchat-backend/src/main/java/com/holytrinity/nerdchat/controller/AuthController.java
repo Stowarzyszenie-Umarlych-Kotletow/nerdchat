@@ -22,16 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 @Transactional
 public class AuthController {
-    @Autowired
-    private SimpMessagingTemplate messaging;
-    @Autowired
-    private ChatMessageService messageService;
-    @Autowired
-    private ChatRoomService roomService;
-    @Autowired
-    private ChatRoomMemberRepository roomMemberRepository;
-    @Autowired
-    private UserCredentialsRepository credentialsRepository;
+
     @Autowired
     private UserService userService;
 
@@ -70,11 +61,11 @@ public class AuthController {
 
     @PostMapping("/auth/register_account")
     public ResponseEntity<?> registerAccount(@RequestBody CreateAccountRequest model) {
-        var user = userService.newModel(model.getNickname(), model.getFirstName(), model.getLastName());
+        var user = UserService.newModel(model.getNickname(), model.getFirstName(), model.getLastName());
         if (model.getFirstName().length() < 2 || model.getLastName().length() < 2) {
             return error("Please fill out all the fields.");
         }
-        if (!userService.checkNickname(user.getNickname())) {
+        if (!UserService.checkNickname(user.getNickname())) {
             return error("Invalid nickname - it must contain only 3-16 latin letters, numbers and underscores");
         }
         if (!userService.checkNicknameFree(user.getNickname())) {
@@ -86,7 +77,7 @@ public class AuthController {
         }
 
         var creds = new UserCredentials(user, model.getPassword());
-        credentialsRepository.save(creds);
+        userService.save(creds);
         return ok(user.getNickname());
     }
 

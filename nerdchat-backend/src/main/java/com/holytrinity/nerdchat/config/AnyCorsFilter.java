@@ -20,7 +20,10 @@ public class AnyCorsFilter implements Filter {
 
             // Access-Control-Allow-Origin
             String origin = request.getHeader("Origin");
-            response.setHeader("Access-Control-Allow-Origin", origin);
+            if(origin != null) {
+                response.setHeader("Access-Control-Allow-Origin", origin);
+            }
+
             response.setHeader("Vary", "Origin");
 
             // Access-Control-Max-Age

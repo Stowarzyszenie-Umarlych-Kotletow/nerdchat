@@ -12,6 +12,7 @@ import com.holytrinity.nerdchat.utils.TrimUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -25,7 +26,8 @@ public class UserService {
     @Autowired
     private UserAccessTokenRepository tokens;
     @Autowired
-    private UserChatConfigRepository configs;
+    private EntityManager entities;
+
 
     public Optional<UserCredentials> findCredentialsByNickname(String nickname) {
         return users.findCredentials(nickname);
@@ -55,15 +57,15 @@ public class UserService {
         return token.getToken().toString().toLowerCase();
     }
 
-    public String sanitizeNickname(String nickname) {
+    public static String sanitizeNickname(String nickname) {
         return nickname.toLowerCase().trim();
     }
 
-    public User newModel(String nickname, String firstName, String lastName) {
+    public static User newModel(String nickname, String firstName, String lastName) {
         return User.builder().firstName(firstName.trim()).lastName(lastName.trim()).nickname(sanitizeNickname(nickname)).build();
     }
 
-    public boolean checkNickname(String nickname) {
+    public static boolean checkNickname(String nickname) {
         return nickname.length() > 1 && nickname.length() <= 16
                 && nickname.toLowerCase().equals(TrimUtils.sanitize(nickname));
     }
@@ -79,6 +81,7 @@ public class UserService {
     public void save(User user) {
         users.save(user);
     }
+    public void save(UserCredentials creds) {entities.persist(creds);}
 
 
 }
