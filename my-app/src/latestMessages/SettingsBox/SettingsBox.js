@@ -102,7 +102,6 @@ const SettingsBox = ({ updateConfig, setSettingsOpen }) => {
               onChange={(c) => onColorChanged("accentsColor", c.hex)}
               placement="right"
             />
-            {/*<input id="accentColorPicker" type="color"></input>*/}
           </div>
         </div>
         <div className="SettingElement">

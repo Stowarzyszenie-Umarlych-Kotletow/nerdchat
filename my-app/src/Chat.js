@@ -167,6 +167,7 @@ export class Chat extends Component {
     let m = JSON.parse(msg.body);
     let type = msg.headers["type"];
     let room = msg.headers["room"];
+
     if (type === "message") {
       if (this.state.activeChatId === room) {
         this.board.current.handleNewMessage(m);

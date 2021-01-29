@@ -1,11 +1,11 @@
 #EmojiBox {
-    position: absolute;
-    z-index: 15;
-    height: 35%;
-    width: 30%;
-    left: 27%;
-    bottom: 100px;
-    background-color: #444c;
+  position: absolute;
+  z-index: 15;
+  height: 35%;
+  width: 30%;
+  left: 27%;
+  bottom: 100px;
+  background-color: #444c;
 }
 
 #EmojiBoxHeaderContainer {
@@ -33,7 +33,6 @@
 
 #EmojiContainer::-webkit-scrollbar-thumb {
   background: #888;
-
 }
 
 .XButton {
@@ -49,14 +48,14 @@
   left: 0;
   right: 1px;
   content: "\d7";
-  font-size: 27px; 
-  color: #BE1616;
+  font-size: 27px;
+  color: #be1616;
   line-height: 18px;
   text-align: center;
 }
 
 .XButton:hover {
-  background: #BE1616;
+  background: #be1616;
 }
 
 .XButton:hover::after {

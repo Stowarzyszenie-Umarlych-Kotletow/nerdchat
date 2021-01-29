@@ -94,7 +94,6 @@ p {
   border-color: #ff5f00;
 }
 
-
 #colorPicker1 {
   width: 40%;
   float: left;
@@ -138,7 +137,6 @@ p {
   z-index: 13;
 }
 
-
 #saveSettingsButton {
   width: 40%;
   font-size: 16px;
@@ -157,16 +155,15 @@ p {
   background: transparent;
   border: 0;
   border: 1px solid #a52f2f;
-  border-radius: 7px ;
+  border-radius: 7px;
   font-size: 16px;
   font-weight: bold;
-  color:#a52f2f;
+  color: #a52f2f;
 }
 
 #logoutButton:hover {
   background-color: #3336;
 }
-
 
 #resetSettingsButton {
   width: 30%;

@@ -30,7 +30,7 @@ export class MessageBoard extends Component {
     reactMessageId: -2077,
     showAddReaction: false,
     showFullScreen: false,
-    fullScreenImgSrc: ""
+    fullScreenImgSrc: "",
   };
 
   container = React.createRef();
@@ -41,7 +41,6 @@ export class MessageBoard extends Component {
     let scrollHeight = obj.scrollHeight;
     let clientHeight = obj.clientHeight;
     let height = scrollHeight - clientHeight;
-    // console.log(`o ${offset} h ${scrollHeight - clientHeight}`);
     if (scrollHeight - offset <= 10 || force) {
       document.getElementById("MessageContainer").scrollTop = height;
     }
@@ -78,8 +77,11 @@ export class MessageBoard extends Component {
       pos2 = 0,
       pos3 = 0,
       pos4 = 0;
-    
-    if(element !== null) document.getElementById(element.id + "Header").onmousedown = dragMouseDown;
+
+    if (element !== null)
+      document.getElementById(
+        element.id + "Header"
+      ).onmousedown = dragMouseDown;
 
     function dragMouseDown(e) {
       e = e || window.event;
@@ -156,7 +158,7 @@ export class MessageBoard extends Component {
       this.setState({ openOptions: false });
     }
     this.scrollDown();
-    
+
     this.dragElement(document.getElementById("showReactions"));
     this.dragElement(document.getElementById("addReaction"));
   };
@@ -361,78 +363,79 @@ export class MessageBoard extends Component {
                   {...{
                     switchOpenEmoji: this.switchOpenEmoji,
                   }}
-
                 />
               ) : null}
-               {this.state.showAddReaction ? (
-          <div id="addReaction">
-            <div
-              id="addReactionHeader"
-              style={{
-                backgroundColor: this.context.accentsColor,
-                color: this.context.textColorMain,
-              }}
-            >
-              Add Reaction
-              <div
-                className="XButton"
-                onClick={() => this.setState({ showAddReaction: false })}
-                style={{ float: "right" }}
-              />
-            </div>
-            <div id="addReactionContent">
-              {this.props.emojis.map((emoji) => (
-                <input
-                  key={`${emoji.id}`}
-                  type="button"
-                  value={emoji.dataText}
-                  className="addReactionButton"
-                  onClick={() => this.addReaction(emoji.id)}
-                  style={{
-                    backgroundColor:
-                      this.context.accentsColor +
-                      (this.isReactionSelected(emoji.id) ? "99" : "00"),
-                  }}
+              {this.state.showAddReaction ? (
+                <div id="addReaction">
+                  <div
+                    id="addReactionHeader"
+                    style={{
+                      backgroundColor: this.context.accentsColor,
+                      color: this.context.textColorMain,
+                    }}
+                  >
+                    Add Reaction
+                    <div
+                      className="XButton"
+                      onClick={() => this.setState({ showAddReaction: false })}
+                      style={{ float: "right" }}
+                    />
+                  </div>
+                  <div id="addReactionContent">
+                    {this.props.emojis.map((emoji) => (
+                      <input
+                        key={`${emoji.id}`}
+                        type="button"
+                        value={emoji.dataText}
+                        className="addReactionButton"
+                        onClick={() => this.addReaction(emoji.id)}
+                        style={{
+                          backgroundColor:
+                            this.context.accentsColor +
+                            (this.isReactionSelected(emoji.id) ? "99" : "00"),
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {this.state.showReactions ? (
+                <div id="showReactions">
+                  <div
+                    id="showReactionsHeader"
+                    style={{
+                      backgroundColor: this.context.accentsColor,
+                      color: this.context.textColorMain,
+                    }}
+                  >
+                    Reactions
+                    <div
+                      className="XButton"
+                      onClick={() => this.setState({ showReactions: false })}
+                      style={{ float: "right" }}
+                    />
+                  </div>
+                  <div id="showReactionsContent">
+                    {Object.values(currentReactions).map((r) => (
+                      <p
+                        key={`${r.emojiId}`}
+                        style={{ color: this.context.textColorMain }}
+                      >
+                        {findEmoji(this.props.emojis, r.emojiId).dataText +
+                          "" +
+                          r.count}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {this.state.openCreatePoll ? (
+                <CreatePollBox
+                  switchOpenCreatePoll={this.switchOpenCreatePoll}
                 />
-              ))}
-            </div>
-          </div>
-        ) : null}
-
-        {this.state.showReactions ? (
-          <div id="showReactions">
-            <div
-              id="showReactionsHeader"
-              style={{
-                backgroundColor: this.context.accentsColor,
-                color: this.context.textColorMain,
-              }}
-            >
-              Reactions
-              <div
-                className="XButton"
-                onClick={() => this.setState({ showReactions: false })}
-                style={{ float: "right" }}
-              />
-            </div>
-            <div id="showReactionsContent">
-              {Object.values(currentReactions).map((r) => (
-                <p
-                  key={`${r.emojiId}`}
-                  style={{ color: this.context.textColorMain }}
-                >
-                  {findEmoji(this.props.emojis, r.emojiId).dataText +
-                    "" +
-                    r.count}
-                </p>
-              ))}
-            </div>
-          </div>
-        ) : null}
-
-        {this.state.openCreatePoll ? (
-          <CreatePollBox switchOpenCreatePoll={this.switchOpenCreatePoll} />
-        ) : null}
+              ) : null}
               {this.state.openFile ? (
                 <FileBox
                   switchOpenEmoji={this.switchOpenFile}
@@ -450,7 +453,11 @@ export class MessageBoard extends Component {
                   showReactions={this.showReactions}
                   addReaction={this.showAddReaction}
                   fullscreen={(imgsrc) => {
-                    this.setState({showFullScreen: true, fullScreenImgSrc: imgsrc})}}
+                    this.setState({
+                      showFullScreen: true,
+                      fullScreenImgSrc: imgsrc,
+                    });
+                  }}
                 />
               )}
             </div>
@@ -463,12 +470,19 @@ export class MessageBoard extends Component {
             )}
           </div>
         </div>
-        {this.state.showFullScreen ? 
-          <div className="fullscreen" onClick={()=>{this.setState({showFullScreen: false})}}>
-            <img className="fullscreenImage" src={this.state.fullScreenImgSrc}/>
-          </div>: 
-          null
-        }
+        {this.state.showFullScreen ? (
+          <div
+            className="fullscreen"
+            onClick={() => {
+              this.setState({ showFullScreen: false });
+            }}
+          >
+            <img
+              className="fullscreenImage"
+              src={this.state.fullScreenImgSrc}
+            />
+          </div>
+        ) : null}
       </div>
     );
   }

@@ -21,7 +21,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
     : chatRoomList.map((m) => {
         let content =
           m.lastMessage.content === null ? "File" : m.lastMessage.content;
-        // console.log(m.lastMessage.content);
+
         let date = new Date(Date.parse(m.lastMessage.sentAt));
         let today = new Date();
         let isToday =
@@ -44,7 +44,7 @@ const ConversationItem = ({ chatRoomList, setActiveChatId, setLastRead }) => {
             onClick={(e) => {
               setActiveChatId(m.chatRoomId);
               setLastRead(m.chatRoomId);
-              // change chat name
+
               document
                 .getElementById("chatName")
                 .setAttribute("datatext", m.chatName);

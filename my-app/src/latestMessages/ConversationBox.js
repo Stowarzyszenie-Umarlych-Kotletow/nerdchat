@@ -24,9 +24,7 @@ const ConversationBox = ({ updateConfig, setLastRead }) => {
               fontSize: "30px",
             }}
           >
-            <div id="appTitleBoxText">
-              Nerdchat
-            </div>
+            <div id="appTitleBoxText">Nerdchat</div>
           </div>
           <div id="textLatestMessages" style={{ color: cfg.textColorUser }}>
             Latest Messages{" "}
@@ -38,7 +36,6 @@ const ConversationBox = ({ updateConfig, setLastRead }) => {
         <div id="conversationsContainer">
           <ChatContext.Consumer>
             {({ chatRoomList, setActiveChatId }) => {
-              // console.log(chatRoomList);
               return (
                 <ConversationItem
                   {...{ chatRoomList, setActiveChatId, setLastRead }}

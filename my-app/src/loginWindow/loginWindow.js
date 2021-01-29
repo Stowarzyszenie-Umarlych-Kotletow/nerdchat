@@ -26,15 +26,12 @@ export class LoginWindow extends Component {
 
   onForgotPassword = () => {
     // TODO: 'forgotten password handling'
-    console.log("forgot my password, send help");
-    window.alert('Please contact the administrator');
+    window.alert("Please contact the administrator");
   };
 
   render() {
     return (
-      <form  
-      id="loginWindow" 
-      onSubmit={(e) => this.onLogin(e)}>
+      <form id="loginWindow" onSubmit={(e) => this.onLogin(e)}>
         Hello, please sign in!
         <input
           id="loginField"

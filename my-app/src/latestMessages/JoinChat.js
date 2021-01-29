@@ -15,7 +15,6 @@ class JoinChat extends Component {
     this.context.api.stomp.joinChatByCode(this.state.chatCode).then((m) => {
       if (m.success) {
         this.setState({ chatCode: "" });
-        // join new Chat
         this.props.setJoinChatOpen(false);
       } else {
         alert("Invalid code");
@@ -27,7 +26,6 @@ class JoinChat extends Component {
     this.context.api.stomp.createGroupChat(this.state.newChatName).then((m) => {
       if (m.success) {
         this.setState({ newChatName: "" });
-        // join new Chat
         this.props.setJoinChatOpen(false);
       } else {
         alert("Could not create a new group.");
@@ -36,7 +34,6 @@ class JoinChat extends Component {
   };
 
   onSubmitFriend = () => {
-    // join new 1to1 chat with friend
     this.context.api.stomp.joinDirectChat(this.state.friend).then((m) => {
       if (m.success) {
         this.props.setJoinChatOpen(false);
@@ -47,7 +44,6 @@ class JoinChat extends Component {
     });
   };
 
-  //✎
   render() {
     return (
       <div>

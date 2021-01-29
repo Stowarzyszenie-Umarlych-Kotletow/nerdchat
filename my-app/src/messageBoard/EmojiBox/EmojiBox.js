@@ -4,8 +4,6 @@ import Emojis from "./Emojis";
 import { ChatContext } from "../../context";
 
 export class EmojiBox extends Component {
- 
-
   render() {
     return (
       <div id="EmojiBox">

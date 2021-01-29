@@ -1,70 +1,69 @@
 #FileBox {
-    position: absolute;
-    z-index: 16;
-    width: 30%;
-    min-width: 350px;
-    left: 27%;
-    bottom: 50px;
-    background-color: #444c;
-    /* padding: 5px; */
+  position: absolute;
+  z-index: 16;
+  width: 30%;
+  min-width: 350px;
+  left: 27%;
+  bottom: 50px;
+  background-color: #444c;
+  /* padding: 5px; */
 }
 
 #fileInput {
-    height: 50%;
-    width: 100%;
-    flex: 1;
-    font-size: 24px;
-    border: none;
-    padding: 5px;
+  height: 50%;
+  width: 100%;
+  flex: 1;
+  font-size: 24px;
+  border: none;
+  padding: 5px;
 }
 
 #sizeLabel {
-    font-size: 24px;
-    float: right;
+  font-size: 24px;
+  float: right;
 }
 
 #uploadSection {
-    padding: 5px;
-    width: 100%;
+  padding: 5px;
+  width: 100%;
 }
 
 #uploadButton {
-    height: 100%;
-    font-size: 24px;
+  height: 100%;
+  font-size: 24px;
 }
 
 #uploadProgressBarBox {
-    height: 5px;
-    width: 100%;
-    background-color:rgb(136, 136, 136);
-    margin-top: 4px;
+  height: 5px;
+  width: 100%;
+  background-color: rgb(136, 136, 136);
+  margin-top: 4px;
 }
 
 #uploadProgressBar {
-    height: 5px;
+  height: 5px;
 }
 
 .fileItem {
-    display: flex;
-    font-size: 20px;
-    padding: 5px;
-    
+  display: flex;
+  font-size: 20px;
+  padding: 5px;
 }
 
 .fileName {
-    flex: 4;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  flex: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sendFileButton {
-    flex: 1;
-    float: right;
-    font-size: 20px;
-    width: 100%;
+  flex: 1;
+  float: right;
+  font-size: 20px;
+  width: 100%;
 }
 
 .sendFileButton:hover {
-    background-color: #444c;
+  background-color: #444c;
 }

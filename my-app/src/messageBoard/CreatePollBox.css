@@ -1,61 +1,58 @@
 #CreatePollBox {
-    position: absolute;
-    z-index: 17;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin:auto;
-    width: 800px;
-    height: 600px;
-    overflow-y: scroll;
-    background-color: #262626ee;
-    padding: 1%;
-    font-weight: bold;
+  position: absolute;
+  z-index: 17;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 800px;
+  height: 600px;
+  overflow-y: scroll;
+  background-color: #262626ee;
+  padding: 1%;
+  font-weight: bold;
 }
-
 
 #pollNameInputField {
-    padding: 5px;
-    height: 40px;
-    width: 80%;
-    margin-top: 20px;
-    margin-left: 10px;
-    margin-bottom: 30px;
+  padding: 5px;
+  height: 40px;
+  width: 80%;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-bottom: 30px;
 }
 
-.pollButton { 
-    width: 40%;
-    background: transparent;
-    border: 0;
-    border: 1px solid #000;
-    border-radius: 7px ;
-    height: 40px; 
-    font-size: 20px;
-    font-weight: 300;
+.pollButton {
+  width: 40%;
+  background: transparent;
+  border: 0;
+  border: 1px solid #000;
+  border-radius: 7px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 300;
 }
 
 #pollOptionsBox {
-    height: 60%;
-    overflow-y: scroll;
-    border: 0;
-    border: 1px solid #000;
-    border-radius: 7px ;
-    margin-bottom: 30px;
-    padding-left: 1%;
+  height: 60%;
+  overflow-y: scroll;
+  border: 0;
+  border: 1px solid #000;
+  border-radius: 7px;
+  margin-bottom: 30px;
+  padding-left: 1%;
 }
-   
+
 #pollOptionsBox::-webkit-scrollbar-thumb {
-    background: #888;
-
+  background: #888;
 }
-  
-.pollOptionNameInputField {
-    padding: 5px;
-    height: 40px;
-    width: 50%;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-bottom: 10px;
 
+.pollOptionNameInputField {
+  padding: 5px;
+  height: 40px;
+  width: 50%;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }

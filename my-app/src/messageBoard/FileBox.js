@@ -38,7 +38,6 @@ class FileBox extends Component {
 
   getFiles() {
     this.context.api.getMyFiles().then((res) => {
-      //console.log(res);
       this.setState({ lastFiveFiles: res });
     });
   }
@@ -67,7 +66,6 @@ class FileBox extends Component {
   };
 
   onProgress = (pct) => {
-    // console.log(pct);
     this.setState({ fileUploadPct: pct });
   };
 

@@ -57,19 +57,7 @@ export class AddMessage extends Component {
           }}
           onClick={this.props.switchOpenFile}
         />
-        {/* <input
-          type="file"
-          //value="📎"
-          accept=".txt"
-          id="file-input"
-          style={{
-            flex: "1",
-            fontSize: "20px",
-            backgroundColor: "#262626",
-            border: "none",
-          }}
-          onChange={this.onFileButtonClicked}
-        /> */}
+
         <input
           id="textField"
           type="text"
